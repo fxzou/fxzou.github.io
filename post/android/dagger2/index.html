@@ -1,1105 +1,568 @@
-<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>Dagger2-入门，以初学者角度 - Fxzou Blog</title><meta name=renderer content="webkit"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=theme-color content="#f8f5ec"><meta name=msapplication-navbutton-color content="#f8f5ec"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec"><meta name=author content="Fxzou"><meta name=description content="Dagger2是Android中比较热门的依赖注入框架, 本文将从初学者的角度来学习Dagger2。"><meta name=keywords content="Fxzou,blog,zFxiang"><meta name=generator content="Hugo 0.82.0 with theme even"><link rel=canonical href=https://zfxiang.github.io/post/android/dagger2/><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/manifest.json><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link href=/sass/main.min.39a3e01cac9473be1356f3572fcfe34b2e363efabad244a99a40f28a812c837e.css rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin=anonymous><meta property="og:title" content="Dagger2-入门，以初学者角度"><meta property="og:description" content="Dagger2是Android中比较热门的依赖注入框架, 本文将从初学者的角度来学习Dagger2。"><meta property="og:type" content="article"><meta property="og:url" content="https://zfxiang.github.io/post/android/dagger2/"><meta property="article:section" content="post"><meta property="article:published_time" content="2016-09-25T15:43:48+08:00"><meta property="article:modified_time" content="2016-12-21T15:43:48+08:00"><meta itemprop=name content="Dagger2-入门，以初学者角度"><meta itemprop=description content="Dagger2是Android中比较热门的依赖注入框架, 本文将从初学者的角度来学习Dagger2。"><meta itemprop=datePublished content="2016-09-25T15:43:48+08:00"><meta itemprop=dateModified content="2016-12-21T15:43:48+08:00"><meta itemprop=wordCount content="14195"><meta itemprop=keywords content="Dagger2,教程,Android,"><meta name=twitter:card content="summary"><meta name=twitter:title content="Dagger2-入门，以初学者角度"><meta name=twitter:description content="Dagger2是Android中比较热门的依赖注入框架, 本文将从初学者的角度来学习Dagger2。"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script><script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head><body><div id=mobile-navbar class=mobile-navbar><div class=mobile-header-logo><a href=/ class=logo>Fxzou</a></div><div class=mobile-navbar-icon><span></span><span></span><span></span></div></div><nav id=mobile-menu class="mobile-menu slideout-menu"><ul class=mobile-menu-list><a href=/><li class=mobile-menu-item>主页</li></a><a href=/post/><li class=mobile-menu-item>归档</li></a><a href=/tags/><li class=mobile-menu-item>标签</li></a><a href=/categories/><li class=mobile-menu-item>分类</li></a><a href=/about/><li class=mobile-menu-item>关于我</li></a></ul></nav><div class=container id=mobile-panel><header id=header class=header><div class=logo-wrapper><a href=/ class=logo>Fxzou</a></div><nav class=site-navbar><ul id=menu class=menu><li class=menu-item><a class=menu-item-link href=/>主页</a></li><li class=menu-item><a class=menu-item-link href=/post/>归档</a></li><li class=menu-item><a class=menu-item-link href=/tags/>标签</a></li><li class=menu-item><a class=menu-item-link href=/categories/>分类</a></li><li class=menu-item><a class=menu-item-link href=/about/>关于我</a></li></ul></nav></header><main id=main class=main><div class=content-wrapper><div id=content class=content><article class=post><header class=post-header><h1 class=post-title>Dagger2-入门，以初学者角度</h1><div class=post-meta><span class=post-time>2016-09-25</span><div class=post-category><a href=/categories/android/>Android</a></div></div></header><div class=post-toc id=post-toc><h2 class=post-toc-title>文章目录</h2><div class=post-toc-content><nav id=TableOfContents><ul><li><ul><li><a href=#依赖注入>依赖注入</a></li><li><a href=#dagger2介绍>Dagger2介绍</a></li><li><a href=#书写demo>书写Demo</a><ul><li><a href=#引入dagger2>引入Dagger2</a></li><li><a href=#编写布料类cloth>编写布料类Cloth</a></li><li><a href=#书写module类>书写Module类</a></li><li><a href=#书写component接口>书写Component接口</a></li><li><a href=#在mainactivity中声明>在MainActivity中声明</a></li><li><a href=#结果>结果</a></li></ul></li><li><a href=#另一种方法>另一种方法</a><ul><li><a href=#创建依赖类shoe>创建依赖类Shoe</a></li><li><a href=#在mainactivity中声明shoe依赖>在MainActivity中声明Shoe依赖</a></li><li><a href=#结果-1>结果</a></li><li><a href=#注意>注意</a></li></ul></li><li><a href=#复杂一点的情况>复杂一点的情况</a><ul><li><a href=#创建依赖类clothes>创建依赖类Clothes</a></li><li><a href=#在module类中增加提供方法>在Module类中增加提供方法</a></li><li><a href=#在mainactivity中声明clothes依赖>在MainActivity中声明Clothes依赖</a></li><li><a href=#结果-2>结果</a></li></ul></li><li><a href=#依赖总结>依赖总结</a></li><li><a href=#named和qulifier注解的使用>@Named和@Qulifier注解的使用</a><ul><li><a href=#named>@Named</a></li><li><a href=#结果-3>结果</a></li><li><a href=#qulifier>@Qulifier</a></li></ul></li><li><a href=#singleton和scope的使用>@Singleton和@Scope的使用</a><ul><li><a href=#singleton>@Singleton</a></li><li><a href=#scope>@Scope</a></li></ul></li><li><a href=#组件依赖dependencies的使用>组件依赖dependencies的使用</a></li><li><a href=#subcomponent注解>@Subcomponent注解</a></li><li><a href=#lazy与provider>Lazy与Provider</a></li><li><a href=#component的生命周期>Component的生命周期</a></li><li><a href=#总结>总结</a></li><li><a href=#声明>声明</a></li><li><a href=#参考文章>参考文章</a></li></ul></li></ul></nav></div></div><div class=post-outdated><div class=warn><p>【注意】最后更新于 <span class=timeago datetime=2016-12-21T15:43:48 title="December 21, 2016">December 21, 2016</span>，文中内容可能已过时，请谨慎使用。</p></div></div><div class=post-content><p>Dagger2是Android中比较热门的依赖注入框架, 本文将从初学者的角度来学习Dagger2。</p><blockquote><p>2016-12-21 更新:添加@Subcomponent注解以及Lazy与Provider的使用,本文基本完结!如果有好的建议请提出,感谢大家的支持,谢谢</p></blockquote><h2 id=依赖注入>依赖注入</h2><p>Dagger2是Android中比较热门的依赖注入框架,什么是依赖注入呢?维基百科上是这样描述的:</p><blockquote><p>控制反转（Inversion of Control，缩写为IoC），是面向对象编程中的一种设计原则，可以用来减低计算机代码之间的耦合度。其中最常见的方式叫做依赖注入（Dependency Injection，简称DI），还有一种方式叫“依赖查找”（Dependency Lookup）。通过控制反转，对象在被创建的时候，由一个调控系统内所有对象的外界实体，将其所依赖的对象的引用传递给它。也可以说，依赖被注入到对象中.</p></blockquote><p>通俗的来讲呢,就是一个类中需要依赖其他对象时,不需要你亲自为那些需要依赖的对象赋值,为那些对象赋值的操作交给了IOC框架.</p><h2 id=dagger2介绍>Dagger2介绍</h2><p>一般的IOC框架都是通过反射来实现的,但Dagger2作为Android端的IOC框架,为了不影响性能,它是通过apt动态生成代码来实现的.
-Dagger2主要分为三个模块:</p><ol><li>依赖提供方Module,负责提供依赖中所需要的对象,实际编码中类似于工厂类</li><li>依赖需求方实例,它声明依赖对象,它在实际编码中对应业务类,例如Activity,当你在Activity中需要某个对象时,你只要在其中声明就行,声明的方法在下面会讲到.</li><li>依赖注入组件Component,负责将对象注入到依赖需求方,它在实际编码中是一个接口,编译时Dagger2会自动为它生成一个实现类.</li></ol><p>Dagger2的主要工作流程分为以下几步:</p><ol><li>将依赖需求方实例传入给Component实现类</li><li>Component实现类根据依赖需求方实例中依赖声明,来确定该实例需要依赖哪些对象</li><li>确定依赖对象后,Component会在与自己关联的Module类中查找有没有提供这些依赖对象的方法,有的话就将Module类中提供的对象设置到依赖需求方实例中</li></ol><p>通俗上来讲就好比你现在需要一件衣服,自己做太麻烦了,你就去商店买,你跟商店老板说明你想要购买的类型后,商店老板就会在自己的衣服供应商中查找有没有你所说的类型,有就将它卖给你.其中你就对应上面所说的依赖需求方实例,你只要说明你需要什么,商店老板则对应Component实现类,负责满足别人的需求,而衣服供应商则对应Module类,他负责生产衣服.也许这里有点绕,但经过下面的Demo,也许能够帮助你理解.</p><h2 id=书写demo>书写Demo</h2><hr><h3 id=引入dagger2>引入Dagger2</h3><p>在项目下的build.gradle文件中添加apt插件:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>buildscript {
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>Dagger2-入门，以初学者角度 - Fxzou Blog</title><meta name=renderer content="webkit"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=theme-color content="#f8f5ec"><meta name=msapplication-navbutton-color content="#f8f5ec"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec"><meta name=author content="Fxzou"><meta name=description content="Dagger2是Android中比较热门的依赖注入框架, 本文将从初学者的角度来学习Dagger2。"><meta name=keywords content="Fxzou,blog,zFxiang"><meta name=generator content="Hugo 0.82.0 with theme even"><link rel=canonical href=https://zfxiang.github.io/post/android/dagger2/><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/manifest.json><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link href=/sass/main.min.39a3e01cac9473be1356f3572fcfe34b2e363efabad244a99a40f28a812c837e.css rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin=anonymous><meta property="og:title" content="Dagger2-入门，以初学者角度"><meta property="og:description" content="Dagger2是Android中比较热门的依赖注入框架, 本文将从初学者的角度来学习Dagger2。"><meta property="og:type" content="article"><meta property="og:url" content="https://zfxiang.github.io/post/android/dagger2/"><meta property="article:section" content="post"><meta property="article:published_time" content="2016-09-25T15:43:48+08:00"><meta property="article:modified_time" content="2016-12-21T15:43:48+08:00"><meta itemprop=name content="Dagger2-入门，以初学者角度"><meta itemprop=description content="Dagger2是Android中比较热门的依赖注入框架, 本文将从初学者的角度来学习Dagger2。"><meta itemprop=datePublished content="2016-09-25T15:43:48+08:00"><meta itemprop=dateModified content="2016-12-21T15:43:48+08:00"><meta itemprop=wordCount content="13722"><meta itemprop=keywords content="Dagger2,教程,Android,"><meta name=twitter:card content="summary"><meta name=twitter:title content="Dagger2-入门，以初学者角度"><meta name=twitter:description content="Dagger2是Android中比较热门的依赖注入框架, 本文将从初学者的角度来学习Dagger2。"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script><script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head><body><div id=mobile-navbar class=mobile-navbar><div class=mobile-header-logo><a href=/ class=logo>Fxzou</a></div><div class=mobile-navbar-icon><span></span><span></span><span></span></div></div><nav id=mobile-menu class="mobile-menu slideout-menu"><ul class=mobile-menu-list><a href=/><li class=mobile-menu-item>主页</li></a><a href=/post/><li class=mobile-menu-item>归档</li></a><a href=/tags/><li class=mobile-menu-item>标签</li></a><a href=/categories/><li class=mobile-menu-item>分类</li></a><a href=/about/><li class=mobile-menu-item>关于我</li></a></ul></nav><div class=container id=mobile-panel><header id=header class=header><div class=logo-wrapper><a href=/ class=logo>Fxzou</a></div><nav class=site-navbar><ul id=menu class=menu><li class=menu-item><a class=menu-item-link href=/>主页</a></li><li class=menu-item><a class=menu-item-link href=/post/>归档</a></li><li class=menu-item><a class=menu-item-link href=/tags/>标签</a></li><li class=menu-item><a class=menu-item-link href=/categories/>分类</a></li><li class=menu-item><a class=menu-item-link href=/about/>关于我</a></li></ul></nav></header><main id=main class=main><div class=content-wrapper><div id=content class=content><article class=post><header class=post-header><h1 class=post-title>Dagger2-入门，以初学者角度</h1><div class=post-meta><span class=post-time>2016-09-25</span><div class=post-category><a href=/categories/android/>Android</a></div></div></header><div class=post-toc id=post-toc><h2 class=post-toc-title>文章目录</h2><div class=post-toc-content><nav id=TableOfContents><ul><li><ul><li><a href=#依赖注入>依赖注入</a></li><li><a href=#dagger2介绍>Dagger2介绍</a></li><li><a href=#书写demo>书写Demo</a><ul><li><a href=#引入dagger2>引入Dagger2</a></li><li><a href=#编写布料类cloth>编写布料类Cloth</a></li><li><a href=#书写module类>书写Module类</a></li><li><a href=#书写component接口>书写Component接口</a></li><li><a href=#在mainactivity中声明>在MainActivity中声明</a></li><li><a href=#结果>结果</a></li></ul></li><li><a href=#另一种方法>另一种方法</a><ul><li><a href=#创建依赖类shoe>创建依赖类Shoe</a></li><li><a href=#在mainactivity中声明shoe依赖>在MainActivity中声明Shoe依赖</a></li><li><a href=#结果-1>结果</a></li><li><a href=#注意>注意</a></li></ul></li><li><a href=#复杂一点的情况>复杂一点的情况</a><ul><li><a href=#创建依赖类clothes>创建依赖类Clothes</a></li><li><a href=#在module类中增加提供方法>在Module类中增加提供方法</a></li><li><a href=#在mainactivity中声明clothes依赖>在MainActivity中声明Clothes依赖</a></li><li><a href=#结果-2>结果</a></li></ul></li><li><a href=#依赖总结>依赖总结</a></li><li><a href=#named和qulifier注解的使用>@Named和@Qulifier注解的使用</a><ul><li><a href=#named>@Named</a></li><li><a href=#结果-3>结果</a></li><li><a href=#qulifier>@Qulifier</a></li></ul></li><li><a href=#singleton和scope的使用>@Singleton和@Scope的使用</a><ul><li><a href=#singleton>@Singleton</a></li><li><a href=#scope>@Scope</a></li></ul></li><li><a href=#组件依赖dependencies的使用>组件依赖dependencies的使用</a></li><li><a href=#subcomponent注解>@Subcomponent注解</a></li><li><a href=#lazy与provider>Lazy与Provider</a></li><li><a href=#component的生命周期>Component的生命周期</a></li><li><a href=#总结>总结</a></li><li><a href=#声明>声明</a></li><li><a href=#参考文章>参考文章</a></li></ul></li></ul></nav></div></div><div class=post-outdated><div class=warn><p>【注意】最后更新于 <span class=timeago datetime=2016-12-21T15:43:48 title="December 21, 2016">December 21, 2016</span>，文中内容可能已过时，请谨慎使用。</p></div></div><div class=post-content><p>Dagger2是Android中比较热门的依赖注入框架, 本文将从初学者的角度来学习Dagger2。</p><blockquote><p>2016-12-21 更新:添加@Subcomponent注解以及Lazy与Provider的使用,本文基本完结!如果有好的建议请提出,感谢大家的支持,谢谢</p></blockquote><h2 id=依赖注入>依赖注入</h2><p>Dagger2是Android中比较热门的依赖注入框架,什么是依赖注入呢?维基百科上是这样描述的:</p><blockquote><p>控制反转（Inversion of Control，缩写为IoC），是面向对象编程中的一种设计原则，可以用来减低计算机代码之间的耦合度。其中最常见的方式叫做依赖注入（Dependency Injection，简称DI），还有一种方式叫“依赖查找”（Dependency Lookup）。通过控制反转，对象在被创建的时候，由一个调控系统内所有对象的外界实体，将其所依赖的对象的引用传递给它。也可以说，依赖被注入到对象中.</p></blockquote><p>通俗的来讲呢,就是一个类中需要依赖其他对象时,不需要你亲自为那些需要依赖的对象赋值,为那些对象赋值的操作交给了IOC框架.</p><h2 id=dagger2介绍>Dagger2介绍</h2><p>一般的IOC框架都是通过反射来实现的,但Dagger2作为Android端的IOC框架,为了不影响性能,它是通过apt动态生成代码来实现的.
+Dagger2主要分为三个模块:</p><ol><li>依赖提供方Module,负责提供依赖中所需要的对象,实际编码中类似于工厂类</li><li>依赖需求方实例,它声明依赖对象,它在实际编码中对应业务类,例如Activity,当你在Activity中需要某个对象时,你只要在其中声明就行,声明的方法在下面会讲到.</li><li>依赖注入组件Component,负责将对象注入到依赖需求方,它在实际编码中是一个接口,编译时Dagger2会自动为它生成一个实现类.</li></ol><p>Dagger2的主要工作流程分为以下几步:</p><ol><li>将依赖需求方实例传入给Component实现类</li><li>Component实现类根据依赖需求方实例中依赖声明,来确定该实例需要依赖哪些对象</li><li>确定依赖对象后,Component会在与自己关联的Module类中查找有没有提供这些依赖对象的方法,有的话就将Module类中提供的对象设置到依赖需求方实例中</li></ol><p>通俗上来讲就好比你现在需要一件衣服,自己做太麻烦了,你就去商店买,你跟商店老板说明你想要购买的类型后,商店老板就会在自己的衣服供应商中查找有没有你所说的类型,有就将它卖给你.其中你就对应上面所说的依赖需求方实例,你只要说明你需要什么,商店老板则对应Component实现类,负责满足别人的需求,而衣服供应商则对应Module类,他负责生产衣服.也许这里有点绕,但经过下面的Demo,也许能够帮助你理解.</p><h2 id=书写demo>书写Demo</h2><hr><h3 id=引入dagger2>引入Dagger2</h3><p>在项目下的build.gradle文件中添加apt插件:</p><pre><code>buildscript {
     ...
     dependencies {
-        classpath &#39;com.android.tools.build:gradle:2.2.2&#39;
+        classpath 'com.android.tools.build:gradle:2.2.2'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
         //添加apt插件
-        classpath &#39;com.neenbedankt.gradle.plugins:android-apt:1.8&#39;
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     }
 }
 
 ...
 
-</code></pre></td></tr></table></div></div><p>在app目录的build.gradle文件中添加:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>//应用apt插件
-apply plugin: &#39;com.neenbedankt.android-apt&#39;
+</code></pre><p>在app目录的build.gradle文件中添加:</p><pre><code>//应用apt插件
+apply plugin: 'com.neenbedankt.android-apt'
 
 ...
 
 dependencies {
     ...
     //引入dagger2
-    compile &#39;com.google.dagger🗡2.4&#39;
-    apt &#39;com.google.dagger:dagger-compiler:2.4&#39;
+    compile 'com.google.dagger🗡2.4'
+    apt 'com.google.dagger:dagger-compiler:2.4'
     //java注解
-    provided &#39;org.glassfish:javax.annotation:10.0-b28&#39;
+    provided 'org.glassfish:javax.annotation:10.0-b28'
 }
 
-</code></pre></td></tr></table></div></div><h3 id=编写布料类cloth>编写布料类Cloth</h3><p>写一个Cloth类用作依赖对象,它包含一个color属性</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=kd>public</span> <span class=kd>class</span> <span class=nc>Cloth</span> <span class=o>{</span>
-    <span class=kd>private</span> <span class=n>String</span> <span class=n>color</span><span class=o>;</span>
+</code></pre><h3 id=编写布料类cloth>编写布料类Cloth</h3><p>写一个Cloth类用作依赖对象,它包含一个color属性</p><pre><code class=language-java>public class Cloth {
+    private String color;
 
-    <span class=kd>public</span> <span class=n>String</span> <span class=nf>getColor</span><span class=o>()</span> <span class=o>{</span>
-        <span class=k>return</span> <span class=n>color</span><span class=o>;</span>
-    <span class=o>}</span>
+    public String getColor() {
+        return color;
+    }
 
-    <span class=kd>public</span> <span class=kt>void</span> <span class=nf>setColor</span><span class=o>(</span><span class=n>String</span> <span class=n>color</span><span class=o>)</span> <span class=o>{</span>
-        <span class=k>this</span><span class=o>.</span><span class=na>color</span> <span class=o>=</span> <span class=n>color</span><span class=o>;</span>
-    <span class=o>}</span>
+    public void setColor(String color) {
+        this.color = color;
+    }
 
-    <span class=nd>@Override</span>
-    <span class=kd>public</span> <span class=n>String</span> <span class=nf>toString</span><span class=o>()</span> <span class=o>{</span>
-        <span class=k>return</span> <span class=n>color</span> <span class=o>+</span> <span class=s>&#34;布料&#34;</span><span class=o>;</span>
-    <span class=o>}</span>
-<span class=o>}</span>
-</code></pre></td></tr></table></div></div><h3 id=书写module类>书写Module类</h3><p>现在的需求是MainActivity中需要使用到Cloth对象,所以我们要为MainActivity书写一个Module类用来提供Cloth对象,相当于创建了一个提供商</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=nd>@Module</span>
-<span class=kd>public</span> <span class=kd>class</span> <span class=nc>MainModule</span> <span class=o>{</span>
+    @Override
+    public String toString() {
+        return color + &quot;布料&quot;;
+    }
+}
+</code></pre><h3 id=书写module类>书写Module类</h3><p>现在的需求是MainActivity中需要使用到Cloth对象,所以我们要为MainActivity书写一个Module类用来提供Cloth对象,相当于创建了一个提供商</p><pre><code class=language-java>@Module
+public class MainModule {
 
-    <span class=nd>@Provides</span>
-    <span class=kd>public</span> <span class=n>Cloth</span> <span class=nf>getCloth</span><span class=o>()</span> <span class=o>{</span>
-        <span class=n>Cloth</span> <span class=n>cloth</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Cloth</span><span class=o>();</span>
-        <span class=n>cloth</span><span class=o>.</span><span class=na>setColor</span><span class=o>(</span><span class=s>&#34;红色&#34;</span><span class=o>);</span>
-        <span class=k>return</span> <span class=n>cloth</span><span class=o>;</span>
-    <span class=o>}</span>
-<span class=o>}</span>
-</code></pre></td></tr></table></div></div><p>嗯?怎么多了两个注解?这两个注解有什么用呢?
-注解是Dagger2中的关键,编写Module类时要在该类上声明<code>@Module</code>以表明该类是Module类,这样Dagger2才能识别,那<code>@Provides</code>又是干嘛的呢?它的作用是声明Module类中哪些方法是用来提供依赖对象的,当Component类需要依赖对象时,他就会根据返回值的类型来在有<code>@Provides</code>注解的方法中选择调用哪个方法.在一个方法上声明<code>@Provides</code>注解,就相当于创建了一条生产线,这条生产线的产物就是方法的返回值类型.有了这条生产线,供应商就能提供这种类型的商品了,当商店老板发现有人需要这种类型的商品时,供应商就可以提供给他了</p><h3 id=书写component接口>书写Component接口</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span><span class=lnt>4
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=nd>@Component</span><span class=o>(</span><span class=n>modules</span><span class=o>=</span><span class=n>MainModule</span><span class=o>.</span><span class=na>class</span><span class=o>)</span>
-<span class=kd>public</span> <span class=kd>interface</span> <span class=nc>MainComponent</span> <span class=o>{</span>
-    <span class=kt>void</span> <span class=nf>inject</span><span class=o>(</span><span class=n>MainActivity</span> <span class=n>mainActivity</span><span class=o>);</span>
-<span class=o>}</span>
-</code></pre></td></tr></table></div></div><p>和Module类一样,Component类也是需要注解声明的,那个注解就是<code>@Component</code>,但是<code>@Component</code>注解的作用可不是单单用来声明Component类,他还有更强大的功能,<code>@Component</code>注解有modules和dependencies两个属性,这两个属性的类型都是Class数组,modules的作用就是声明该Component含有哪几个Module,当Component需要某个依赖对象时,就会通过这些Module类中对应的方法获取依赖对象,MainComponent中只包含MainModule,所以令modules=MainModule.class,相当于供应商和商店老板确定合作关系的合同.而dependencies属性则是声明Component类的依赖关系,这个下面再详讲.
+    @Provides
+    public Cloth getCloth() {
+        Cloth cloth = new Cloth();
+        cloth.setColor(&quot;红色&quot;);
+        return cloth;
+    }
+}
+</code></pre><p>嗯?怎么多了两个注解?这两个注解有什么用呢?
+注解是Dagger2中的关键,编写Module类时要在该类上声明<code>@Module</code>以表明该类是Module类,这样Dagger2才能识别,那<code>@Provides</code>又是干嘛的呢?它的作用是声明Module类中哪些方法是用来提供依赖对象的,当Component类需要依赖对象时,他就会根据返回值的类型来在有<code>@Provides</code>注解的方法中选择调用哪个方法.在一个方法上声明<code>@Provides</code>注解,就相当于创建了一条生产线,这条生产线的产物就是方法的返回值类型.有了这条生产线,供应商就能提供这种类型的商品了,当商店老板发现有人需要这种类型的商品时,供应商就可以提供给他了</p><h3 id=书写component接口>书写Component接口</h3><pre><code class=language-java>@Component(modules=MainModule.class)
+public interface MainComponent {
+    void inject(MainActivity mainActivity);
+}
+</code></pre><p>和Module类一样,Component类也是需要注解声明的,那个注解就是<code>@Component</code>,但是<code>@Component</code>注解的作用可不是单单用来声明Component类,他还有更强大的功能,<code>@Component</code>注解有modules和dependencies两个属性,这两个属性的类型都是Class数组,modules的作用就是声明该Component含有哪几个Module,当Component需要某个依赖对象时,就会通过这些Module类中对应的方法获取依赖对象,MainComponent中只包含MainModule,所以令modules=MainModule.class,相当于供应商和商店老板确定合作关系的合同.而dependencies属性则是声明Component类的依赖关系,这个下面再详讲.
 接口中那个方法又是干嘛用的呢?
-我们现在只是声明了Component类,但我们要怎么将Component类和依赖需求方对象联合起来呢?答案就是通过这个inject方法,这个方法可以将依赖需求方对象送到Component类中,Component类就会根据依赖需求方对象中声明的依赖关系来注入依赖需求方对象中所需要的对象,本Demo中MainActivity中需要Cloth对象,所以我们通过inject方法将MainActivity实例传入到MainComponent中,MainComponent就会从MainModule中的getCloth方法获取Cloth实例,并将该实例赋值给MainActivity中的cloth字段.相当于你去商店的道路,没有这条路,你就无法去商店和老板说明你所需要的东西.<strong>但是这里需要注意的是,inject方法的参数不能用父类来接收,例如本Demo中,如果inject的参数是Activity,那么Dagger2就会报错.</strong></p><h3 id=在mainactivity中声明>在MainActivity中声明</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=kd>public</span> <span class=kd>class</span> <span class=nc>MainActivity</span> <span class=kd>extends</span> <span class=n>AppCompatActivity</span> <span class=o>{</span>
-    <span class=kd>private</span> <span class=n>TextView</span> <span class=n>tv</span><span class=o>;</span>
-    <span class=nd>@Inject</span>
-    <span class=n>Cloth</span> <span class=n>cloth</span><span class=o>;</span>
+我们现在只是声明了Component类,但我们要怎么将Component类和依赖需求方对象联合起来呢?答案就是通过这个inject方法,这个方法可以将依赖需求方对象送到Component类中,Component类就会根据依赖需求方对象中声明的依赖关系来注入依赖需求方对象中所需要的对象,本Demo中MainActivity中需要Cloth对象,所以我们通过inject方法将MainActivity实例传入到MainComponent中,MainComponent就会从MainModule中的getCloth方法获取Cloth实例,并将该实例赋值给MainActivity中的cloth字段.相当于你去商店的道路,没有这条路,你就无法去商店和老板说明你所需要的东西.<strong>但是这里需要注意的是,inject方法的参数不能用父类来接收,例如本Demo中,如果inject的参数是Activity,那么Dagger2就会报错.</strong></p><h3 id=在mainactivity中声明>在MainActivity中声明</h3><pre><code class=language-java>public class MainActivity extends AppCompatActivity {
+    private TextView tv;
+    @Inject
+    Cloth cloth;
 
-    <span class=nd>@Override</span>
-    <span class=kd>protected</span> <span class=kt>void</span> <span class=nf>onCreate</span><span class=o>(</span><span class=n>Bundle</span> <span class=n>savedInstanceState</span><span class=o>)</span> <span class=o>{</span>
-        <span class=kd>super</span><span class=o>.</span><span class=na>onCreate</span><span class=o>(</span><span class=n>savedInstanceState</span><span class=o>);</span>
-        <span class=n>setContentView</span><span class=o>(</span><span class=n>R</span><span class=o>.</span><span class=na>layout</span><span class=o>.</span><span class=na>activity_main</span><span class=o>);</span>
-        <span class=n>tv</span> <span class=o>=</span> <span class=o>(</span><span class=n>TextView</span><span class=o>)</span> <span class=n>findViewById</span><span class=o>(</span><span class=n>R</span><span class=o>.</span><span class=na>id</span><span class=o>.</span><span class=na>tv</span><span class=o>);</span>
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        tv = (TextView) findViewById(R.id.tv);
 
-        <span class=n>MainComponent</span> <span class=n>build</span> <span class=o>=</span> <span class=n>DaggerMainComponent</span><span class=o>.</span><span class=na>builder</span><span class=o>().</span><span class=na>mainModule</span><span class=o>(</span><span class=k>new</span> <span class=n>MainModule</span><span class=o>()).</span><span class=na>build</span><span class=o>();</span>
-        <span class=n>build</span><span class=o>.</span><span class=na>inject</span><span class=o>(</span><span class=k>this</span><span class=o>);</span>
-        <span class=n>tv</span><span class=o>.</span><span class=na>setText</span><span class=o>(</span><span class=s>&#34;我现在有&#34;</span> <span class=o>+</span> <span class=n>cloth</span><span class=o>);</span>
-    <span class=o>}</span>
-<span class=o>}</span>
-</code></pre></td></tr></table></div></div><p>上面代码中有两处关键:</p><ol><li>声明依赖对象Cloth,就是在cloth字段上添加<code>@Inject</code>注解,Dagger2中声明依赖对象都是通过<code>@Inject</code>注解,<strong>但是<code>@Inject</code>注解的字段不能是private和protected的.</strong></li><li>通过Dagger2自动生成的类来创建Component的实现类,创建时需要传入该Component实现类所需要的Module类实例,传入方法就是调用Module类类名首字母小写对应的方法.这里我们通过Dagger2自动生成的DaggerMainComponent类创建了MainComponent的实例,相当于我们创建了一个实实在在的商店,不再是理论上的商店,但是创建商店一定也要创建真实的供应商嘛,所以创建Component实现类时一定要传入Module的实例.(注意编写完Component接口后Dagger2并不会自动创建对应的类,需要我们点击Android Studio中bulid菜单下的Rebulid Poject选项,或者直接书写代码,编译时Dagger2就会帮你自动生成).
-再将MainActivity通过inject方法发送到MainComponent中,调用完inject方法后,你就会发现,MainActivity中的cloth字段已经被赋值,而且该cloth对应的就是我们在MainModule类getCloth方法中创建的Cloth对象.</li></ol><h3 id=结果>结果</h3><p><img src=https://img.imgdb.cn/item/605c1a4d8322e6675c774e14.jpg alt=dagger2demo_1.jpeg></p><h2 id=另一种方法>另一种方法</h2><p>前面的Demo可能给人最大的感受就是麻烦吧?就是为cloth赋个值,又要写什么Module类,又是要写什么Component接口.其实Dagger2还可以用注解来提供依赖对象.让我们来瞧瞧怎么使用.</p><h3 id=创建依赖类shoe>创建依赖类Shoe</h3><p>我们又创建一个依赖类Shoe</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=kd>public</span> <span class=kd>class</span> <span class=nc>Shoe</span> <span class=o>{</span>
-    <span class=nd>@Inject</span>
-    <span class=kd>public</span> <span class=nf>Shoe</span><span class=o>()</span> <span class=o>{</span>
-    <span class=o>}</span>
+        MainComponent build = DaggerMainComponent.builder().mainModule(new MainModule()).build();
+        build.inject(this);
+        tv.setText(&quot;我现在有&quot; + cloth);
+    }
+}
+</code></pre><p>上面代码中有两处关键:</p><ol><li>声明依赖对象Cloth,就是在cloth字段上添加<code>@Inject</code>注解,Dagger2中声明依赖对象都是通过<code>@Inject</code>注解,<strong>但是<code>@Inject</code>注解的字段不能是private和protected的.</strong></li><li>通过Dagger2自动生成的类来创建Component的实现类,创建时需要传入该Component实现类所需要的Module类实例,传入方法就是调用Module类类名首字母小写对应的方法.这里我们通过Dagger2自动生成的DaggerMainComponent类创建了MainComponent的实例,相当于我们创建了一个实实在在的商店,不再是理论上的商店,但是创建商店一定也要创建真实的供应商嘛,所以创建Component实现类时一定要传入Module的实例.(注意编写完Component接口后Dagger2并不会自动创建对应的类,需要我们点击Android Studio中bulid菜单下的Rebulid Poject选项,或者直接书写代码,编译时Dagger2就会帮你自动生成).
+再将MainActivity通过inject方法发送到MainComponent中,调用完inject方法后,你就会发现,MainActivity中的cloth字段已经被赋值,而且该cloth对应的就是我们在MainModule类getCloth方法中创建的Cloth对象.</li></ol><h3 id=结果>结果</h3><p><img src=https://img.imgdb.cn/item/605c1a4d8322e6675c774e14.jpg alt=dagger2demo_1.jpeg></p><h2 id=另一种方法>另一种方法</h2><p>前面的Demo可能给人最大的感受就是麻烦吧?就是为cloth赋个值,又要写什么Module类,又是要写什么Component接口.其实Dagger2还可以用注解来提供依赖对象.让我们来瞧瞧怎么使用.</p><h3 id=创建依赖类shoe>创建依赖类Shoe</h3><p>我们又创建一个依赖类Shoe</p><pre><code class=language-java>public class Shoe {
+    @Inject
+    public Shoe() {
+    }
 
-    <span class=nd>@Override</span>
-    <span class=kd>public</span> <span class=n>String</span> <span class=nf>toString</span><span class=o>()</span> <span class=o>{</span>
-        <span class=k>return</span> <span class=s>&#34;鞋子&#34;</span><span class=o>;</span>
-    <span class=o>}</span>
-<span class=o>}</span>
-</code></pre></td></tr></table></div></div><p>但是这次我们创建的方式和Cloth不一样了,我们在构造函数上声明了<code>@Inject</code>注解,这个注解有什么用呢?作用可大了,当Component在所拥有的Module类中找不到依赖需求方需要类型的提供方法时,Dagger2就会检查该需要类型的有没有用<code>@Inject</code>声明的构造方法,有则用该构造方法创建一个.
-相当于你去商店购买东西,你需要的东西商店的供应商不生产,商店老板就只好帮你去网上看看有没有你需要的东西,有则帮你网购一个.(假设你不会网购,哈哈^ ^).</p><h3 id=在mainactivity中声明shoe依赖>在MainActivity中声明Shoe依赖</h3><p>我们修改之前的MainActivity,添加一点东西</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=kd>public</span> <span class=kd>class</span> <span class=nc>MainActivity</span> <span class=kd>extends</span> <span class=n>AppCompatActivity</span> <span class=o>{</span>
-	<span class=o>...</span>
-    <span class=nd>@Inject</span>
-    <span class=n>Shoe</span> <span class=n>shoe</span><span class=o>;</span>
+    @Override
+    public String toString() {
+        return &quot;鞋子&quot;;
+    }
+}
+</code></pre><p>但是这次我们创建的方式和Cloth不一样了,我们在构造函数上声明了<code>@Inject</code>注解,这个注解有什么用呢?作用可大了,当Component在所拥有的Module类中找不到依赖需求方需要类型的提供方法时,Dagger2就会检查该需要类型的有没有用<code>@Inject</code>声明的构造方法,有则用该构造方法创建一个.
+相当于你去商店购买东西,你需要的东西商店的供应商不生产,商店老板就只好帮你去网上看看有没有你需要的东西,有则帮你网购一个.(假设你不会网购,哈哈^ ^).</p><h3 id=在mainactivity中声明shoe依赖>在MainActivity中声明Shoe依赖</h3><p>我们修改之前的MainActivity,添加一点东西</p><pre><code class=language-java>public class MainActivity extends AppCompatActivity {
+	...
+    @Inject
+    Shoe shoe;
 
-    <span class=nd>@Override</span>
-    <span class=kd>protected</span> <span class=kt>void</span> <span class=nf>onCreate</span><span class=o>(</span><span class=n>Bundle</span> <span class=n>savedInstanceState</span><span class=o>)</span> <span class=o>{</span>
-      	<span class=o>...</span>
-        <span class=n>tv</span><span class=o>.</span><span class=na>setText</span><span class=o>(</span><span class=s>&#34;我现在有&#34;</span> <span class=o>+</span> <span class=n>cloth</span> <span class=o>+</span> <span class=s>&#34;和&#34;</span> <span class=o>+</span> <span class=n>shoe</span><span class=o>);</span>
-    <span class=o>}</span>
-<span class=o>}</span>
-</code></pre></td></tr></table></div></div><h3 id=结果-1>结果</h3><p><img src=https://img.imgdb.cn/item/605c1a648322e6675c77592a.jpg alt=dagger2demo_2.jpeg></p><h3 id=注意>注意</h3><p>有些读者可能会这样想:为什么不都用这种方法来声明呢?为什么要用Module类?
-答案是这样的,项目中我们会用到别人的jar包,我们无法修改别人的源码,就更别说在人家的类上添加注解了,所以我们只能通过Module类来提供.</p><h2 id=复杂一点的情况>复杂一点的情况</h2><p>我们创建的这些依赖类都不用依赖于其它依赖类,但是如果需要依赖于其它依赖类又要怎么弄呢?</p><h3 id=创建依赖类clothes>创建依赖类Clothes</h3><p>我们又来创建一个衣服类Clothes,制作衣服时需要布料,所以我们在创建Clothes的实例时需要用到Cloth实例</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span><span class=lnt>17
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=kd>public</span> <span class=kd>class</span> <span class=nc>Clothes</span> <span class=o>{</span>
-    <span class=kd>private</span> <span class=n>Cloth</span> <span class=n>cloth</span><span class=o>;</span>
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+      	...
+        tv.setText(&quot;我现在有&quot; + cloth + &quot;和&quot; + shoe);
+    }
+}
+</code></pre><h3 id=结果-1>结果</h3><p><img src=https://img.imgdb.cn/item/605c1a648322e6675c77592a.jpg alt=dagger2demo_2.jpeg></p><h3 id=注意>注意</h3><p>有些读者可能会这样想:为什么不都用这种方法来声明呢?为什么要用Module类?
+答案是这样的,项目中我们会用到别人的jar包,我们无法修改别人的源码,就更别说在人家的类上添加注解了,所以我们只能通过Module类来提供.</p><h2 id=复杂一点的情况>复杂一点的情况</h2><p>我们创建的这些依赖类都不用依赖于其它依赖类,但是如果需要依赖于其它依赖类又要怎么弄呢?</p><h3 id=创建依赖类clothes>创建依赖类Clothes</h3><p>我们又来创建一个衣服类Clothes,制作衣服时需要布料,所以我们在创建Clothes的实例时需要用到Cloth实例</p><pre><code class=language-java>public class Clothes {
+    private Cloth cloth;
 
-    <span class=kd>public</span> <span class=nf>Clothes</span><span class=o>(</span><span class=n>Cloth</span> <span class=n>cloth</span><span class=o>)</span> <span class=o>{</span>
-        <span class=k>this</span><span class=o>.</span><span class=na>cloth</span> <span class=o>=</span> <span class=n>cloth</span><span class=o>;</span>
-    <span class=o>}</span>
+    public Clothes(Cloth cloth) {
+        this.cloth = cloth;
+    }
 
-    <span class=kd>public</span> <span class=n>Cloth</span> <span class=nf>getCloth</span><span class=o>()</span> <span class=o>{</span>
-        <span class=k>return</span> <span class=n>cloth</span><span class=o>;</span>
-    <span class=o>}</span>
+    public Cloth getCloth() {
+        return cloth;
+    }
 
-    <span class=nd>@Override</span>
-    <span class=kd>public</span> <span class=n>String</span> <span class=nf>toString</span><span class=o>()</span> <span class=o>{</span>
-        <span class=k>return</span> <span class=n>cloth</span><span class=o>.</span><span class=na>getColor</span><span class=o>()</span> <span class=o>+</span> <span class=s>&#34;衣服&#34;</span><span class=o>;</span>
-    <span class=o>}</span>
+    @Override
+    public String toString() {
+        return cloth.getColor() + &quot;衣服&quot;;
+    }
 
-<span class=o>}</span>
-</code></pre></td></tr></table></div></div><h3 id=在module类中增加提供方法>在Module类中增加提供方法</h3><p>现在我们的MainActivity中需要依赖于Clothes对象,所以我们在MianModule中添加提供Clothes对象的方法,但是Clothes需要依赖于Cloth对象,这要怎么办呢?可能最先想到的办法就是这样:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span><span class=lnt>4
-</span><span class=lnt>5
-</span><span class=lnt>6
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java>	<span class=nd>@Provides</span>
-    <span class=kd>public</span> <span class=n>Clothes</span> <span class=nf>getClothes</span><span class=o>(){</span>
-        <span class=n>Cloth</span> <span class=n>cloth</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Cloth</span><span class=o>();</span>
-        <span class=n>cloth</span><span class=o>.</span><span class=na>setColor</span><span class=o>(</span><span class=s>&#34;红色&#34;</span><span class=o>);</span>
-        <span class=k>return</span> <span class=k>new</span> <span class=n>Clothes</span><span class=o>(</span><span class=n>cloth</span><span class=o>);</span>
-    <span class=o>}</span>
-</code></pre></td></tr></table></div></div><p>直接在方法中创建一个Cloth不就得了,但是你有没有发现,创建Cloth的代码已经在getCloth方法中有了,我们能不能用getCloth方法中创建的Cloth实例来创建Clothes实例呢?
-Dagger2提供了这样的功能,我们只要在getClothes方法中添加Cloth参数,Dagger2就会像帮依赖需求方找依赖对象一样帮你找到该方法依赖的Cloth实例,所以我们代码可以这样改:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span><span class=lnt>4
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java>	<span class=nd>@Provides</span>
-    <span class=kd>public</span> <span class=n>Clothes</span> <span class=nf>getClothes</span><span class=o>(</span><span class=n>Cloth</span> <span class=n>cloth</span><span class=o>){</span>
-        <span class=k>return</span> <span class=k>new</span> <span class=n>Clothes</span><span class=o>(</span><span class=n>cloth</span><span class=o>);</span>
-    <span class=o>}</span>
-</code></pre></td></tr></table></div></div><h3 id=在mainactivity中声明clothes依赖>在MainActivity中声明Clothes依赖</h3><p>我们修改之前的MainActivity,添加一点东西</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=kd>public</span> <span class=kd>class</span> <span class=nc>MainActivity</span> <span class=kd>extends</span> <span class=n>AppCompatActivity</span> <span class=o>{</span>
-    <span class=o>...</span>
-    <span class=nd>@Inject</span>
-    <span class=n>Clothes</span> <span class=n>clothes</span><span class=o>;</span>
+}
+</code></pre><h3 id=在module类中增加提供方法>在Module类中增加提供方法</h3><p>现在我们的MainActivity中需要依赖于Clothes对象,所以我们在MianModule中添加提供Clothes对象的方法,但是Clothes需要依赖于Cloth对象,这要怎么办呢?可能最先想到的办法就是这样:</p><pre><code class=language-java>	@Provides
+    public Clothes getClothes(){
+        Cloth cloth = new Cloth();
+        cloth.setColor(&quot;红色&quot;);
+        return new Clothes(cloth);
+    }
+</code></pre><p>直接在方法中创建一个Cloth不就得了,但是你有没有发现,创建Cloth的代码已经在getCloth方法中有了,我们能不能用getCloth方法中创建的Cloth实例来创建Clothes实例呢?
+Dagger2提供了这样的功能,我们只要在getClothes方法中添加Cloth参数,Dagger2就会像帮依赖需求方找依赖对象一样帮你找到该方法依赖的Cloth实例,所以我们代码可以这样改:</p><pre><code class=language-java>	@Provides
+    public Clothes getClothes(Cloth cloth){
+        return new Clothes(cloth);
+    }
+</code></pre><h3 id=在mainactivity中声明clothes依赖>在MainActivity中声明Clothes依赖</h3><p>我们修改之前的MainActivity,添加一点东西</p><pre><code class=language-java>public class MainActivity extends AppCompatActivity {
+    ...
+    @Inject
+    Clothes clothes;
 
-    <span class=nd>@Override</span>
-    <span class=kd>protected</span> <span class=kt>void</span> <span class=nf>onCreate</span><span class=o>(</span><span class=n>Bundle</span> <span class=n>savedInstanceState</span><span class=o>)</span> <span class=o>{</span>
-        <span class=o>...</span>
-        <span class=n>tv</span><span class=o>.</span><span class=na>setText</span><span class=o>(</span><span class=s>&#34;我现在有&#34;</span> <span class=o>+</span> <span class=n>cloth</span> <span class=o>+</span> <span class=s>&#34;和&#34;</span> <span class=o>+</span> <span class=n>shoe</span> <span class=o>+</span> <span class=s>&#34;和&#34;</span> <span class=o>+</span> <span class=n>clothes</span><span class=o>);</span>
-    <span class=o>}</span>
-<span class=o>}</span>
-</code></pre></td></tr></table></div></div><h3 id=结果-2>结果</h3><p><img src=https://img.imgdb.cn/item/605c1a748322e6675c775f6d.jpg alt=dagger2demo_3.jpeg></p><h2 id=依赖总结>依赖总结</h2><p>同理,在带有<code>@Inject</code>注解的构造函数要是依赖于其它对象,Dagger2也会帮你自动注入.笔者就不测试了,希望读者亲测一下.
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        ...
+        tv.setText(&quot;我现在有&quot; + cloth + &quot;和&quot; + shoe + &quot;和&quot; + clothes);
+    }
+}
+</code></pre><h3 id=结果-2>结果</h3><p><img src=https://img.imgdb.cn/item/605c1a748322e6675c775f6d.jpg alt=dagger2demo_3.jpeg></p><h2 id=依赖总结>依赖总结</h2><p>同理,在带有<code>@Inject</code>注解的构造函数要是依赖于其它对象,Dagger2也会帮你自动注入.笔者就不测试了,希望读者亲测一下.
 这里我们引用<a href="https://dreamerhome.github.io/2016/07/07/dagger/?utm_source=tuicool&utm_medium=referral">依赖注入神器：Dagger2详解系列</a>中的一段话:</p><blockquote><p>我们有两种方式可以提供依赖，一个是注解了@Inject的构造方法，一个是在Module里提供的依赖，那么Dagger2是怎么选择依赖提供的呢，规则是这样的：</p></blockquote><ul><li>步骤1：查找Module中是否存在创建该类的方法。</li><li>步骤2：若存在创建类方法，查看该方法是否存在参数</li><li>步骤2.1：若存在参数，则按从步骤1开始依次初始化每个参数</li><li>步骤2.2：若不存在参数，则直接初始化该类实例，一次依赖注入到此结束</li><li>步骤3：若不存在创建类方法，则查找Inject注解的构造函数，看构造函数是否存在参数</li><li>步骤3.1：若存在参数，则从步骤1开始依次初始化每个参数</li><li>步骤3.2：若不存在参数，则直接初始化该类实例，一次依赖注入到此结束</li></ul><p>也就说Dagger2会递归的提供依赖.</p><h2 id=named和qulifier注解的使用>@Named和@Qulifier注解的使用</h2><h3 id=named>@Named</h3><p>假设我们现在又有了新的需求,MainActivity中需要两种布料,分别是红布料和蓝布料,但我们的MainModule类中只能提供红布料,怎么办呢?
-读者可能会想:在MainModule类中再添加一个提供蓝布料的方法不就行了:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java>	<span class=nd>@Provides</span>
-    <span class=kd>public</span> <span class=n>Cloth</span> <span class=nf>getRedCloth</span><span class=o>()</span> <span class=o>{</span>
-        <span class=n>Cloth</span> <span class=n>cloth</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Cloth</span><span class=o>();</span>
-        <span class=n>cloth</span><span class=o>.</span><span class=na>setColor</span><span class=o>(</span><span class=s>&#34;红色&#34;</span><span class=o>);</span>
-        <span class=k>return</span> <span class=n>cloth</span><span class=o>;</span>
-    <span class=o>}</span>
-    <span class=nd>@Provides</span>
-    <span class=kd>public</span> <span class=n>Cloth</span> <span class=nf>getBlueCloth</span><span class=o>()</span> <span class=o>{</span>
-        <span class=n>Cloth</span> <span class=n>cloth</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Cloth</span><span class=o>();</span>
-        <span class=n>cloth</span><span class=o>.</span><span class=na>setColor</span><span class=o>(</span><span class=s>&#34;蓝色&#34;</span><span class=o>);</span>
-        <span class=k>return</span> <span class=n>cloth</span><span class=o>;</span>
-    <span class=o>}</span>
-</code></pre></td></tr></table></div></div><p>可问题就来了,Dagger2是通过返回值类型来确定的,当你需要红布料时,它又怎么知道哪个是红布料呢?所以Dagger2为我们提供<code>@Named</code>注解,它怎么使用呢?它有一个value值,用来标识这个方法是给谁用的.修改我们的代码:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java>    <span class=nd>@Provides</span>
-    <span class=nd>@Named</span><span class=o>(</span><span class=s>&#34;red&#34;</span><span class=o>)</span>
-    <span class=kd>public</span> <span class=n>Cloth</span> <span class=nf>getRedCloth</span><span class=o>()</span> <span class=o>{</span>
-        <span class=n>Cloth</span> <span class=n>cloth</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Cloth</span><span class=o>();</span>
-        <span class=n>cloth</span><span class=o>.</span><span class=na>setColor</span><span class=o>(</span><span class=s>&#34;红色&#34;</span><span class=o>);</span>
-        <span class=k>return</span> <span class=n>cloth</span><span class=o>;</span>
-    <span class=o>}</span>
-    <span class=nd>@Provides</span>
-    <span class=nd>@Named</span><span class=o>(</span><span class=s>&#34;blue&#34;</span><span class=o>)</span>
-    <span class=kd>public</span> <span class=n>Cloth</span> <span class=nf>getBlueCloth</span><span class=o>()</span> <span class=o>{</span>
-        <span class=n>Cloth</span> <span class=n>cloth</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Cloth</span><span class=o>();</span>
-        <span class=n>cloth</span><span class=o>.</span><span class=na>setColor</span><span class=o>(</span><span class=s>&#34;蓝色&#34;</span><span class=o>);</span>
-        <span class=k>return</span> <span class=n>cloth</span><span class=o>;</span>
-    <span class=o>}</span>
-</code></pre></td></tr></table></div></div><p>我们在getRedCloth方法上使用<code>@Named("red")</code>表明此方法返回的是红布料,同理,在getBlueCloth方法上使用<code>@Named("blue")</code>表明此方法返回的是蓝布料,接下我们只要在MainActivity中的布料字段上同样使用<code>@Named</code>注解,就可以一一配对了.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=kd>public</span> <span class=kd>class</span> <span class=nc>MainActivity</span> <span class=kd>extends</span> <span class=n>AppCompatActivity</span> <span class=o>{</span>
-    <span class=o>...</span>
-    <span class=nd>@Inject</span>
-    <span class=nd>@Named</span><span class=o>(</span><span class=s>&#34;red&#34;</span><span class=o>)</span>
-    <span class=n>Cloth</span> <span class=n>redCloth</span><span class=o>;</span>
-    <span class=nd>@Inject</span>
-    <span class=nd>@Named</span><span class=o>(</span><span class=s>&#34;blue&#34;</span><span class=o>)</span>
-    <span class=n>Cloth</span> <span class=n>blueCloth</span><span class=o>;</span>
+读者可能会想:在MainModule类中再添加一个提供蓝布料的方法不就行了:</p><pre><code class=language-java>	@Provides
+    public Cloth getRedCloth() {
+        Cloth cloth = new Cloth();
+        cloth.setColor(&quot;红色&quot;);
+        return cloth;
+    }
+    @Provides
+    public Cloth getBlueCloth() {
+        Cloth cloth = new Cloth();
+        cloth.setColor(&quot;蓝色&quot;);
+        return cloth;
+    }
+</code></pre><p>可问题就来了,Dagger2是通过返回值类型来确定的,当你需要红布料时,它又怎么知道哪个是红布料呢?所以Dagger2为我们提供<code>@Named</code>注解,它怎么使用呢?它有一个value值,用来标识这个方法是给谁用的.修改我们的代码:</p><pre><code class=language-java>    @Provides
+    @Named(&quot;red&quot;)
+    public Cloth getRedCloth() {
+        Cloth cloth = new Cloth();
+        cloth.setColor(&quot;红色&quot;);
+        return cloth;
+    }
+    @Provides
+    @Named(&quot;blue&quot;)
+    public Cloth getBlueCloth() {
+        Cloth cloth = new Cloth();
+        cloth.setColor(&quot;蓝色&quot;);
+        return cloth;
+    }
+</code></pre><p>我们在getRedCloth方法上使用<code>@Named("red")</code>表明此方法返回的是红布料,同理,在getBlueCloth方法上使用<code>@Named("blue")</code>表明此方法返回的是蓝布料,接下我们只要在MainActivity中的布料字段上同样使用<code>@Named</code>注解,就可以一一配对了.</p><pre><code class=language-java>public class MainActivity extends AppCompatActivity {
+    ...
+    @Inject
+    @Named(&quot;red&quot;)
+    Cloth redCloth;
+    @Inject
+    @Named(&quot;blue&quot;)
+    Cloth blueCloth;
 
-    <span class=nd>@Override</span>
-    <span class=kd>protected</span> <span class=kt>void</span> <span class=nf>onCreate</span><span class=o>(</span><span class=n>Bundle</span> <span class=n>savedInstanceState</span><span class=o>)</span> <span class=o>{</span>
-        <span class=o>...</span>
-        <span class=n>tv</span><span class=o>.</span><span class=na>setText</span><span class=o>(</span><span class=s>&#34;我现在有&#34;</span> <span class=o>+</span> <span class=n>redCloth</span> <span class=o>+</span> <span class=s>&#34;和&#34;</span> <span class=o>+</span> <span class=n>blueCloth</span> <span class=o>);</span>
-    <span class=o>}</span>
-<span class=o>}</span>
-</code></pre></td></tr></table></div></div><p>在<code>redCloth</code>上用<code>@Named("red")</code>标记后,他就会对应Module中对应的方法.</p><h3 id=结果-3>结果</h3><p><img src=https://img.imgdb.cn/item/605c1a918322e6675c776ce4.jpg alt=dagger2demo_4.png></p><h3 id=qulifier>@Qulifier</h3><p><code>@Qulifier</code>功能和<code>@Named</code>一样,并且<code>@Named</code>就是继承<code>@Qulifier</code>的,我们要怎么使用<code>@Qulifier</code>注解呢?答案就是自定义一个注解:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span><span class=lnt>4
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=nd>@Qualifier</span>
-<span class=nd>@Retention</span><span class=o>(</span><span class=n>RetentionPolicy</span><span class=o>.</span><span class=na>RUNTIME</span><span class=o>)</span>
-<span class=kd>public</span> <span class=nd>@interface</span> <span class=n>RedCloth</span> <span class=o>{</span>
-<span class=o>}</span>
-</code></pre></td></tr></table></div></div><p>有了这个注解,我们就可以用它在替换掉上面的<code>@Named("red")</code>,效果是一样的.读者可以亲自试一试.
-而且这两个注解还能使用在依赖参数上,比如这个:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span><span class=lnt>4
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java>	<span class=nd>@Provides</span>
-    <span class=kd>public</span> <span class=n>Clothes</span> <span class=nf>getClothes</span><span class=o>(</span><span class=nd>@Named</span><span class=o>(</span><span class=s>&#34;blue&#34;</span><span class=o>)</span> <span class=n>Cloth</span> <span class=n>cloth</span><span class=o>){</span>
-        <span class=k>return</span> <span class=k>new</span> <span class=n>Clothes</span><span class=o>(</span><span class=n>cloth</span><span class=o>);</span>
-    <span class=o>}</span>
-</code></pre></td></tr></table></div></div><p>效果和上面说明的一样,进入这个方法的cloth由上面有<code>@Named("blue")</code>的方法提供</p><h2 id=singleton和scope的使用>@Singleton和@Scope的使用</h2><h3 id=singleton>@Singleton</h3><p>假设现在MainActivity中需要依赖Clothes和Cloth,我们在MainModule中提供这两个类的提供方法:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=nd>@Module</span>
-<span class=kd>public</span> <span class=kd>class</span> <span class=nc>MainModule</span> <span class=o>{</span>
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        ...
+        tv.setText(&quot;我现在有&quot; + redCloth + &quot;和&quot; + blueCloth );
+    }
+}
+</code></pre><p>在<code>redCloth</code>上用<code>@Named("red")</code>标记后,他就会对应Module中对应的方法.</p><h3 id=结果-3>结果</h3><p><img src=https://img.imgdb.cn/item/605c1a918322e6675c776ce4.jpg alt=dagger2demo_4.png></p><h3 id=qulifier>@Qulifier</h3><p><code>@Qulifier</code>功能和<code>@Named</code>一样,并且<code>@Named</code>就是继承<code>@Qulifier</code>的,我们要怎么使用<code>@Qulifier</code>注解呢?答案就是自定义一个注解:</p><pre><code class=language-java>@Qualifier
+@Retention(RetentionPolicy.RUNTIME)
+public @interface RedCloth {
+}
+</code></pre><p>有了这个注解,我们就可以用它在替换掉上面的<code>@Named("red")</code>,效果是一样的.读者可以亲自试一试.
+而且这两个注解还能使用在依赖参数上,比如这个:</p><pre><code class=language-java>	@Provides
+    public Clothes getClothes(@Named(&quot;blue&quot;) Cloth cloth){
+        return new Clothes(cloth);
+    }
+</code></pre><p>效果和上面说明的一样,进入这个方法的cloth由上面有<code>@Named("blue")</code>的方法提供</p><h2 id=singleton和scope的使用>@Singleton和@Scope的使用</h2><h3 id=singleton>@Singleton</h3><p>假设现在MainActivity中需要依赖Clothes和Cloth,我们在MainModule中提供这两个类的提供方法:</p><pre><code class=language-java>@Module
+public class MainModule {
 
-    <span class=nd>@Provides</span>
-    <span class=kd>public</span> <span class=n>Cloth</span> <span class=nf>getRedCloth</span><span class=o>()</span> <span class=o>{</span>
-        <span class=n>Cloth</span> <span class=n>cloth</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Cloth</span><span class=o>();</span>
-        <span class=n>cloth</span><span class=o>.</span><span class=na>setColor</span><span class=o>(</span><span class=s>&#34;红色&#34;</span><span class=o>);</span>
-        <span class=k>return</span> <span class=n>cloth</span><span class=o>;</span>
-    <span class=o>}</span>
+    @Provides
+    public Cloth getRedCloth() {
+        Cloth cloth = new Cloth();
+        cloth.setColor(&quot;红色&quot;);
+        return cloth;
+    }
     
-    <span class=nd>@Provides</span>
-    <span class=kd>public</span> <span class=n>Clothes</span> <span class=nf>getClothes</span><span class=o>(</span><span class=n>Cloth</span> <span class=n>cloth</span><span class=o>){</span>
-        <span class=k>return</span> <span class=k>new</span> <span class=n>Clothes</span><span class=o>(</span><span class=n>cloth</span><span class=o>);</span>
-    <span class=o>}</span>
-<span class=o>}</span>
-</code></pre></td></tr></table></div></div><p>接着在MainActivity中声明:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span><span class=lnt>17
-</span><span class=lnt>18
-</span><span class=lnt>19
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=kd>public</span> <span class=kd>class</span> <span class=nc>MainActivity</span> <span class=kd>extends</span> <span class=n>AppCompatActivity</span> <span class=o>{</span>
-    <span class=kd>private</span> <span class=n>TextView</span> <span class=n>tv</span><span class=o>;</span>
-    <span class=nd>@Inject</span>
-    <span class=n>Cloth</span> <span class=n>redCloth</span><span class=o>;</span>
+    @Provides
+    public Clothes getClothes(Cloth cloth){
+        return new Clothes(cloth);
+    }
+}
+</code></pre><p>接着在MainActivity中声明:</p><pre><code class=language-java>public class MainActivity extends AppCompatActivity {
+    private TextView tv;
+    @Inject
+    Cloth redCloth;
 
-    <span class=nd>@Inject</span>
-    <span class=n>Clothes</span> <span class=n>clothes</span><span class=o>;</span>
+    @Inject
+    Clothes clothes;
 
-    <span class=nd>@Override</span>
-    <span class=kd>protected</span> <span class=kt>void</span> <span class=nf>onCreate</span><span class=o>(</span><span class=n>Bundle</span> <span class=n>savedInstanceState</span><span class=o>)</span> <span class=o>{</span>
-        <span class=kd>super</span><span class=o>.</span><span class=na>onCreate</span><span class=o>(</span><span class=n>savedInstanceState</span><span class=o>);</span>
-        <span class=n>setContentView</span><span class=o>(</span><span class=n>R</span><span class=o>.</span><span class=na>layout</span><span class=o>.</span><span class=na>activity_main</span><span class=o>);</span>
-        <span class=n>tv</span> <span class=o>=</span> <span class=o>(</span><span class=n>TextView</span><span class=o>)</span> <span class=n>findViewById</span><span class=o>(</span><span class=n>R</span><span class=o>.</span><span class=na>id</span><span class=o>.</span><span class=na>tv</span><span class=o>);</span>
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        tv = (TextView) findViewById(R.id.tv);
 
-        <span class=n>MainComponent</span> <span class=n>build</span> <span class=o>=</span> <span class=n>DaggerMainComponent</span><span class=o>.</span><span class=na>builder</span><span class=o>().</span><span class=na>mainModule</span><span class=o>(</span><span class=k>new</span> <span class=n>MainModule</span><span class=o>()).</span><span class=na>build</span><span class=o>();</span>
-        <span class=n>build</span><span class=o>.</span><span class=na>inject</span><span class=o>(</span><span class=k>this</span><span class=o>);</span>
-        <span class=n>tv</span><span class=o>.</span><span class=na>setText</span><span class=o>(</span><span class=s>&#34;redCloth=clothes中的cloth吗?:&#34;</span> <span class=o>+</span> <span class=o>(</span><span class=n>redCloth</span> <span class=o>==</span> <span class=n>clothes</span><span class=o>.</span><span class=na>getCloth</span><span class=o>()));</span>
-    <span class=o>}</span>
-<span class=o>}</span>
-</code></pre></td></tr></table></div></div><p>运行结果:</p><p><img src=https://img.imgdb.cn/item/605c1a9c8322e6675c777385.jpg alt=dagger2demo_5.png></p><p>你会发现,MainActivity中的Cloth对象和Clothes中的Cloth对象并不是同一个对象,注入过程中,对cloth注入时会调用一次getRedCloth方法,创建了一个Cloth对象;注入Clothes时又会调用一次getRedCloth方法,这时又会创建一个Cloth对象,所以才会出现上面的结果.但是如果需要MainActivity中的Cloth对象和Clothes中的Cloth对象是同一个对象又要怎么办呢?Dagger2为我们提供了<code>@Singleton</code>注解,和名字一样,这个注解的作用就是声明单例模式,我们先看看它怎么使用,下面再讲原理.
-首先,在getRedCloth方法上添加该注解:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span><span class=lnt>4
-</span><span class=lnt>5
-</span><span class=lnt>6
-</span><span class=lnt>7
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java>	<span class=nd>@Singleton</span>
-    <span class=nd>@Provides</span>
-    <span class=kd>public</span> <span class=n>Cloth</span> <span class=nf>getRedCloth</span><span class=o>()</span> <span class=o>{</span>
-        <span class=n>Cloth</span> <span class=n>cloth</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Cloth</span><span class=o>();</span>
-        <span class=n>cloth</span><span class=o>.</span><span class=na>setColor</span><span class=o>(</span><span class=s>&#34;红色&#34;</span><span class=o>);</span>
-        <span class=k>return</span> <span class=n>cloth</span><span class=o>;</span>
-    <span class=o>}</span>
-</code></pre></td></tr></table></div></div><p>再在MainComponent接口上添加该注解:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span><span class=lnt>4
-</span><span class=lnt>5
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=nd>@Singleton</span>
-<span class=nd>@Component</span><span class=o>(</span><span class=n>modules</span><span class=o>=</span><span class=n>MainModule</span><span class=o>.</span><span class=na>class</span><span class=o>)</span>
-<span class=kd>public</span> <span class=kd>interface</span> <span class=nc>MainComponent</span> <span class=o>{</span>
-    <span class=kt>void</span> <span class=nf>inject</span><span class=o>(</span><span class=n>MainActivity</span> <span class=n>mainActivity</span><span class=o>);</span>
-<span class=o>}</span>
-</code></pre></td></tr></table></div></div><p>我们看看运行结果:</p><p><img src=https://img.imgdb.cn/item/605c1aaa8322e6675c7778f7.jpg alt=dagger2demo_6.png></p><p>有没有发现,MainActivity中的Cloth对象和Clothes中的Cloth对象是同一个对象了,是不是很神奇!</p><h3 id=scope>@Scope</h3><p><code>@Singleton</code>是怎么实现的呢?我们先看看<code>@Scope</code>注解,弄懂它,<code>@Singleton</code>你也就会明白了,下面我们就来分析分析
-顾名思义,<code>@Scope</code>就是用来声明作用范围的.<code>@Scope</code>和<code>@Qulifier</code>一样,需要我们自定义注解才能使用,我们先自定义一个注解:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span><span class=lnt>4
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=nd>@Scope</span>
-<span class=nd>@Retention</span><span class=o>(</span><span class=n>RetentionPolicy</span><span class=o>.</span><span class=na>RUNTIME</span><span class=o>)</span>
-<span class=kd>public</span> <span class=nd>@interface</span> <span class=n>PerActivity</span> <span class=o>{</span>
-<span class=o>}</span>
-</code></pre></td></tr></table></div></div><p>这个注解有什么用呢?答案就是声明作用范围,当我们将这个注解使用在Module类中的Provide方法上时,就是声明这个Provide方法是在PerActivity作用范围内的,并且当一个Component要引用这个Module时,必须也要声明这个Component是PerActivity作用范围内的,否则就会报错,声明方法也很简单,就是在Component接口上使用这个注解.但是我们声明这个作用范围又有什么用呢?原来Dagger2有这样一个机制:在同一个作用范围内,Provide方法提供的依赖对象就会变成单例,也就是说依赖需求方不管依赖几次Provide方法提供的依赖对象,Dagger2都只会调用一次这个方法.就和上面那个例子一样,正常情况下,在注入MainActivity中的Cloth对象时会调用一次getRedCloth方法,注入Clothes对象时因为依赖Cloth对象,所以又会调用一次getRedCloth方法,导致这两个Cloth对象并不是同一个实例.但是我们给它声明作用范围后,这两次对Cloth的依赖只会调用一次getRedCloth方法,这样这两个Cloth对象就是同一实例了,这样就保证了在给MainActivity注入时,所有声明的Cloth依赖都是指向同一个实例.(注意:只有Module类中声明了作用范围的Provide方法才能实现单例,没声明的方法就不是单例的)
+        MainComponent build = DaggerMainComponent.builder().mainModule(new MainModule()).build();
+        build.inject(this);
+        tv.setText(&quot;redCloth=clothes中的cloth吗?:&quot; + (redCloth == clothes.getCloth()));
+    }
+}
+</code></pre><p>运行结果:</p><p><img src=https://img.imgdb.cn/item/605c1a9c8322e6675c777385.jpg alt=dagger2demo_5.png></p><p>你会发现,MainActivity中的Cloth对象和Clothes中的Cloth对象并不是同一个对象,注入过程中,对cloth注入时会调用一次getRedCloth方法,创建了一个Cloth对象;注入Clothes时又会调用一次getRedCloth方法,这时又会创建一个Cloth对象,所以才会出现上面的结果.但是如果需要MainActivity中的Cloth对象和Clothes中的Cloth对象是同一个对象又要怎么办呢?Dagger2为我们提供了<code>@Singleton</code>注解,和名字一样,这个注解的作用就是声明单例模式,我们先看看它怎么使用,下面再讲原理.
+首先,在getRedCloth方法上添加该注解:</p><pre><code class=language-java>	@Singleton
+    @Provides
+    public Cloth getRedCloth() {
+        Cloth cloth = new Cloth();
+        cloth.setColor(&quot;红色&quot;);
+        return cloth;
+    }
+</code></pre><p>再在MainComponent接口上添加该注解:</p><pre><code class=language-java>@Singleton
+@Component(modules=MainModule.class)
+public interface MainComponent {
+    void inject(MainActivity mainActivity);
+}
+</code></pre><p>我们看看运行结果:</p><p><img src=https://img.imgdb.cn/item/605c1aaa8322e6675c7778f7.jpg alt=dagger2demo_6.png></p><p>有没有发现,MainActivity中的Cloth对象和Clothes中的Cloth对象是同一个对象了,是不是很神奇!</p><h3 id=scope>@Scope</h3><p><code>@Singleton</code>是怎么实现的呢?我们先看看<code>@Scope</code>注解,弄懂它,<code>@Singleton</code>你也就会明白了,下面我们就来分析分析
+顾名思义,<code>@Scope</code>就是用来声明作用范围的.<code>@Scope</code>和<code>@Qulifier</code>一样,需要我们自定义注解才能使用,我们先自定义一个注解:</p><pre><code class=language-java>@Scope
+@Retention(RetentionPolicy.RUNTIME)
+public @interface PerActivity {
+}
+</code></pre><p>这个注解有什么用呢?答案就是声明作用范围,当我们将这个注解使用在Module类中的Provide方法上时,就是声明这个Provide方法是在PerActivity作用范围内的,并且当一个Component要引用这个Module时,必须也要声明这个Component是PerActivity作用范围内的,否则就会报错,声明方法也很简单,就是在Component接口上使用这个注解.但是我们声明这个作用范围又有什么用呢?原来Dagger2有这样一个机制:在同一个作用范围内,Provide方法提供的依赖对象就会变成单例,也就是说依赖需求方不管依赖几次Provide方法提供的依赖对象,Dagger2都只会调用一次这个方法.就和上面那个例子一样,正常情况下,在注入MainActivity中的Cloth对象时会调用一次getRedCloth方法,注入Clothes对象时因为依赖Cloth对象,所以又会调用一次getRedCloth方法,导致这两个Cloth对象并不是同一个实例.但是我们给它声明作用范围后,这两次对Cloth的依赖只会调用一次getRedCloth方法,这样这两个Cloth对象就是同一实例了,这样就保证了在给MainActivity注入时,所有声明的Cloth依赖都是指向同一个实例.(注意:只有Module类中声明了作用范围的Provide方法才能实现单例,没声明的方法就不是单例的)
 查看源码你会发现<code>Singleton</code>其实是继承<code>@Scope</code>注解的,所以你知道了<code>Singleton</code>是怎么实现单例模式的吧.
 可能有些读者可能会问,Dagger2既然有了<code>Singleton</code>为什么还要我们自定义<code>PerActivity</code>注解?这就涉及到代码可读性了,当依赖需求方是Activity时,我们可以自定义一个<code>PerActivity</code>注解,当依赖需求方是Fragment时,我们又可以自定义一个<code>PerFragment</code>注解,这样我们就能清楚的区分依赖对象的提供目标了
 那我们通过构造函数提供依赖的方式又要怎么声明作用范围呢?答案就是在类名上使用注解标明,<strong>切记不要在构造函数上用注解标明,这样是无效的</strong>.
-读者可以试试用<code>PerActivity</code>注解代替上面例子中的<code>Singleton</code>注解,你会发现效果是一样的</p><blockquote><p><strong>注意注意注意</strong>:单例是在同一个Component实例提供依赖的前提下才有效的,不同的Component实例只能通过Component依赖才能实现单例.也就是说,你虽然在两个Component接口上都添加了<code>PerActivity</code>注解,但是这两个Component提供依赖时是没有联系的,他们只能在各自的范围内实现单例.(下一个例子会体现到)</p></blockquote><h2 id=组件依赖dependencies的使用>组件依赖dependencies的使用</h2><p>在实际开发中,我们经常会使用到工具类,工具类一般在整个App的生命周期内都是单例的,我们现在给我们的Demo添加一个工具类ClothHandler:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span><span class=lnt>4
-</span><span class=lnt>5
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=kd>public</span> <span class=kd>class</span> <span class=nc>ClothHandler</span> <span class=o>{</span>
-    <span class=kd>public</span> <span class=n>Clothes</span> <span class=nf>handle</span><span class=o>(</span><span class=n>Cloth</span> <span class=n>cloth</span><span class=o>){</span>
-        <span class=k>return</span> <span class=k>new</span> <span class=n>Clothes</span><span class=o>(</span><span class=n>cloth</span><span class=o>);</span>
-    <span class=o>}</span>
-<span class=o>}</span>
-</code></pre></td></tr></table></div></div><p>它的功能就是将cloth加工成clothes,假设我们现在有两个Activity中都要使用该工具类,我们要怎么使用Dagger2帮我们注入呢?
-我们先用上面所学的方法试试,先在MainModule中添加提供方法:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span><span class=lnt>17
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=nd>@Module</span>
-<span class=kd>public</span> <span class=kd>class</span> <span class=nc>MainModule</span> <span class=o>{</span>
+读者可以试试用<code>PerActivity</code>注解代替上面例子中的<code>Singleton</code>注解,你会发现效果是一样的</p><blockquote><p><strong>注意注意注意</strong>:单例是在同一个Component实例提供依赖的前提下才有效的,不同的Component实例只能通过Component依赖才能实现单例.也就是说,你虽然在两个Component接口上都添加了<code>PerActivity</code>注解,但是这两个Component提供依赖时是没有联系的,他们只能在各自的范围内实现单例.(下一个例子会体现到)</p></blockquote><h2 id=组件依赖dependencies的使用>组件依赖dependencies的使用</h2><p>在实际开发中,我们经常会使用到工具类,工具类一般在整个App的生命周期内都是单例的,我们现在给我们的Demo添加一个工具类ClothHandler:</p><pre><code class=language-java>public class ClothHandler {
+    public Clothes handle(Cloth cloth){
+        return new Clothes(cloth);
+    }
+}
+</code></pre><p>它的功能就是将cloth加工成clothes,假设我们现在有两个Activity中都要使用该工具类,我们要怎么使用Dagger2帮我们注入呢?
+我们先用上面所学的方法试试,先在MainModule中添加提供方法:</p><pre><code class=language-java>@Module
+public class MainModule {
 
-    <span class=nd>@PerActivity</span>
-    <span class=nd>@Provides</span>
-    <span class=kd>public</span> <span class=n>Cloth</span> <span class=nf>getRedCloth</span><span class=o>()</span> <span class=o>{</span>
-        <span class=n>Cloth</span> <span class=n>cloth</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Cloth</span><span class=o>();</span>
-        <span class=n>cloth</span><span class=o>.</span><span class=na>setColor</span><span class=o>(</span><span class=s>&#34;红色&#34;</span><span class=o>);</span>
-        <span class=k>return</span> <span class=n>cloth</span><span class=o>;</span>
-    <span class=o>}</span>
+    @PerActivity
+    @Provides
+    public Cloth getRedCloth() {
+        Cloth cloth = new Cloth();
+        cloth.setColor(&quot;红色&quot;);
+        return cloth;
+    }
     
-    <span class=nd>@PerActivity</span>
-    <span class=nd>@Provides</span>
-    <span class=kd>public</span> <span class=n>ClothHandler</span> <span class=nf>getClothHandler</span><span class=o>(){</span>
-        <span class=k>return</span> <span class=k>new</span> <span class=n>ClothHandler</span><span class=o>();</span>
-    <span class=o>}</span>
-<span class=o>}</span>
-</code></pre></td></tr></table></div></div><p>再在MainActivity中声明依赖:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span><span class=lnt>17
-</span><span class=lnt>18
-</span><span class=lnt>19
-</span><span class=lnt>20
-</span><span class=lnt>21
-</span><span class=lnt>22
-</span><span class=lnt>23
-</span><span class=lnt>24
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=kd>public</span> <span class=kd>class</span> <span class=nc>MainActivity</span> <span class=kd>extends</span> <span class=n>AppCompatActivity</span> <span class=o>{</span>
-    <span class=kd>private</span> <span class=n>TextView</span> <span class=n>tv</span><span class=o>;</span>
-    <span class=nd>@Inject</span>
-    <span class=n>Cloth</span> <span class=n>redCloth</span><span class=o>;</span>
+    @PerActivity
+    @Provides
+    public ClothHandler getClothHandler(){
+        return new ClothHandler();
+    }
+}
+</code></pre><p>再在MainActivity中声明依赖:</p><pre><code class=language-java>public class MainActivity extends AppCompatActivity {
+    private TextView tv;
+    @Inject
+    Cloth redCloth;
 
-    <span class=nd>@Inject</span>
-    <span class=n>ClothHandler</span> <span class=n>clothHandler</span><span class=o>;</span>
+    @Inject
+    ClothHandler clothHandler;
 
-    <span class=nd>@Override</span>
-    <span class=kd>protected</span> <span class=kt>void</span> <span class=nf>onCreate</span><span class=o>(</span><span class=n>Bundle</span> <span class=n>savedInstanceState</span><span class=o>)</span> <span class=o>{</span>
-        <span class=kd>super</span><span class=o>.</span><span class=na>onCreate</span><span class=o>(</span><span class=n>savedInstanceState</span><span class=o>);</span>
-        <span class=n>setContentView</span><span class=o>(</span><span class=n>R</span><span class=o>.</span><span class=na>layout</span><span class=o>.</span><span class=na>activity_main</span><span class=o>);</span>
-        <span class=n>tv</span> <span class=o>=</span> <span class=o>(</span><span class=n>TextView</span><span class=o>)</span> <span class=n>findViewById</span><span class=o>(</span><span class=n>R</span><span class=o>.</span><span class=na>id</span><span class=o>.</span><span class=na>tv</span><span class=o>);</span>
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        tv = (TextView) findViewById(R.id.tv);
 
-        <span class=n>MainComponent</span> <span class=n>build</span> <span class=o>=</span> <span class=n>DaggerMainComponent</span><span class=o>.</span><span class=na>builder</span><span class=o>().</span><span class=na>mainModule</span><span class=o>(</span><span class=k>new</span> <span class=n>MainModule</span><span class=o>()).</span><span class=na>build</span><span class=o>();</span>
-        <span class=n>build</span><span class=o>.</span><span class=na>inject</span><span class=o>(</span><span class=k>this</span><span class=o>);</span>
-        <span class=n>tv</span><span class=o>.</span><span class=na>setText</span><span class=o>(</span><span class=s>&#34;红布料加工后变成了&#34;</span> <span class=o>+</span> <span class=n>clothHandler</span><span class=o>.</span><span class=na>handle</span><span class=o>(</span><span class=n>redCloth</span><span class=o>)</span> <span class=o>+</span> <span class=s>&#34;\nclothHandler地址:&#34;</span> <span class=o>+</span> <span class=n>clothHandler</span><span class=o>);</span>
-    <span class=o>}</span>
-	<span class=c1>//在布局文件中声明的点击方法
-</span><span class=c1></span>    <span class=kd>public</span> <span class=kt>void</span> <span class=nf>onClick</span><span class=o>(</span><span class=n>View</span> <span class=n>v</span><span class=o>){</span>
-        <span class=n>Intent</span> <span class=n>intent</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Intent</span><span class=o>(</span><span class=k>this</span><span class=o>,</span><span class=n>SecondActivity</span><span class=o>.</span><span class=na>class</span><span class=o>);</span>
-        <span class=n>startActivity</span><span class=o>(</span><span class=n>intent</span><span class=o>);</span>
-    <span class=o>}</span>
-<span class=o>}</span>
-</code></pre></td></tr></table></div></div><p>同理在书写第二个Activity,并为它书写Module类Component接口:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span><span class=lnt>17
-</span><span class=lnt>18
-</span><span class=lnt>19
-</span><span class=lnt>20
-</span><span class=lnt>21
-</span><span class=lnt>22
-</span><span class=lnt>23
-</span><span class=lnt>24
-</span><span class=lnt>25
-</span><span class=lnt>26
-</span><span class=lnt>27
-</span><span class=lnt>28
-</span><span class=lnt>29
-</span><span class=lnt>30
-</span><span class=lnt>31
-</span><span class=lnt>32
-</span><span class=lnt>33
-</span><span class=lnt>34
-</span><span class=lnt>35
-</span><span class=lnt>36
-</span><span class=lnt>37
-</span><span class=lnt>38
-</span><span class=lnt>39
-</span><span class=lnt>40
-</span><span class=lnt>41
-</span><span class=lnt>42
-</span><span class=lnt>43
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=kd>public</span> <span class=kd>class</span> <span class=nc>SecondActivity</span> <span class=kd>extends</span> <span class=n>AppCompatActivity</span> <span class=o>{</span>
-    <span class=kd>private</span> <span class=n>TextView</span> <span class=n>tv</span><span class=o>;</span>
+        MainComponent build = DaggerMainComponent.builder().mainModule(new MainModule()).build();
+        build.inject(this);
+        tv.setText(&quot;红布料加工后变成了&quot; + clothHandler.handle(redCloth) + &quot;\nclothHandler地址:&quot; + clothHandler);
+    }
+	//在布局文件中声明的点击方法
+    public void onClick(View v){
+        Intent intent = new Intent(this,SecondActivity.class);
+        startActivity(intent);
+    }
+}
+</code></pre><p>同理在书写第二个Activity,并为它书写Module类Component接口:</p><pre><code class=language-java>public class SecondActivity extends AppCompatActivity {
+    private TextView tv;
 
-    <span class=nd>@Inject</span>
-    <span class=n>Cloth</span> <span class=n>blueCloth</span><span class=o>;</span>
-    <span class=nd>@Inject</span>
-    <span class=n>ClothHandler</span> <span class=n>clothHandler</span><span class=o>;</span>
+    @Inject
+    Cloth blueCloth;
+    @Inject
+    ClothHandler clothHandler;
 
-    <span class=nd>@Override</span>
-    <span class=kd>protected</span> <span class=kt>void</span> <span class=nf>onCreate</span><span class=o>(</span><span class=n>Bundle</span> <span class=n>savedInstanceState</span><span class=o>)</span> <span class=o>{</span>
-        <span class=kd>super</span><span class=o>.</span><span class=na>onCreate</span><span class=o>(</span><span class=n>savedInstanceState</span><span class=o>);</span>
-        <span class=n>setContentView</span><span class=o>(</span><span class=n>R</span><span class=o>.</span><span class=na>layout</span><span class=o>.</span><span class=na>activity_second</span><span class=o>);</span>
-        <span class=n>tv</span> <span class=o>=</span> <span class=o>(</span><span class=n>TextView</span><span class=o>)</span> <span class=n>findViewById</span><span class=o>(</span><span class=n>R</span><span class=o>.</span><span class=na>id</span><span class=o>.</span><span class=na>tv</span><span class=o>);</span>
-        <span class=n>SecondComponent</span> <span class=n>component</span> <span class=o>=</span> <span class=n>DaggerSecondComponent</span><span class=o>.</span><span class=na>builder</span><span class=o>().</span><span class=na>secondModule</span><span class=o>(</span><span class=k>new</span> <span class=n>SecondModule</span><span class=o>()).</span><span class=na>build</span><span class=o>();</span>
-        <span class=n>component</span><span class=o>.</span><span class=na>inject</span><span class=o>(</span><span class=k>this</span><span class=o>);</span>
-        <span class=n>tv</span><span class=o>.</span><span class=na>setText</span><span class=o>(</span><span class=s>&#34;蓝布料加工后变成了&#34;</span> <span class=o>+</span> <span class=n>clothHandler</span><span class=o>.</span><span class=na>handle</span><span class=o>(</span><span class=n>blueCloth</span><span class=o>)</span> <span class=o>+</span> <span class=s>&#34;\nclothHandler地址:&#34;</span> <span class=o>+</span> <span class=n>clothHandler</span><span class=o>);</span>
-    <span class=o>}</span>
-<span class=o>}</span>
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_second);
+        tv = (TextView) findViewById(R.id.tv);
+        SecondComponent component = DaggerSecondComponent.builder().secondModule(new SecondModule()).build();
+        component.inject(this);
+        tv.setText(&quot;蓝布料加工后变成了&quot; + clothHandler.handle(blueCloth) + &quot;\nclothHandler地址:&quot; + clothHandler);
+    }
+}
 
-<span class=nd>@Module</span>
-<span class=kd>public</span> <span class=kd>class</span> <span class=nc>SecondModule</span> <span class=o>{</span>
+@Module
+public class SecondModule {
 
-    <span class=nd>@PerActivity</span>
-    <span class=nd>@Provides</span>
-    <span class=kd>public</span> <span class=n>Cloth</span> <span class=nf>getBlueCloth</span><span class=o>(){</span>
-        <span class=n>Cloth</span> <span class=n>cloth</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Cloth</span><span class=o>();</span>
-        <span class=n>cloth</span><span class=o>.</span><span class=na>setColor</span><span class=o>(</span><span class=s>&#34;蓝色&#34;</span><span class=o>);</span>
-        <span class=k>return</span> <span class=n>cloth</span><span class=o>;</span>
-    <span class=o>}</span>
+    @PerActivity
+    @Provides
+    public Cloth getBlueCloth(){
+        Cloth cloth = new Cloth();
+        cloth.setColor(&quot;蓝色&quot;);
+        return cloth;
+    }
 
-    <span class=nd>@PerActivity</span>
-    <span class=nd>@Provides</span>
-    <span class=kd>public</span> <span class=n>ClothHandler</span> <span class=nf>getClothHandler</span><span class=o>(){</span>
-        <span class=k>return</span> <span class=k>new</span> <span class=n>ClothHandler</span><span class=o>();</span>
-    <span class=o>}</span>
-<span class=o>}</span>
+    @PerActivity
+    @Provides
+    public ClothHandler getClothHandler(){
+        return new ClothHandler();
+    }
+}
 
-<span class=nd>@PerActivity</span>
-<span class=nd>@Component</span><span class=o>(</span><span class=n>modules</span> <span class=o>=</span> <span class=n>SecondModule</span><span class=o>.</span><span class=na>class</span><span class=o>)</span>
-<span class=kd>public</span> <span class=kd>interface</span> <span class=nc>SecondComponent</span> <span class=o>{</span>
-    <span class=kt>void</span> <span class=nf>inject</span><span class=o>(</span><span class=n>SecondActivity</span> <span class=n>secondActivity</span><span class=o>);</span>
-<span class=o>}</span>
+@PerActivity
+@Component(modules = SecondModule.class)
+public interface SecondComponent {
+    void inject(SecondActivity secondActivity);
+}
 
-</code></pre></td></tr></table></div></div><p>我们来看看结果:</p><p><img src=https://img.imgdb.cn/item/605c1ac48322e6675c7784d9.jpg alt=dagger2demo_7.png></p><p>你会发现,虽然我们成功的将ClothHandler注入到了这两个Activity中,但是你会发现,这两个Activity中的ClothHandler实例不是一样的(验证了上面那个结论),并且我们发现这种注入方式要在每一个Module中都要提供getClothHandler方法, 假如有20个Activity都需要用到ClothHandler,那我们都这样写,不就代码重复了吗.并且我们还要实现单例,怎么办呢?Dagger2很贴心的为我们提供了Component依赖,就能完美的解决这个问题.
-在面向对象的思想中,我们碰到这种情况一般都要抽取父类,Dagger2也是用的这种思想,我们先创建一个BaseModule,用来提供工具类:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span><span class=lnt>4
-</span><span class=lnt>5
-</span><span class=lnt>6
-</span><span class=lnt>7
-</span><span class=lnt>8
-</span><span class=lnt>9
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=nd>@Module</span>
-<span class=kd>public</span> <span class=kd>class</span> <span class=nc>BaseModule</span> <span class=o>{</span>
+</code></pre><p>我们来看看结果:</p><p><img src=https://img.imgdb.cn/item/605c1ac48322e6675c7784d9.jpg alt=dagger2demo_7.png></p><p>你会发现,虽然我们成功的将ClothHandler注入到了这两个Activity中,但是你会发现,这两个Activity中的ClothHandler实例不是一样的(验证了上面那个结论),并且我们发现这种注入方式要在每一个Module中都要提供getClothHandler方法, 假如有20个Activity都需要用到ClothHandler,那我们都这样写,不就代码重复了吗.并且我们还要实现单例,怎么办呢?Dagger2很贴心的为我们提供了Component依赖,就能完美的解决这个问题.
+在面向对象的思想中,我们碰到这种情况一般都要抽取父类,Dagger2也是用的这种思想,我们先创建一个BaseModule,用来提供工具类:</p><pre><code class=language-java>@Module
+public class BaseModule {
 	
-    <span class=nd>@Singleton</span> <span class=c1>//单例
-</span><span class=c1></span>    <span class=nd>@Provides</span>
-    <span class=kd>public</span> <span class=n>ClothHandler</span> <span class=nf>getClothHandler</span><span class=o>(){</span>
-        <span class=k>return</span> <span class=k>new</span> <span class=n>ClothHandler</span><span class=o>();</span>
-    <span class=o>}</span>
-<span class=o>}</span>
-</code></pre></td></tr></table></div></div><p>在创建一个BaseComponent接口:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span><span class=lnt>4
-</span><span class=lnt>5
-</span><span class=lnt>6
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java>
-<span class=nd>@Singleton</span> <span class=c1>//对应Module中声明的单例
-</span><span class=c1></span><span class=nd>@Component</span><span class=o>(</span><span class=n>modules</span> <span class=o>=</span> <span class=n>BaseModule</span><span class=o>.</span><span class=na>class</span><span class=o>)</span>
-<span class=kd>public</span> <span class=kd>interface</span> <span class=nc>BaseComponent</span> <span class=o>{</span>
-    <span class=n>ClothHandler</span> <span class=nf>getClothHandler</span><span class=o>();</span>
-<span class=o>}</span>
-</code></pre></td></tr></table></div></div><p>嗯?这个Component怎么有点不一样,怎么没有inject方法呢?上面讲过,我们通过inject方法依赖需求方实例送到Component中,从而帮助依赖需求方实现依赖,但是我们这个BaseComponent是给其他Component提供依赖的,所以我们就可以不用inject方法,但是BaseComponent中多了一个getClothHandler方法,它的返回值是ClothHandler对象,这个方法有什么用呢?它的作用就是告诉依赖于BaseComponent的Component,BaseComponent能为你们提供ClothHandler对象,如果没有这个方法,BaseComponent就不能提供ClothHandler对象(这个提供规则和上面的依赖规则相同,可以实现单例).既然有了BaseComponent,那我们就可在其它Component中依赖它了.我们删除MainModule和SecondModule中的getClothHandler方法:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span><span class=lnt>17
-</span><span class=lnt>18
-</span><span class=lnt>19
-</span><span class=lnt>20
-</span><span class=lnt>21
-</span><span class=lnt>22
-</span><span class=lnt>23
-</span><span class=lnt>24
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=nd>@Module</span>
-<span class=kd>public</span> <span class=kd>class</span> <span class=nc>MainModule</span> <span class=o>{</span>
+    @Singleton //单例
+    @Provides
+    public ClothHandler getClothHandler(){
+        return new ClothHandler();
+    }
+}
+</code></pre><p>在创建一个BaseComponent接口:</p><pre><code class=language-java>
+@Singleton //对应Module中声明的单例
+@Component(modules = BaseModule.class)
+public interface BaseComponent {
+    ClothHandler getClothHandler();
+}
+</code></pre><p>嗯?这个Component怎么有点不一样,怎么没有inject方法呢?上面讲过,我们通过inject方法依赖需求方实例送到Component中,从而帮助依赖需求方实现依赖,但是我们这个BaseComponent是给其他Component提供依赖的,所以我们就可以不用inject方法,但是BaseComponent中多了一个getClothHandler方法,它的返回值是ClothHandler对象,这个方法有什么用呢?它的作用就是告诉依赖于BaseComponent的Component,BaseComponent能为你们提供ClothHandler对象,如果没有这个方法,BaseComponent就不能提供ClothHandler对象(这个提供规则和上面的依赖规则相同,可以实现单例).既然有了BaseComponent,那我们就可在其它Component中依赖它了.我们删除MainModule和SecondModule中的getClothHandler方法:</p><pre><code class=language-java>@Module
+public class MainModule {
 
-    <span class=nd>@PerActivity</span>
-    <span class=nd>@Provides</span>
-    <span class=kd>public</span> <span class=n>Cloth</span> <span class=nf>getRedCloth</span><span class=o>()</span> <span class=o>{</span>
-        <span class=n>Cloth</span> <span class=n>cloth</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Cloth</span><span class=o>();</span>
-        <span class=n>cloth</span><span class=o>.</span><span class=na>setColor</span><span class=o>(</span><span class=s>&#34;红色&#34;</span><span class=o>);</span>
-        <span class=k>return</span> <span class=n>cloth</span><span class=o>;</span>
-    <span class=o>}</span>
+    @PerActivity
+    @Provides
+    public Cloth getRedCloth() {
+        Cloth cloth = new Cloth();
+        cloth.setColor(&quot;红色&quot;);
+        return cloth;
+    }
 
-<span class=o>}</span>
-<span class=nd>@Module</span>
-<span class=kd>public</span> <span class=kd>class</span> <span class=nc>SecondModule</span> <span class=o>{</span>
+}
+@Module
+public class SecondModule {
 
-    <span class=nd>@PerActivity</span>
-    <span class=nd>@Provides</span>
-    <span class=kd>public</span> <span class=n>Cloth</span> <span class=nf>getBlueCloth</span><span class=o>(){</span>
-        <span class=n>Cloth</span> <span class=n>cloth</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Cloth</span><span class=o>();</span>
-        <span class=n>cloth</span><span class=o>.</span><span class=na>setColor</span><span class=o>(</span><span class=s>&#34;蓝色&#34;</span><span class=o>);</span>
-        <span class=k>return</span> <span class=n>cloth</span><span class=o>;</span>
-    <span class=o>}</span>
+    @PerActivity
+    @Provides
+    public Cloth getBlueCloth(){
+        Cloth cloth = new Cloth();
+        cloth.setColor(&quot;蓝色&quot;);
+        return cloth;
+    }
 
-<span class=o>}</span>
-</code></pre></td></tr></table></div></div><p>接下来在MainComponent和SecondComponent中声明依赖,就要用到<code>@Component</code>中的<code>dependencies</code>属性了:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=nd>@PerActivity</span>
-<span class=nd>@Component</span><span class=o>(</span><span class=n>modules</span><span class=o>=</span><span class=n>MainModule</span><span class=o>.</span><span class=na>class</span><span class=o>,</span><span class=n>dependencies</span> <span class=o>=</span> <span class=n>BaseComponent</span><span class=o>.</span><span class=na>class</span><span class=o>)</span>
-<span class=kd>public</span> <span class=kd>interface</span> <span class=nc>MainComponent</span> <span class=o>{</span>
-    <span class=kt>void</span> <span class=nf>inject</span><span class=o>(</span><span class=n>MainActivity</span> <span class=n>mainActivity</span><span class=o>);</span>
-<span class=o>}</span>
+}
+</code></pre><p>接下来在MainComponent和SecondComponent中声明依赖,就要用到<code>@Component</code>中的<code>dependencies</code>属性了:</p><pre><code class=language-java>@PerActivity
+@Component(modules=MainModule.class,dependencies = BaseComponent.class)
+public interface MainComponent {
+    void inject(MainActivity mainActivity);
+}
 
-<span class=nd>@PerActivity</span>
-<span class=nd>@Component</span><span class=o>(</span><span class=n>modules</span> <span class=o>=</span> <span class=n>SecondModule</span><span class=o>.</span><span class=na>class</span><span class=o>,</span><span class=n>dependencies</span> <span class=o>=</span> <span class=n>BaseComponent</span><span class=o>.</span><span class=na>class</span><span class=o>)</span>
-<span class=kd>public</span> <span class=kd>interface</span> <span class=nc>SecondComponent</span> <span class=o>{</span>
-    <span class=kt>void</span> <span class=nf>inject</span><span class=o>(</span><span class=n>SecondActivity</span> <span class=n>secondActivity</span><span class=o>);</span>
-<span class=o>}</span>
-</code></pre></td></tr></table></div></div><p>下面我们用Android Studio中build菜单下的Rebuild Object选项后,你会发现创建MainComponent和SecondComponent实例时多了一个baseComponent方法:</p><p><img src=https://img.imgdb.cn/item/605c1ad58322e6675c778ce7.jpg alt=dagger2demo_8.png></p><p>这个方法需要我们传入一个BaseComponent实例,原因很简单,MainComponent和SecondComponent既然依赖BaseComponent,肯定需要你传入一个BaseComponent实例给它,它才能从BaseComponent实例中获取到它需要的对象嘛.但是需要注意的是,如果要MainComponent和SecondComponent依赖到的对象是同一个的话(也就是单例),创建它们是传入的BaseComponent实例也必须是同一个,上面说过,不同的Component实例是无法提供相同的依赖实例的,因为它们之间是没有联系的.这样的话,我们就需要在MainActivity和SecondActivity中能获取到同一个BaseComponent实例,怎么样能实现呢?很多人一开始都会想到用静态工厂,这种方法可行,但是我们一般都会自定义一个Application类,用它来提供BaseComponent实例,因为在整个App生命周期内都只有一个Application实例,所以其中的BaseComponent实例也不会变.我们自定义一个MyApplication类</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=kd>public</span> <span class=kd>class</span> <span class=nc>MyApplication</span> <span class=kd>extends</span> <span class=n>Application</span> <span class=o>{</span>
-    <span class=kd>private</span> <span class=n>BaseComponent</span> <span class=n>baseComponent</span><span class=o>;</span>
-    <span class=nd>@Override</span>
-    <span class=kd>public</span> <span class=kt>void</span> <span class=nf>onCreate</span><span class=o>()</span> <span class=o>{</span>
-        <span class=kd>super</span><span class=o>.</span><span class=na>onCreate</span><span class=o>();</span>
-        <span class=n>baseComponent</span> <span class=o>=</span> <span class=n>DaggerBaseComponent</span><span class=o>.</span><span class=na>builder</span><span class=o>().</span><span class=na>baseModule</span><span class=o>(</span><span class=k>new</span> <span class=n>BaseModule</span><span class=o>()).</span><span class=na>build</span><span class=o>();</span>
-    <span class=o>}</span>
+@PerActivity
+@Component(modules = SecondModule.class,dependencies = BaseComponent.class)
+public interface SecondComponent {
+    void inject(SecondActivity secondActivity);
+}
+</code></pre><p>下面我们用Android Studio中build菜单下的Rebuild Object选项后,你会发现创建MainComponent和SecondComponent实例时多了一个baseComponent方法:</p><p><img src=https://img.imgdb.cn/item/605c1ad58322e6675c778ce7.jpg alt=dagger2demo_8.png></p><p>这个方法需要我们传入一个BaseComponent实例,原因很简单,MainComponent和SecondComponent既然依赖BaseComponent,肯定需要你传入一个BaseComponent实例给它,它才能从BaseComponent实例中获取到它需要的对象嘛.但是需要注意的是,如果要MainComponent和SecondComponent依赖到的对象是同一个的话(也就是单例),创建它们是传入的BaseComponent实例也必须是同一个,上面说过,不同的Component实例是无法提供相同的依赖实例的,因为它们之间是没有联系的.这样的话,我们就需要在MainActivity和SecondActivity中能获取到同一个BaseComponent实例,怎么样能实现呢?很多人一开始都会想到用静态工厂,这种方法可行,但是我们一般都会自定义一个Application类,用它来提供BaseComponent实例,因为在整个App生命周期内都只有一个Application实例,所以其中的BaseComponent实例也不会变.我们自定义一个MyApplication类</p><pre><code class=language-java>public class MyApplication extends Application {
+    private BaseComponent baseComponent;
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        baseComponent = DaggerBaseComponent.builder().baseModule(new BaseModule()).build();
+    }
 
-    <span class=kd>public</span> <span class=n>BaseComponent</span> <span class=nf>getBaseComponent</span><span class=o>()</span> <span class=o>{</span>
-        <span class=k>return</span> <span class=n>baseComponent</span><span class=o>;</span>
-    <span class=o>}</span>
-<span class=o>}</span>
-</code></pre></td></tr></table></div></div><p>我们在onCreate方法中创建BaseComponent实例,并对外提供获取方法.
+    public BaseComponent getBaseComponent() {
+        return baseComponent;
+    }
+}
+</code></pre><p>我们在onCreate方法中创建BaseComponent实例,并对外提供获取方法.
 这种方式还有一种好处,就是当我们在BaseModule中需要用到Application实例时,我们就可以在创建BaseModule时传入<code>this</code>.
-接下来在AndroidManifest.xml中声明我们新建的MyApplication:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span><span class=lnt>17
-</span><span class=lnt>18
-</span><span class=lnt>19
-</span><span class=lnt>20
-</span><span class=lnt>21
-</span><span class=lnt>22
-</span><span class=lnt>23
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-xml data-lang=xml><span class=cp>&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;</span>
-<span class=nt>&lt;manifest</span> <span class=na>package=</span><span class=s>&#34;cn.izouxiang.dagger2demo2&#34;</span>
-          <span class=na>xmlns:android=</span><span class=s>&#34;http://schemas.android.com/apk/res/android&#34;</span><span class=nt>&gt;</span>
+接下来在AndroidManifest.xml中声明我们新建的MyApplication:</p><pre><code class=language-xml>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;manifest package=&quot;cn.izouxiang.dagger2demo2&quot;
+          xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;
 
-    <span class=nt>&lt;application</span>
-        <span class=na>android:name=</span><span class=s>&#34;.MyApplication&#34;</span>
-        <span class=na>android:allowBackup=</span><span class=s>&#34;true&#34;</span>
-        <span class=na>android:icon=</span><span class=s>&#34;@mipmap/ic_launcher&#34;</span>
-        <span class=na>android:label=</span><span class=s>&#34;@string/app_name&#34;</span>
-        <span class=na>android:supportsRtl=</span><span class=s>&#34;true&#34;</span>
-        <span class=na>android:theme=</span><span class=s>&#34;@style/AppTheme&#34;</span><span class=nt>&gt;</span>
-        <span class=nt>&lt;activity</span> <span class=na>android:name=</span><span class=s>&#34;.MainActivity&#34;</span><span class=nt>&gt;</span>
-            <span class=nt>&lt;intent-filter&gt;</span>
-                <span class=nt>&lt;action</span> <span class=na>android:name=</span><span class=s>&#34;android.intent.action.MAIN&#34;</span><span class=nt>/&gt;</span>
+    &lt;application
+        android:name=&quot;.MyApplication&quot;
+        android:allowBackup=&quot;true&quot;
+        android:icon=&quot;@mipmap/ic_launcher&quot;
+        android:label=&quot;@string/app_name&quot;
+        android:supportsRtl=&quot;true&quot;
+        android:theme=&quot;@style/AppTheme&quot;&gt;
+        &lt;activity android:name=&quot;.MainActivity&quot;&gt;
+            &lt;intent-filter&gt;
+                &lt;action android:name=&quot;android.intent.action.MAIN&quot;/&gt;
 
-                <span class=nt>&lt;category</span> <span class=na>android:name=</span><span class=s>&#34;android.intent.category.LAUNCHER&#34;</span><span class=nt>/&gt;</span>
-            <span class=nt>&lt;/intent-filter&gt;</span>
-        <span class=nt>&lt;/activity&gt;</span>
-        <span class=nt>&lt;activity</span> <span class=na>android:name=</span><span class=s>&#34;.SecondActivity&#34;</span><span class=nt>&gt;</span>
-        <span class=nt>&lt;/activity&gt;</span>
-    <span class=nt>&lt;/application&gt;</span>
+                &lt;category android:name=&quot;android.intent.category.LAUNCHER&quot;/&gt;
+            &lt;/intent-filter&gt;
+        &lt;/activity&gt;
+        &lt;activity android:name=&quot;.SecondActivity&quot;&gt;
+        &lt;/activity&gt;
+    &lt;/application&gt;
 
-<span class=nt>&lt;/manifest&gt;</span>
-</code></pre></td></tr></table></div></div><p>接下来修改MainActivity和SecondActivity中的代码:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span><span class=lnt>17
-</span><span class=lnt>18
-</span><span class=lnt>19
-</span><span class=lnt>20
-</span><span class=lnt>21
-</span><span class=lnt>22
-</span><span class=lnt>23
-</span><span class=lnt>24
-</span><span class=lnt>25
-</span><span class=lnt>26
-</span><span class=lnt>27
-</span><span class=lnt>28
-</span><span class=lnt>29
-</span><span class=lnt>30
-</span><span class=lnt>31
-</span><span class=lnt>32
-</span><span class=lnt>33
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=kd>public</span> <span class=kd>class</span> <span class=nc>MainActivity</span> <span class=kd>extends</span> <span class=n>AppCompatActivity</span> <span class=o>{</span>
-    <span class=o>...</span>
+&lt;/manifest&gt;
+</code></pre><p>接下来修改MainActivity和SecondActivity中的代码:</p><pre><code class=language-java>public class MainActivity extends AppCompatActivity {
+    ...
 
-    <span class=nd>@Override</span>
-    <span class=kd>protected</span> <span class=kt>void</span> <span class=nf>onCreate</span><span class=o>(</span><span class=n>Bundle</span> <span class=n>savedInstanceState</span><span class=o>)</span> <span class=o>{</span>
-        <span class=o>...</span>
-        <span class=n>MainComponent</span> <span class=n>build</span> <span class=o>=</span> <span class=n>DaggerMainComponent</span>
-                <span class=o>.</span><span class=na>builder</span><span class=o>()</span>
-                <span class=o>.</span><span class=na>baseComponent</span><span class=o>(((</span><span class=n>MyApplication</span><span class=o>)</span><span class=n>getApplication</span><span class=o>()).</span><span class=na>getBaseComponent</span><span class=o>())</span>
-                <span class=o>.</span><span class=na>mainModule</span><span class=o>(</span><span class=k>new</span> <span class=n>MainModule</span><span class=o>())</span>
-                <span class=o>.</span><span class=na>build</span><span class=o>();</span>
-        <span class=n>build</span><span class=o>.</span><span class=na>inject</span><span class=o>(</span><span class=k>this</span><span class=o>);</span>
-        <span class=n>tv</span><span class=o>.</span><span class=na>setText</span><span class=o>(</span><span class=s>&#34;红布料加工后变成了&#34;</span> <span class=o>+</span> <span class=n>clothHandler</span><span class=o>.</span><span class=na>handle</span><span class=o>(</span><span class=n>redCloth</span><span class=o>)</span> <span class=o>+</span> <span class=s>&#34;\nclothHandler地址:&#34;</span> <span class=o>+</span> <span class=n>clothHandler</span><span class=o>);</span>
-    <span class=o>}</span>
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        ...
+        MainComponent build = DaggerMainComponent
+                .builder()
+                .baseComponent(((MyApplication)getApplication()).getBaseComponent())
+                .mainModule(new MainModule())
+                .build();
+        build.inject(this);
+        tv.setText(&quot;红布料加工后变成了&quot; + clothHandler.handle(redCloth) + &quot;\nclothHandler地址:&quot; + clothHandler);
+    }
 
-    <span class=o>...</span>
-<span class=o>}</span>
-<span class=kd>public</span> <span class=kd>class</span> <span class=nc>SecondActivity</span> <span class=kd>extends</span> <span class=n>AppCompatActivity</span> <span class=o>{</span>
-   <span class=o>...</span>
+    ...
+}
+public class SecondActivity extends AppCompatActivity {
+   ...
 
-    <span class=nd>@Override</span>
-    <span class=kd>protected</span> <span class=kt>void</span> <span class=nf>onCreate</span><span class=o>(</span><span class=n>Bundle</span> <span class=n>savedInstanceState</span><span class=o>)</span> <span class=o>{</span>
-        <span class=o>...</span>
-        <span class=n>SecondComponent</span> <span class=n>component</span> <span class=o>=</span> <span class=n>DaggerSecondComponent</span>
-                <span class=o>.</span><span class=na>builder</span><span class=o>()</span>
-                <span class=o>.</span><span class=na>baseComponent</span><span class=o>(((</span><span class=n>MyApplication</span><span class=o>)</span><span class=n>getApplication</span><span class=o>()).</span><span class=na>getBaseComponent</span><span class=o>())</span>
-                <span class=o>.</span><span class=na>secondModule</span><span class=o>(</span><span class=k>new</span> <span class=n>SecondModule</span><span class=o>())</span>
-                <span class=o>.</span><span class=na>build</span><span class=o>();</span>
-        <span class=n>component</span><span class=o>.</span><span class=na>inject</span><span class=o>(</span><span class=k>this</span><span class=o>);</span>
-        <span class=n>tv</span><span class=o>.</span><span class=na>setText</span><span class=o>(</span><span class=s>&#34;蓝布料加工后变成了&#34;</span> <span class=o>+</span> <span class=n>clothHandler</span><span class=o>.</span><span class=na>handle</span><span class=o>(</span><span class=n>blueCloth</span><span class=o>)</span> <span class=o>+</span> <span class=s>&#34;\nclothHandler地址:&#34;</span> <span class=o>+</span> <span class=n>clothHandler</span><span class=o>);</span>
-    <span class=o>}</span>
-<span class=o>}</span>
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        ...
+        SecondComponent component = DaggerSecondComponent
+                .builder()
+                .baseComponent(((MyApplication)getApplication()).getBaseComponent())
+                .secondModule(new SecondModule())
+                .build();
+        component.inject(this);
+        tv.setText(&quot;蓝布料加工后变成了&quot; + clothHandler.handle(blueCloth) + &quot;\nclothHandler地址:&quot; + clothHandler);
+    }
+}
 
-</code></pre></td></tr></table></div></div><p>运行结果:</p><p><img src=https://img.imgdb.cn/item/605c1adf8322e6675c779109.jpg alt=dagger2demo_9.png></p><p>我们成功的将ClothHandler注入到了这两个Activity中,并且还实现了单例.(注意:这里能实现单例跟BaseComponent中声明了<code>@Singleton</code>有很大关系,因为BaseComponent都没有单例的话,外部依赖它的Component就更不可能单例了).</p><h2 id=subcomponent注解>@Subcomponent注解</h2><p><code>@Subcomponent</code>注解的功能和component依赖类似,但是使用方法有点不同,component依赖需要在被依赖的Component(下文中称为父组件)中暴露接口,没有暴露接口的类型在依赖方Component(下文中称为子组件)是获取不到的,但是通过<code>@Subcomponent</code>,子组件可以获取到所有父组件能提供的类型,下面我们来看看<code>@Subcomponent</code>注解的使用方法:
-先声明一个SubMainComponent组件接口,这里的声明方式和最基本的Component接口声明方式差别不大,只是要将接口上的<code>@Component</code>注解改为<code>@Subcomponent</code>注解</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span><span class=lnt>4
-</span><span class=lnt>5
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=nd>@PerActivity</span>
-<span class=nd>@Subcomponent</span><span class=o>(</span><span class=n>modules</span> <span class=o>=</span> <span class=n>MainModule</span><span class=o>.</span><span class=na>class</span><span class=o>)</span>
-<span class=kd>public</span> <span class=kd>interface</span> <span class=nc>SubMainComponent</span> <span class=o>{</span>
-    <span class=kt>void</span> <span class=nf>inject</span><span class=o>(</span><span class=n>MainActivity</span> <span class=n>activity</span><span class=o>);</span>
-<span class=o>}</span>
-</code></pre></td></tr></table></div></div><p>这一步是重点,我们需要在父组件中声明一个返回值为子组件的方法,当子组件需要什么Module时,就在该方法中添加该类型的参数</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span><span class=lnt>4
-</span><span class=lnt>5
-</span><span class=lnt>6
-</span><span class=lnt>7
-</span><span class=lnt>8
-</span><span class=lnt>9
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=nd>@Singleton</span>
-<span class=nd>@Component</span><span class=o>(</span><span class=n>modules</span> <span class=o>=</span> <span class=n>BaseModule</span><span class=o>.</span><span class=na>class</span><span class=o>)</span>
-<span class=kd>public</span> <span class=kd>interface</span> <span class=nc>BaseComponent</span> <span class=o>{</span>
-    <span class=c1>//这个是为第二个Activity准备的,也就是dependencies依赖声明的方式
-</span><span class=c1></span>    <span class=n>ClothHandler</span> <span class=nf>getClothHandler</span><span class=o>();</span>
+</code></pre><p>运行结果:</p><p><img src=https://img.imgdb.cn/item/605c1adf8322e6675c779109.jpg alt=dagger2demo_9.png></p><p>我们成功的将ClothHandler注入到了这两个Activity中,并且还实现了单例.(注意:这里能实现单例跟BaseComponent中声明了<code>@Singleton</code>有很大关系,因为BaseComponent都没有单例的话,外部依赖它的Component就更不可能单例了).</p><h2 id=subcomponent注解>@Subcomponent注解</h2><p><code>@Subcomponent</code>注解的功能和component依赖类似,但是使用方法有点不同,component依赖需要在被依赖的Component(下文中称为父组件)中暴露接口,没有暴露接口的类型在依赖方Component(下文中称为子组件)是获取不到的,但是通过<code>@Subcomponent</code>,子组件可以获取到所有父组件能提供的类型,下面我们来看看<code>@Subcomponent</code>注解的使用方法:
+先声明一个SubMainComponent组件接口,这里的声明方式和最基本的Component接口声明方式差别不大,只是要将接口上的<code>@Component</code>注解改为<code>@Subcomponent</code>注解</p><pre><code class=language-java>@PerActivity
+@Subcomponent(modules = MainModule.class)
+public interface SubMainComponent {
+    void inject(MainActivity activity);
+}
+</code></pre><p>这一步是重点,我们需要在父组件中声明一个返回值为子组件的方法,当子组件需要什么Module时,就在该方法中添加该类型的参数</p><pre><code class=language-java>@Singleton
+@Component(modules = BaseModule.class)
+public interface BaseComponent {
+    //这个是为第二个Activity准备的,也就是dependencies依赖声明的方式
+    ClothHandler getClothHandler();
 
-    <span class=c1>//@Subcomponent使用的声明方式,声明一个返回值为子组件的方法,子组件需要什么Module,就在方法参数中添加什么
-</span><span class=c1></span>    <span class=n>SubMainComponent</span> <span class=nf>getSubMainComponent</span><span class=o>(</span><span class=n>MainModule</span> <span class=n>module</span><span class=o>);</span>
-<span class=o>}</span>
-</code></pre></td></tr></table></div></div><p>最后修改MainActivity:还是先获取到BaseComponent,再调用getSubMainComponent()方法,当中传入SubMainComponent组件需要的MainModule,这样我们就获取到了继承了BaseComponent组件的SubMainComponent组件,再调用一下inject方法完成注入就ok了</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span><span class=lnt>4
-</span><span class=lnt>5
-</span><span class=lnt>6
-</span><span class=lnt>7
-</span><span class=lnt>8
-</span><span class=lnt>9
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=nd>@Override</span>
-<span class=kd>protected</span> <span class=kt>void</span> <span class=nf>onCreate</span><span class=o>(</span><span class=n>Bundle</span> <span class=n>savedInstanceState</span><span class=o>)</span> <span class=o>{</span>
-    <span class=kd>super</span><span class=o>.</span><span class=na>onCreate</span><span class=o>(</span><span class=n>savedInstanceState</span><span class=o>);</span>
-    <span class=n>setContentView</span><span class=o>(</span><span class=n>R</span><span class=o>.</span><span class=na>layout</span><span class=o>.</span><span class=na>activity_main</span><span class=o>);</span>
-    <span class=n>tv</span> <span class=o>=</span> <span class=o>(</span><span class=n>TextView</span><span class=o>)</span> <span class=n>findViewById</span><span class=o>(</span><span class=n>R</span><span class=o>.</span><span class=na>id</span><span class=o>.</span><span class=na>tv</span><span class=o>);</span>
-    <span class=n>MyApplication</span> <span class=n>application</span> <span class=o>=</span> <span class=o>(</span><span class=n>MyApplication</span><span class=o>)</span> <span class=n>getApplication</span><span class=o>();</span>
-    <span class=n>application</span><span class=o>.</span><span class=na>getBaseComponent</span><span class=o>().</span><span class=na>getSubMainComponent</span><span class=o>(</span><span class=k>new</span> <span class=n>MainModule</span><span class=o>()).</span><span class=na>inject</span><span class=o>(</span><span class=k>this</span><span class=o>);</span>
-    <span class=n>tv</span><span class=o>.</span><span class=na>setText</span><span class=o>(</span><span class=s>&#34;红布料加工后变成了&#34;</span> <span class=o>+</span> <span class=n>clothHandler</span><span class=o>.</span><span class=na>handle</span><span class=o>(</span><span class=n>redCloth</span><span class=o>)</span> <span class=o>+</span> <span class=s>&#34;\nclothHandler地址:&#34;</span> <span class=o>+</span> <span class=n>clothHandler</span><span class=o>);</span>
-<span class=o>}</span>
-</code></pre></td></tr></table></div></div><p>最后查看结果</p><p><img src=https://img.imgdb.cn/item/605c1aee8322e6675c77983f.jpg alt=dagger2demo_10.png></p><p>这里我们发现,虽然第一个Activity使用的是<code>@subcomponent</code>方式,第二个使用的是dependencies依赖的方式,但是ClothHandler还是实现了单例,出现这个原因我们上面也讲到了,因为这两个Activity中用到的BaseComponent是同一个实例,因为在BaseComponent中ClothHandler是单例的,那么通过BaseComponent提供的ClothHandler的肯定也是单例的嘛
+    //@Subcomponent使用的声明方式,声明一个返回值为子组件的方法,子组件需要什么Module,就在方法参数中添加什么
+    SubMainComponent getSubMainComponent(MainModule module);
+}
+</code></pre><p>最后修改MainActivity:还是先获取到BaseComponent,再调用getSubMainComponent()方法,当中传入SubMainComponent组件需要的MainModule,这样我们就获取到了继承了BaseComponent组件的SubMainComponent组件,再调用一下inject方法完成注入就ok了</p><pre><code class=language-java>@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+    tv = (TextView) findViewById(R.id.tv);
+    MyApplication application = (MyApplication) getApplication();
+    application.getBaseComponent().getSubMainComponent(new MainModule()).inject(this);
+    tv.setText(&quot;红布料加工后变成了&quot; + clothHandler.handle(redCloth) + &quot;\nclothHandler地址:&quot; + clothHandler);
+}
+</code></pre><p>最后查看结果</p><p><img src=https://img.imgdb.cn/item/605c1aee8322e6675c77983f.jpg alt=dagger2demo_10.png></p><p>这里我们发现,虽然第一个Activity使用的是<code>@subcomponent</code>方式,第二个使用的是dependencies依赖的方式,但是ClothHandler还是实现了单例,出现这个原因我们上面也讲到了,因为这两个Activity中用到的BaseComponent是同一个实例,因为在BaseComponent中ClothHandler是单例的,那么通过BaseComponent提供的ClothHandler的肯定也是单例的嘛
 这里总结一下<code>@Subcomponent</code>的使用:</p><ul><li>子组件的声明方式由<code>@Component</code>改为<code>@Subcomponent</code></li><li>在父组件中要声明一个返回值为子组件的方法,当子组件需要什么Module时,就在该方法中添加该类型的参数</li></ul><blockquote><p>注意:用<code>@Subcomponent</code>注解声明的Component是无法单独使用的,想要获取该Component实例必须经过其父组件</p></blockquote><h2 id=lazy与provider>Lazy与Provider</h2><p>Lazy和Provider都是用于包装Container中需要被注入的类型,Lazy用于延迟加载,所谓的懒加载就是当你需要用到该依赖对象时,Dagger2才帮你去获取一个;Provide用于强制重新加载,也就是每一要用到依赖对象时,Dagger2都会帮你依赖注入一次,下面我们来看个小例子:
-修改MainModule类</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span><span class=lnt>17
-</span><span class=lnt>18
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=nd>@Module</span>
-<span class=kd>public</span> <span class=kd>class</span> <span class=nc>MainModule</span> <span class=o>{</span>
-    <span class=kd>private</span> <span class=kd>static</span> <span class=kd>final</span> <span class=n>String</span> <span class=n>TAG</span> <span class=o>=</span> <span class=s>&#34;MainModule&#34;</span><span class=o>;</span>
-    <span class=c1>//注意:这里没有声明作用域内单例
-</span><span class=c1></span>    <span class=nd>@Provides</span>
-    <span class=kd>public</span> <span class=n>Cloth</span> <span class=nf>getRedCloth</span><span class=o>()</span> <span class=o>{</span>
-        <span class=n>Log</span><span class=o>.</span><span class=na>d</span><span class=o>(</span><span class=n>TAG</span><span class=o>,</span> <span class=s>&#34;getRedCloth: ...&#34;</span><span class=o>);</span>
-        <span class=n>Cloth</span> <span class=n>cloth</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Cloth</span><span class=o>();</span>
-        <span class=n>cloth</span><span class=o>.</span><span class=na>setColor</span><span class=o>(</span><span class=s>&#34;红色&#34;</span><span class=o>);</span>
-        <span class=k>return</span> <span class=n>cloth</span><span class=o>;</span>
-    <span class=o>}</span>
-	<span class=c1>//注意:这里没有声明作用域内单例
-</span><span class=c1></span>    <span class=nd>@Provides</span>
-    <span class=kd>public</span> <span class=n>Shoe</span> <span class=nf>getShoe</span><span class=o>(){</span>
-        <span class=n>Log</span><span class=o>.</span><span class=na>d</span><span class=o>(</span><span class=n>TAG</span><span class=o>,</span> <span class=s>&#34;getShoe: ...&#34;</span><span class=o>);</span>
-        <span class=k>return</span> <span class=k>new</span> <span class=n>Shoe</span><span class=o>();</span>
-    <span class=o>}</span>
-<span class=o>}</span>
-</code></pre></td></tr></table></div></div><p>再修改MainActivity类</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span><span class=lnt>17
-</span><span class=lnt>18
-</span><span class=lnt>19
-</span><span class=lnt>20
-</span><span class=lnt>21
-</span><span class=lnt>22
-</span><span class=lnt>23
-</span><span class=lnt>24
-</span><span class=lnt>25
-</span><span class=lnt>26
-</span><span class=lnt>27
-</span><span class=lnt>28
-</span><span class=lnt>29
-</span><span class=lnt>30
-</span><span class=lnt>31
-</span><span class=lnt>32
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=kd>public</span> <span class=kd>class</span> <span class=nc>MainActivity</span> <span class=kd>extends</span> <span class=n>AppCompatActivity</span> <span class=o>{</span>
-    <span class=kd>private</span> <span class=kd>static</span> <span class=kd>final</span> <span class=n>String</span> <span class=n>TAG</span> <span class=o>=</span> <span class=s>&#34;MainActivity&#34;</span><span class=o>;</span>
-    <span class=nd>@Inject</span> <span class=c1>//Lazy声明方式
-</span><span class=c1></span>    <span class=n>Lazy</span><span class=o>&lt;</span><span class=n>Cloth</span><span class=o>&gt;</span> <span class=n>redCloth</span><span class=o>;</span>
-    <span class=nd>@Inject</span> <span class=c1>//Provider声明方式
-</span><span class=c1></span>    <span class=n>Provider</span><span class=o>&lt;</span><span class=n>Shoe</span><span class=o>&gt;</span> <span class=n>shoe</span><span class=o>;</span>
+修改MainModule类</p><pre><code class=language-java>@Module
+public class MainModule {
+    private static final String TAG = &quot;MainModule&quot;;
+    //注意:这里没有声明作用域内单例
+    @Provides
+    public Cloth getRedCloth() {
+        Log.d(TAG, &quot;getRedCloth: ...&quot;);
+        Cloth cloth = new Cloth();
+        cloth.setColor(&quot;红色&quot;);
+        return cloth;
+    }
+	//注意:这里没有声明作用域内单例
+    @Provides
+    public Shoe getShoe(){
+        Log.d(TAG, &quot;getShoe: ...&quot;);
+        return new Shoe();
+    }
+}
+</code></pre><p>再修改MainActivity类</p><pre><code class=language-java>public class MainActivity extends AppCompatActivity {
+    private static final String TAG = &quot;MainActivity&quot;;
+    @Inject //Lazy声明方式
+    Lazy&lt;Cloth&gt; redCloth;
+    @Inject //Provider声明方式
+    Provider&lt;Shoe&gt; shoe;
 
-    <span class=nd>@Override</span>
-    <span class=kd>protected</span> <span class=kt>void</span> <span class=nf>onCreate</span><span class=o>(</span><span class=n>Bundle</span> <span class=n>savedInstanceState</span><span class=o>)</span> <span class=o>{</span>
-        <span class=kd>super</span><span class=o>.</span><span class=na>onCreate</span><span class=o>(</span><span class=n>savedInstanceState</span><span class=o>);</span>
-        <span class=n>setContentView</span><span class=o>(</span><span class=n>R</span><span class=o>.</span><span class=na>layout</span><span class=o>.</span><span class=na>activity_main</span><span class=o>);</span>
-        <span class=n>tv</span> <span class=o>=</span> <span class=o>(</span><span class=n>TextView</span><span class=o>)</span> <span class=n>findViewById</span><span class=o>(</span><span class=n>R</span><span class=o>.</span><span class=na>id</span><span class=o>.</span><span class=na>tv</span><span class=o>);</span>
-        <span class=n>MyApplication</span> <span class=n>application</span> <span class=o>=</span> <span class=o>(</span><span class=n>MyApplication</span><span class=o>)</span> <span class=n>getApplication</span><span class=o>();</span>
-        <span class=c1>//这里虽然没使用到BaseComponent,但是我们还是得传入BaseComponent,不然Dagger2会报错
-</span><span class=c1></span>        <span class=n>MainComponent</span> <span class=n>component</span> <span class=o>=</span> <span class=n>DaggerMainComponent</span><span class=o>.</span><span class=na>builder</span><span class=o>().</span><span class=na>baseComponent</span><span class=o>(</span><span class=n>application</span><span class=o>.</span><span class=na>getBaseComponent</span><span class=o>()).</span><span class=na>mainModule</span><span class=o>(</span><span class=k>new</span> <span class=n>MainModule</span><span class=o>()).</span><span class=na>build</span><span class=o>();</span>
-        <span class=n>component</span><span class=o>.</span><span class=na>inject</span><span class=o>(</span><span class=k>this</span><span class=o>);</span>
-        <span class=n>Log</span><span class=o>.</span><span class=na>d</span><span class=o>(</span><span class=n>TAG</span><span class=o>,</span> <span class=s>&#34;inject done ...&#34;</span><span class=o>);</span>
-        <span class=n>Log</span><span class=o>.</span><span class=na>d</span><span class=o>(</span><span class=n>TAG</span><span class=o>,</span> <span class=s>&#34;1 use redCloth instance ..&#34;</span><span class=o>);</span>
-        <span class=n>Log</span><span class=o>.</span><span class=na>d</span><span class=o>(</span><span class=n>TAG</span><span class=o>,</span> <span class=s>&#34;redCloth:&#34;</span> <span class=o>+</span> <span class=n>redCloth</span><span class=o>.</span><span class=na>get</span><span class=o>());</span>
-        <span class=n>Log</span><span class=o>.</span><span class=na>d</span><span class=o>(</span><span class=n>TAG</span><span class=o>,</span> <span class=s>&#34;2 use redCloth instance ..&#34;</span><span class=o>);</span>
-        <span class=n>Log</span><span class=o>.</span><span class=na>d</span><span class=o>(</span><span class=n>TAG</span><span class=o>,</span> <span class=s>&#34;redCloth:&#34;</span> <span class=o>+</span> <span class=n>redCloth</span><span class=o>.</span><span class=na>get</span><span class=o>());</span>
-        <span class=n>Log</span><span class=o>.</span><span class=na>d</span><span class=o>(</span><span class=n>TAG</span><span class=o>,</span> <span class=s>&#34;1 use shoe instance ..&#34;</span><span class=o>);</span>
-        <span class=n>Log</span><span class=o>.</span><span class=na>d</span><span class=o>(</span><span class=n>TAG</span><span class=o>,</span> <span class=s>&#34;shoe:&#34;</span> <span class=o>+</span> <span class=n>shoe</span><span class=o>.</span><span class=na>get</span><span class=o>());</span>
-        <span class=n>Log</span><span class=o>.</span><span class=na>d</span><span class=o>(</span><span class=n>TAG</span><span class=o>,</span> <span class=s>&#34;2 use shoe instance ..&#34;</span><span class=o>);</span>
-        <span class=n>Log</span><span class=o>.</span><span class=na>d</span><span class=o>(</span><span class=n>TAG</span><span class=o>,</span> <span class=s>&#34;shoe:&#34;</span> <span class=o>+</span> <span class=n>shoe</span><span class=o>.</span><span class=na>get</span><span class=o>());</span>
-    <span class=o>}</span>
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        tv = (TextView) findViewById(R.id.tv);
+        MyApplication application = (MyApplication) getApplication();
+        //这里虽然没使用到BaseComponent,但是我们还是得传入BaseComponent,不然Dagger2会报错
+        MainComponent component = DaggerMainComponent.builder().baseComponent(application.getBaseComponent()).mainModule(new MainModule()).build();
+        component.inject(this);
+        Log.d(TAG, &quot;inject done ...&quot;);
+        Log.d(TAG, &quot;1 use redCloth instance ..&quot;);
+        Log.d(TAG, &quot;redCloth:&quot; + redCloth.get());
+        Log.d(TAG, &quot;2 use redCloth instance ..&quot;);
+        Log.d(TAG, &quot;redCloth:&quot; + redCloth.get());
+        Log.d(TAG, &quot;1 use shoe instance ..&quot;);
+        Log.d(TAG, &quot;shoe:&quot; + shoe.get());
+        Log.d(TAG, &quot;2 use shoe instance ..&quot;);
+        Log.d(TAG, &quot;shoe:&quot; + shoe.get());
+    }
 
-    <span class=kd>public</span> <span class=kt>void</span> <span class=nf>onClick</span><span class=o>(</span><span class=n>View</span> <span class=n>v</span><span class=o>)</span> <span class=o>{</span>
-        <span class=n>Intent</span> <span class=n>intent</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Intent</span><span class=o>(</span><span class=k>this</span><span class=o>,</span> <span class=n>SecondActivity</span><span class=o>.</span><span class=na>class</span><span class=o>);</span>
-        <span class=n>startActivity</span><span class=o>(</span><span class=n>intent</span><span class=o>);</span>
-    <span class=o>}</span>
-<span class=o>}</span>
-</code></pre></td></tr></table></div></div><p>其中Lazy和Provider的使用方法就是使用该类作为字段,泛型类型就是你要依赖的类型,当我们要获取该对象时,使用该类的get方法就行了.
+    public void onClick(View v) {
+        Intent intent = new Intent(this, SecondActivity.class);
+        startActivity(intent);
+    }
+}
+</code></pre><p>其中Lazy和Provider的使用方法就是使用该类作为字段,泛型类型就是你要依赖的类型,当我们要获取该对象时,使用该类的get方法就行了.
 下面我们来看看运行结果</p><p><img src=https://img.imgdb.cn/item/605c1af78322e6675c779d2d.jpg alt=dagger2demo_11.png></p><p>你会发现,cloth和shoe都是使用时才去调用module中的方法,不同的是,cloth只会调用一次,而shoe每次都会调用module中的方法,即对shoe重新注入,这也就是Lazy和Provider的区别.
 上面的MainModule中是没有声明作用域内单例的,现在我们声明一下再看看结果有没有什么变化:
-修改MainModule</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span><span class=lnt>17
-</span><span class=lnt>18
-</span><span class=lnt>19
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=nd>@Module</span>
-<span class=kd>public</span> <span class=kd>class</span> <span class=nc>MainModule</span> <span class=o>{</span>
-    <span class=kd>private</span> <span class=kd>static</span> <span class=kd>final</span> <span class=n>String</span> <span class=n>TAG</span> <span class=o>=</span> <span class=s>&#34;MainModule&#34;</span><span class=o>;</span>
-    <span class=nd>@PerActivity</span> <span class=c1>//这里声明作用域内单例
-</span><span class=c1></span>    <span class=nd>@Provides</span>
-    <span class=kd>public</span> <span class=n>Cloth</span> <span class=nf>getRedCloth</span><span class=o>()</span> <span class=o>{</span>
-        <span class=n>Log</span><span class=o>.</span><span class=na>d</span><span class=o>(</span><span class=n>TAG</span><span class=o>,</span> <span class=s>&#34;getRedCloth: ...&#34;</span><span class=o>);</span>
-        <span class=n>Cloth</span> <span class=n>cloth</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Cloth</span><span class=o>();</span>
-        <span class=n>cloth</span><span class=o>.</span><span class=na>setColor</span><span class=o>(</span><span class=s>&#34;红色&#34;</span><span class=o>);</span>
-        <span class=k>return</span> <span class=n>cloth</span><span class=o>;</span>
-    <span class=o>}</span>
+修改MainModule</p><pre><code class=language-java>@Module
+public class MainModule {
+    private static final String TAG = &quot;MainModule&quot;;
+    @PerActivity //这里声明作用域内单例
+    @Provides
+    public Cloth getRedCloth() {
+        Log.d(TAG, &quot;getRedCloth: ...&quot;);
+        Cloth cloth = new Cloth();
+        cloth.setColor(&quot;红色&quot;);
+        return cloth;
+    }
 
-    <span class=nd>@PerActivity</span> <span class=c1>//这里声明作用域内单例
-</span><span class=c1></span>    <span class=nd>@Provides</span>
-    <span class=kd>public</span> <span class=n>Shoe</span> <span class=nf>getShoe</span><span class=o>(){</span>
-        <span class=n>Log</span><span class=o>.</span><span class=na>d</span><span class=o>(</span><span class=n>TAG</span><span class=o>,</span> <span class=s>&#34;getShoe: ...&#34;</span><span class=o>);</span>
-        <span class=k>return</span> <span class=k>new</span> <span class=n>Shoe</span><span class=o>();</span>
-    <span class=o>}</span>
-<span class=o>}</span>
-</code></pre></td></tr></table></div></div><p>查看结果:</p><p><img src=https://img.imgdb.cn/item/605c1aff8322e6675c77a11c.jpg alt=dagger2demo_12.png></p><p>发现,声明单例后,使用shoe时也不会每次都去调用module中的方法了,这是因为Provider的作用是每次使用时都对依赖对象重新注入,但是Shoe在Component中是单例的,所以每次注入的都是同一个实例,所以只会调用一次module中的方法.</p><h2 id=component的生命周期>Component的生命周期</h2><p>一般情况下我们都是在Activity的onCreate方法中创建Component实例,再调用inject方法完成依赖.所以Component依赖可以分为三个过程:</p><ol><li>创建Component实例<div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span><span class=lnt>4
-</span><span class=lnt>5
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=n>MainComponent</span> <span class=n>component</span> <span class=o>=</span> <span class=n>DaggerMainComponent</span>
-            <span class=o>.</span><span class=na>builder</span><span class=o>()</span>
-            <span class=o>.</span><span class=na>baseComponent</span><span class=o>(((</span><span class=n>MyApplication</span><span class=o>)</span><span class=n>getApplication</span><span class=o>()).</span><span class=na>getBaseComponent</span><span class=o>())</span>
-            <span class=o>.</span><span class=na>mainModule</span><span class=o>(</span><span class=k>new</span> <span class=n>MainModule</span><span class=o>())</span>
-            <span class=o>.</span><span class=na>build</span><span class=o>();</span>
-</code></pre></td></tr></table></div></div></li><li>调用inject方法<div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=n>component</span><span class=o>.</span><span class=na>inject</span><span class=o>(</span><span class=k>this</span><span class=o>);</span>
-</code></pre></td></tr></table></div></div><p>调用完这个方法整个依赖就完成了.</p></li><li>Component实例被销毁
+    @PerActivity //这里声明作用域内单例
+    @Provides
+    public Shoe getShoe(){
+        Log.d(TAG, &quot;getShoe: ...&quot;);
+        return new Shoe();
+    }
+}
+</code></pre><p>查看结果:</p><p><img src=https://img.imgdb.cn/item/605c1aff8322e6675c77a11c.jpg alt=dagger2demo_12.png></p><p>发现,声明单例后,使用shoe时也不会每次都去调用module中的方法了,这是因为Provider的作用是每次使用时都对依赖对象重新注入,但是Shoe在Component中是单例的,所以每次注入的都是同一个实例,所以只会调用一次module中的方法.</p><h2 id=component的生命周期>Component的生命周期</h2><p>一般情况下我们都是在Activity的onCreate方法中创建Component实例,再调用inject方法完成依赖.所以Component依赖可以分为三个过程:</p><ol><li>创建Component实例<pre><code class=language-java>MainComponent component = DaggerMainComponent
+            .builder()
+            .baseComponent(((MyApplication)getApplication()).getBaseComponent())
+            .mainModule(new MainModule())
+            .build();
+</code></pre></li><li>调用inject方法<pre><code class=language-java>component.inject(this);
+</code></pre><p>调用完这个方法整个依赖就完成了.</p></li><li>Component实例被销毁
 onCreate()方法调用完成后,Component实例就会因为没有被引用而被垃圾回收器回收.其中传入给Component实例的Module实例也会一同被回收,这也就能说明不同的Component实例之间是没有联系的(Component依赖除外).这里需要注意的是,使用Lazy和Provider时,与该依赖对象有关的Module实例会被Lazy和Provider引用,所以该Module实例不会被垃圾回收器回收</li></ol><h2 id=总结>总结</h2><ul><li>至此,Dagger2基础已讲完,对于Dagger2在项目中的使用方法,可以参考github上的开源项目.希望此篇文章能够对你有所帮助!</li><li>本篇文章是笔者用来记录自己对Dagger2的理解的,如果当中有错误,还请赐教,以便笔者纠正.</li><li>能够书写本篇文章,还得多亏了各位大神的blog,正因为各位大神的分享精神,才让我们这种小菜鸟能够成长.此篇文章分享出来的目的也就是为了传承这种精神</li></ul><p>最后我们引用一下<a href=http://blog.piasy.com/2016/04/11/Dagger2-Scope-Instance/>Dagger2 Scope 注解能保证依赖在 component 生命周期内的单例性吗？</a>中的注意事项:</p><blockquote><ul><li>component 的 inject 函数不要声明基类参数；</li></ul></blockquote><ul><li>Scope 注解必须用在 module 的 provide 方法上，否则并不能达到局部单例的效果；</li><li>如果 module 的 provide 方法使用了 scope 注解，那么 component 就必须使用同一个注解，否则编译会失败；</li><li>如果 module 的 provide 方法没有使用 scope 注解，那么 component 和 module 是否加注解都无关紧要，可以通过编译，但是没有局部单例效果；</li><li>对于直接使用 @Inject 构造函数的依赖，如果把 scope 注解放到它的类上，而不是构造函数上，就能达到局部单例的效果了；</li></ul><p>笔者再总结</p><ul><li>被依赖的Component能提供某个对象时,一定要在接口中声明以该对象为返回值的方法(也就是暴露接口).这样依赖它的Component才能获取到这种对象.</li></ul><h2 id=声明>声明</h2><p><strong>本文为笔者原创文章,转载需说明!</strong></p><h2 id=参考文章>参考文章</h2><blockquote><p><a href="https://dreamerhome.github.io/2016/07/07/dagger/?utm_source=tuicool&utm_medium=referral">依赖注入神器：Dagger2详解系列</a>
 <a href=http://blog.piasy.com/2016/04/11/Dagger2-Scope-Instance/>Dagger2 Scope 注解能保证依赖在 component 生命周期内的单例性吗？</a>
 <a href=https://github.com/codeestX/GeekNews>GeekNews</a>
@@ -1118,4 +581,4 @@ onCreate()方法调用完成后,Component实例就会因为没有被引用而被
 <span class=theme-info>主题 -
 <a class=theme-link href=https://github.com/olOwOlo/hugo-theme-even>Even</a></span>
 <span class=copyright-year>&copy;
-2021<span class=heart><i class="iconfont icon-heart"></i></span><span>Fxzou</span></span></div></footer><div class=back-to-top id=back-to-top><i class="iconfont icon-up"></i></div></div><script src=https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.min.js integrity="sha256-jwCP0NAdCBloaIWTWHmW4i3snUNMHUNO+jr9rYd2iOI=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.locales.min.js integrity="sha256-ZwofwC1Lf/faQCzN7nZtfijVV6hSwxjQMwXL4gn9qU8=" crossorigin=anonymous></script><script>var languageCode="zh-cn".replace(/-/g,'_').replace(/_(.*)/,function(b,a){return b.replace(a,a.toUpperCase())});timeago().render(document.querySelectorAll('.timeago'),languageCode),timeago.cancel()</script><script type=text/javascript src=/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js></script></body></html>
+2021<span class=heart><i class="iconfont icon-heart"></i></span><span>Fxzou</span></span></div></footer><div class=back-to-top id=back-to-top><i class="iconfont icon-up"></i></div></div><script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script src=https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.min.js integrity="sha256-jwCP0NAdCBloaIWTWHmW4i3snUNMHUNO+jr9rYd2iOI=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.locales.min.js integrity="sha256-ZwofwC1Lf/faQCzN7nZtfijVV6hSwxjQMwXL4gn9qU8=" crossorigin=anonymous></script><script>var languageCode="zh-cn".replace(/-/g,'_').replace(/_(.*)/,function(b,a){return b.replace(a,a.toUpperCase())});timeago().render(document.querySelectorAll('.timeago'),languageCode),timeago.cancel()</script><script type=text/javascript src=/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js></script></body></html>

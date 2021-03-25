@@ -1,297 +1,151 @@
 <!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>仿即刻APP点赞桃心的效果 - Fxzou Blog</title><meta name=renderer content="webkit"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=theme-color content="#f8f5ec"><meta name=msapplication-navbutton-color content="#f8f5ec"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec"><meta name=author content="Fxzou"><meta name=description content="用自定View的方式实现即刻APP的点赞效果。
-"><meta name=keywords content="Fxzou,blog,zFxiang"><meta name=generator content="Hugo 0.82.0 with theme even"><link rel=canonical href=https://zfxiang.github.io/post/android/like_view/><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/manifest.json><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link href=/sass/main.min.39a3e01cac9473be1356f3572fcfe34b2e363efabad244a99a40f28a812c837e.css rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin=anonymous><meta property="og:title" content="仿即刻APP点赞桃心的效果"><meta property="og:description" content="用自定View的方式实现即刻APP的点赞效果。"><meta property="og:type" content="article"><meta property="og:url" content="https://zfxiang.github.io/post/android/like_view/"><meta property="article:section" content="post"><meta property="article:modified_time" content="2016-12-05T15:43:48+08:00"><meta itemprop=name content="仿即刻APP点赞桃心的效果"><meta itemprop=description content="用自定View的方式实现即刻APP的点赞效果。"><meta itemprop=dateModified content="2016-12-05T15:43:48+08:00"><meta itemprop=wordCount content="1395"><meta itemprop=keywords content="自定义View,Android,"><meta name=twitter:card content="summary"><meta name=twitter:title content="仿即刻APP点赞桃心的效果"><meta name=twitter:description content="用自定View的方式实现即刻APP的点赞效果。"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script><script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head><body><div id=mobile-navbar class=mobile-navbar><div class=mobile-header-logo><a href=/ class=logo>Fxzou</a></div><div class=mobile-navbar-icon><span></span><span></span><span></span></div></div><nav id=mobile-menu class="mobile-menu slideout-menu"><ul class=mobile-menu-list><a href=/><li class=mobile-menu-item>主页</li></a><a href=/post/><li class=mobile-menu-item>归档</li></a><a href=/tags/><li class=mobile-menu-item>标签</li></a><a href=/categories/><li class=mobile-menu-item>分类</li></a><a href=/about/><li class=mobile-menu-item>关于我</li></a></ul></nav><div class=container id=mobile-panel><header id=header class=header><div class=logo-wrapper><a href=/ class=logo>Fxzou</a></div><nav class=site-navbar><ul id=menu class=menu><li class=menu-item><a class=menu-item-link href=/>主页</a></li><li class=menu-item><a class=menu-item-link href=/post/>归档</a></li><li class=menu-item><a class=menu-item-link href=/tags/>标签</a></li><li class=menu-item><a class=menu-item-link href=/categories/>分类</a></li><li class=menu-item><a class=menu-item-link href=/about/>关于我</a></li></ul></nav></header><main id=main class=main><div class=content-wrapper><div id=content class=content><article class=post><header class=post-header><h1 class=post-title>仿即刻APP点赞桃心的效果</h1><div class=post-meta><span class=post-time>2016-12-05</span><div class=post-category><a href=/categories/android/>Android</a></div></div></header><div class=post-toc id=post-toc><h2 class=post-toc-title>文章目录</h2><div class=post-toc-content><nav id=TableOfContents><ul><li><ul><li><a href=#2016-12-5更新>2016-12-5更新</a></li><li><a href=#先看效果图>先看效果图</a></li><li><a href=#使用方法>使用方法</a><ul><li><a href=#布局配置>布局配置</a></li><li><a href=#代码配置>代码配置</a></li><li><a href=#自定义图形适配器>自定义图形适配器</a></li></ul></li><li><a href=#自定义配置>自定义配置</a></li><li><a href=#接口>接口</a></li><li><a href=#声明>声明</a></li></ul></li></ul></nav></div></div><div class=post-outdated><div class=warn><p>【注意】最后更新于 <span class=timeago datetime=2016-12-05T15:43:48 title="December 5, 2016">December 5, 2016</span>，文中内容可能已过时，请谨慎使用。</p></div></div><div class=post-content><p>用自定View的方式实现即刻APP的点赞效果。</p><h2 id=2016-12-5更新>2016-12-5更新</h2><ul><li>修改测量逻辑</li><li>添加了对齐方式</li><li>添加了一个评论图形的GraphAdapter</li><li>修改了已知BUG</li></ul><h2 id=先看效果图>先看效果图</h2><p><img src=https://img.imgdb.cn/item/605c19f18322e6675c77263b.gif alt=likeview.gif></p><h2 id=使用方法>使用方法</h2><h3 id=布局配置>布局配置</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span><span class=lnt>4
-</span><span class=lnt>5
-</span><span class=lnt>6
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-xml data-lang=xml><span class=nt>&lt;cn.izouxiang.likeview.LikeView</span>
-            <span class=na>android:id=</span><span class=s>&#34;@+id/lv&#34;</span>
-            <span class=na>android:layout_width=</span><span class=s>&#34;wrap_content&#34;</span>
-            <span class=na>android:layout_height=</span><span class=s>&#34;wrap_content&#34;</span>
-            <span class=na>app:number=</span><span class=s>&#34;99&#34;</span>
-            <span class=nt>/&gt;</span>
-</code></pre></td></tr></table></div></div><blockquote><p>注意,一般不需要直接指定宽高,内部会根据字体大小自动测量</p></blockquote><h3 id=代码配置>代码配置</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span><span class=lnt>17
-</span><span class=lnt>18
-</span><span class=lnt>19
-</span><span class=lnt>20
-</span><span class=lnt>21
-</span><span class=lnt>22
-</span><span class=lnt>23
-</span><span class=lnt>24
-</span><span class=lnt>25
-</span><span class=lnt>26
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=c1>//点赞view的设置
-</span><span class=c1></span><span class=n>holder</span><span class=o>.</span><span class=na>like</span><span class=o>.</span><span class=na>setActivated</span><span class=o>(</span><span class=n>entity</span><span class=o>.</span><span class=na>isLike</span><span class=o>);</span>
-<span class=n>holder</span><span class=o>.</span><span class=na>like</span><span class=o>.</span><span class=na>setNumber</span><span class=o>(</span><span class=n>entity</span><span class=o>.</span><span class=na>likeNum</span><span class=o>);</span>
-<span class=n>holder</span><span class=o>.</span><span class=na>like</span><span class=o>.</span><span class=na>setCallback</span><span class=o>(</span><span class=k>new</span> <span class=n>LikeView</span><span class=o>.</span><span class=na>SimpleCallback</span><span class=o>()</span> <span class=o>{</span>
-    <span class=nd>@Override</span>
-    <span class=kd>public</span> <span class=kt>void</span> <span class=nf>activate</span><span class=o>(</span><span class=n>LikeView</span> <span class=n>view</span><span class=o>)</span> <span class=o>{</span>
-        <span class=n>Snackbar</span><span class=o>.</span><span class=na>make</span><span class=o>(</span><span class=n>view</span><span class=o>,</span> <span class=s>&#34;你觉得&#34;</span> <span class=o>+</span> <span class=n>entity</span><span class=o>.</span><span class=na>name</span> <span class=o>+</span> <span class=s>&#34;很赞!&#34;</span><span class=o>,</span> <span class=n>Snackbar</span><span class=o>.</span><span class=na>LENGTH_SHORT</span><span class=o>).</span><span class=na>show</span><span class=o>();</span>
-    <span class=o>}</span>
+"><meta name=keywords content="Fxzou,blog,zFxiang"><meta name=generator content="Hugo 0.82.0 with theme even"><link rel=canonical href=https://zfxiang.github.io/post/android/like_view/><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/manifest.json><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link href=/sass/main.min.39a3e01cac9473be1356f3572fcfe34b2e363efabad244a99a40f28a812c837e.css rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin=anonymous><meta property="og:title" content="仿即刻APP点赞桃心的效果"><meta property="og:description" content="用自定View的方式实现即刻APP的点赞效果。"><meta property="og:type" content="article"><meta property="og:url" content="https://zfxiang.github.io/post/android/like_view/"><meta property="article:section" content="post"><meta property="article:modified_time" content="2016-12-05T15:43:48+08:00"><meta itemprop=name content="仿即刻APP点赞桃心的效果"><meta itemprop=description content="用自定View的方式实现即刻APP的点赞效果。"><meta itemprop=dateModified content="2016-12-05T15:43:48+08:00"><meta itemprop=wordCount content="1261"><meta itemprop=keywords content="自定义View,Android,"><meta name=twitter:card content="summary"><meta name=twitter:title content="仿即刻APP点赞桃心的效果"><meta name=twitter:description content="用自定View的方式实现即刻APP的点赞效果。"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script><script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head><body><div id=mobile-navbar class=mobile-navbar><div class=mobile-header-logo><a href=/ class=logo>Fxzou</a></div><div class=mobile-navbar-icon><span></span><span></span><span></span></div></div><nav id=mobile-menu class="mobile-menu slideout-menu"><ul class=mobile-menu-list><a href=/><li class=mobile-menu-item>主页</li></a><a href=/post/><li class=mobile-menu-item>归档</li></a><a href=/tags/><li class=mobile-menu-item>标签</li></a><a href=/categories/><li class=mobile-menu-item>分类</li></a><a href=/about/><li class=mobile-menu-item>关于我</li></a></ul></nav><div class=container id=mobile-panel><header id=header class=header><div class=logo-wrapper><a href=/ class=logo>Fxzou</a></div><nav class=site-navbar><ul id=menu class=menu><li class=menu-item><a class=menu-item-link href=/>主页</a></li><li class=menu-item><a class=menu-item-link href=/post/>归档</a></li><li class=menu-item><a class=menu-item-link href=/tags/>标签</a></li><li class=menu-item><a class=menu-item-link href=/categories/>分类</a></li><li class=menu-item><a class=menu-item-link href=/about/>关于我</a></li></ul></nav></header><main id=main class=main><div class=content-wrapper><div id=content class=content><article class=post><header class=post-header><h1 class=post-title>仿即刻APP点赞桃心的效果</h1><div class=post-meta><span class=post-time>2016-12-05</span><div class=post-category><a href=/categories/android/>Android</a></div></div></header><div class=post-toc id=post-toc><h2 class=post-toc-title>文章目录</h2><div class=post-toc-content><nav id=TableOfContents><ul><li><ul><li><a href=#2016-12-5更新>2016-12-5更新</a></li><li><a href=#先看效果图>先看效果图</a></li><li><a href=#使用方法>使用方法</a><ul><li><a href=#布局配置>布局配置</a></li><li><a href=#代码配置>代码配置</a></li><li><a href=#自定义图形适配器>自定义图形适配器</a></li></ul></li><li><a href=#自定义配置>自定义配置</a></li><li><a href=#接口>接口</a></li><li><a href=#声明>声明</a></li></ul></li></ul></nav></div></div><div class=post-outdated><div class=warn><p>【注意】最后更新于 <span class=timeago datetime=2016-12-05T15:43:48 title="December 5, 2016">December 5, 2016</span>，文中内容可能已过时，请谨慎使用。</p></div></div><div class=post-content><p>用自定View的方式实现即刻APP的点赞效果。</p><h2 id=2016-12-5更新>2016-12-5更新</h2><ul><li>修改测量逻辑</li><li>添加了对齐方式</li><li>添加了一个评论图形的GraphAdapter</li><li>修改了已知BUG</li></ul><h2 id=先看效果图>先看效果图</h2><p><img src=https://img.imgdb.cn/item/605c19f18322e6675c77263b.gif alt=likeview.gif></p><h2 id=使用方法>使用方法</h2><h3 id=布局配置>布局配置</h3><pre><code class=language-xml>&lt;cn.izouxiang.likeview.LikeView
+            android:id=&quot;@+id/lv&quot;
+            android:layout_width=&quot;wrap_content&quot;
+            android:layout_height=&quot;wrap_content&quot;
+            app:number=&quot;99&quot;
+            /&gt;
+</code></pre><blockquote><p>注意,一般不需要直接指定宽高,内部会根据字体大小自动测量</p></blockquote><h3 id=代码配置>代码配置</h3><pre><code class=language-java>//点赞view的设置
+holder.like.setActivated(entity.isLike);
+holder.like.setNumber(entity.likeNum);
+holder.like.setCallback(new LikeView.SimpleCallback() {
+    @Override
+    public void activate(LikeView view) {
+        Snackbar.make(view, &quot;你觉得&quot; + entity.name + &quot;很赞!&quot;, Snackbar.LENGTH_SHORT).show();
+    }
 
-    <span class=nd>@Override</span>
-    <span class=kd>public</span> <span class=kt>void</span> <span class=nf>deactivate</span><span class=o>(</span><span class=n>LikeView</span> <span class=n>view</span><span class=o>)</span> <span class=o>{</span>
-        <span class=n>Snackbar</span><span class=o>.</span><span class=na>make</span><span class=o>(</span><span class=n>view</span><span class=o>,</span> <span class=s>&#34;你取消了对&#34;</span> <span class=o>+</span> <span class=n>entity</span><span class=o>.</span><span class=na>name</span> <span class=o>+</span> <span class=s>&#34;的赞!&#34;</span><span class=o>,</span> <span class=n>Snackbar</span><span class=o>.</span><span class=na>LENGTH_SHORT</span><span class=o>).</span><span class=na>show</span><span class=o>();</span>
-    <span class=o>}</span>
-<span class=o>});</span>
-<span class=c1>//评论view的设置
-</span><span class=c1></span><span class=n>holder</span><span class=o>.</span><span class=na>comment</span><span class=o>.</span><span class=na>setNumber</span><span class=o>(</span><span class=n>entity</span><span class=o>.</span><span class=na>commentNum</span><span class=o>);</span>
-<span class=c1>//设置图形适配器
-</span><span class=c1></span><span class=n>holder</span><span class=o>.</span><span class=na>comment</span><span class=o>.</span><span class=na>setGraphAdapter</span><span class=o>(</span><span class=n>CommentPathAdapter</span><span class=o>.</span><span class=na>getInstance</span><span class=o>());</span>
-<span class=n>holder</span><span class=o>.</span><span class=na>comment</span><span class=o>.</span><span class=na>setCallback</span><span class=o>(</span><span class=k>new</span> <span class=n>LikeView</span><span class=o>.</span><span class=na>SimpleCallback</span><span class=o>(){</span>
-    <span class=nd>@Override</span>
-    <span class=kd>public</span> <span class=kt>boolean</span> <span class=nf>onClick</span><span class=o>(</span><span class=n>LikeView</span> <span class=n>view</span><span class=o>)</span> <span class=o>{</span>
-        <span class=n>Snackbar</span><span class=o>.</span><span class=na>make</span><span class=o>(</span><span class=n>view</span><span class=o>,</span> <span class=s>&#34;你点击&#34;</span> <span class=o>+</span> <span class=n>entity</span><span class=o>.</span><span class=na>name</span> <span class=o>+</span> <span class=s>&#34;的评论按钮&#34;</span><span class=o>,</span> <span class=n>Snackbar</span><span class=o>.</span><span class=na>LENGTH_SHORT</span><span class=o>).</span><span class=na>show</span><span class=o>();</span>
-        <span class=c1>//返回true代表拦截此次点击,不使用默认的点击事件
-</span><span class=c1></span>        <span class=k>return</span> <span class=kc>true</span><span class=o>;</span>
-    <span class=o>}</span>
-<span class=o>});</span>
-</code></pre></td></tr></table></div></div><h3 id=自定义图形适配器>自定义图形适配器</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span><span class=lnt>17
-</span><span class=lnt>18
-</span><span class=lnt>19
-</span><span class=lnt>20
-</span><span class=lnt>21
-</span><span class=lnt>22
-</span><span class=lnt>23
-</span><span class=lnt>24
-</span><span class=lnt>25
-</span><span class=lnt>26
-</span><span class=lnt>27
-</span><span class=lnt>28
-</span><span class=lnt>29
-</span><span class=lnt>30
-</span><span class=lnt>31
-</span><span class=lnt>32
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=kd>public</span> <span class=kd>class</span> <span class=nc>CommentPathAdapter</span> <span class=kd>implements</span> <span class=n>LikeView</span><span class=o>.</span><span class=na>GraphAdapter</span> <span class=o>{</span>
-    <span class=kd>private</span> <span class=kd>static</span> <span class=n>CommentPathAdapter</span> <span class=n>instance</span><span class=o>;</span>
-    <span class=kd>private</span> <span class=kd>static</span> <span class=kd>final</span> <span class=kt>float</span> <span class=n>xOffsetScale</span> <span class=o>=</span> <span class=n>0</span><span class=o>.</span><span class=na>06f</span><span class=o>;</span>
-    <span class=kd>private</span> <span class=kd>static</span> <span class=kd>final</span> <span class=kt>float</span> <span class=n>yOffsetScale</span> <span class=o>=</span> <span class=n>0</span><span class=o>.</span><span class=na>2f</span><span class=o>;</span>
-	<span class=c1>//可用单例模式
-</span><span class=c1></span>    <span class=kd>public</span> <span class=kd>static</span> <span class=n>CommentPathAdapter</span> <span class=nf>getInstance</span><span class=o>()</span> <span class=o>{</span>
-        <span class=kd>synchronized</span> <span class=o>(</span><span class=n>CommentPathAdapter</span><span class=o>.</span><span class=na>class</span><span class=o>)</span> <span class=o>{</span>
-            <span class=k>if</span> <span class=o>(</span><span class=kc>null</span> <span class=o>==</span> <span class=n>instance</span><span class=o>)</span> <span class=o>{</span>
-                <span class=n>instance</span> <span class=o>=</span> <span class=k>new</span> <span class=n>CommentPathAdapter</span><span class=o>();</span>
-            <span class=o>}</span>
-        <span class=o>}</span>
-        <span class=k>return</span> <span class=n>instance</span><span class=o>;</span>
-    <span class=o>}</span>
-	<span class=c1>//这里绘制你想要的图形
-</span><span class=c1></span>    <span class=nd>@Override</span>
-    <span class=kd>public</span> <span class=n>Path</span> <span class=nf>getGraphPath</span><span class=o>(</span><span class=n>LikeView</span> <span class=n>view</span><span class=o>,</span> <span class=kt>int</span> <span class=n>length</span><span class=o>)</span> <span class=o>{</span>
-        <span class=n>Path</span> <span class=n>path</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Path</span><span class=o>();</span>
-        <span class=kt>int</span> <span class=n>dx</span> <span class=o>=</span> <span class=o>(</span><span class=kt>int</span><span class=o>)</span> <span class=o>(</span><span class=n>length</span> <span class=o>*</span> <span class=n>xOffsetScale</span><span class=o>);</span>
-        <span class=kt>int</span> <span class=n>dy</span> <span class=o>=</span> <span class=o>(</span><span class=kt>int</span><span class=o>)</span> <span class=o>(</span><span class=n>length</span> <span class=o>*</span> <span class=n>yOffsetScale</span><span class=o>);</span>
-        <span class=kt>int</span> <span class=n>w</span> <span class=o>=</span> <span class=o>(</span><span class=kt>int</span><span class=o>)</span> <span class=o>(</span><span class=n>length</span> <span class=o>*</span> <span class=o>(</span><span class=n>1</span> <span class=o>-</span> <span class=n>xOffsetScale</span> <span class=o>*</span> <span class=n>2</span><span class=o>));</span>
-        <span class=kt>int</span> <span class=n>h</span> <span class=o>=</span> <span class=o>(</span><span class=kt>int</span><span class=o>)</span> <span class=o>(</span><span class=n>length</span> <span class=o>*</span> <span class=o>(</span><span class=n>1</span> <span class=o>-</span> <span class=n>yOffsetScale</span> <span class=o>*</span> <span class=n>2</span><span class=o>));</span>
-        <span class=n>path</span><span class=o>.</span><span class=na>moveTo</span><span class=o>(</span><span class=n>dx</span><span class=o>,</span> <span class=n>dy</span><span class=o>);</span>
-        <span class=n>path</span><span class=o>.</span><span class=na>lineTo</span><span class=o>(</span><span class=n>dx</span> <span class=o>+</span> <span class=n>w</span><span class=o>,</span> <span class=n>dy</span><span class=o>);</span>
-        <span class=n>path</span><span class=o>.</span><span class=na>lineTo</span><span class=o>(</span><span class=n>dx</span> <span class=o>+</span> <span class=n>w</span><span class=o>,</span> <span class=n>dy</span> <span class=o>+</span> <span class=n>h</span><span class=o>);</span>
-        <span class=n>path</span><span class=o>.</span><span class=na>lineTo</span><span class=o>(</span><span class=n>dx</span> <span class=o>+</span> <span class=o>(</span><span class=n>w</span> <span class=o>*</span> <span class=n>0</span><span class=o>.</span><span class=na>35f</span><span class=o>),</span> <span class=n>dy</span> <span class=o>+</span> <span class=n>h</span><span class=o>);</span>
-        <span class=n>path</span><span class=o>.</span><span class=na>lineTo</span><span class=o>(</span><span class=n>dx</span> <span class=o>+</span> <span class=o>(</span><span class=n>w</span> <span class=o>*</span> <span class=n>0</span><span class=o>.</span><span class=na>1f</span><span class=o>),</span> <span class=n>dy</span> <span class=o>+</span> <span class=o>(</span><span class=n>h</span> <span class=o>*</span> <span class=n>1</span><span class=o>.</span><span class=na>4f</span><span class=o>));</span>
-        <span class=n>path</span><span class=o>.</span><span class=na>lineTo</span><span class=o>(</span><span class=n>dx</span> <span class=o>+</span> <span class=o>(</span><span class=n>w</span> <span class=o>*</span> <span class=n>0</span><span class=o>.</span><span class=na>1f</span><span class=o>),</span> <span class=n>dy</span> <span class=o>+</span> <span class=n>h</span><span class=o>);</span>
-        <span class=n>path</span><span class=o>.</span><span class=na>lineTo</span><span class=o>(</span><span class=n>dx</span><span class=o>,</span> <span class=n>dy</span> <span class=o>+</span> <span class=n>h</span><span class=o>);</span>
-        <span class=n>path</span><span class=o>.</span><span class=na>lineTo</span><span class=o>(</span><span class=n>dx</span><span class=o>,</span> <span class=n>dy</span><span class=o>);</span>
-        <span class=k>return</span> <span class=n>path</span><span class=o>;</span>
-    <span class=o>}</span>
-<span class=o>}</span>
-</code></pre></td></tr></table></div></div><h2 id=自定义配置>自定义配置</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span><span class=lnt>17
-</span><span class=lnt>18
-</span><span class=lnt>19
-</span><span class=lnt>20
-</span><span class=lnt>21
-</span><span class=lnt>22
-</span><span class=lnt>23
-</span><span class=lnt>24
-</span><span class=lnt>25
-</span><span class=lnt>26
-</span><span class=lnt>27
-</span><span class=lnt>28
-</span><span class=lnt>29
-</span><span class=lnt>30
-</span><span class=lnt>31
-</span><span class=lnt>32
-</span><span class=lnt>33
-</span><span class=lnt>34
-</span><span class=lnt>35
-</span><span class=lnt>36
-</span><span class=lnt>37
-</span><span class=lnt>38
-</span><span class=lnt>39
-</span><span class=lnt>40
-</span><span class=lnt>41
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-xml data-lang=xml><span class=nt>&lt;resources&gt;</span>
-    <span class=nt>&lt;declare-styleable</span> <span class=na>name=</span><span class=s>&#34;LikeView&#34;</span><span class=nt>&gt;</span>
-        <span class=c>&lt;!--当前数值,默认0--&gt;</span>
-        <span class=nt>&lt;attr</span> <span class=na>name=</span><span class=s>&#34;number&#34;</span> <span class=na>format=</span><span class=s>&#34;integer&#34;</span><span class=nt>/&gt;</span>
-        <span class=c>&lt;!--数字颜色,默认#888888--&gt;</span>
-        <span class=nt>&lt;attr</span> <span class=na>name=</span><span class=s>&#34;textColor&#34;</span> <span class=na>format=</span><span class=s>&#34;color&#34;</span><span class=nt>/&gt;</span>
-        <span class=c>&lt;!--图形外边颜色,默认#888888--&gt;</span>
-        <span class=nt>&lt;attr</span> <span class=na>name=</span><span class=s>&#34;graphColor&#34;</span> <span class=na>format=</span><span class=s>&#34;color&#34;</span><span class=nt>/&gt;</span>
-        <span class=c>&lt;!--当前激活时图形颜色,默认#ca5f5f--&gt;</span>
-        <span class=nt>&lt;attr</span> <span class=na>name=</span><span class=s>&#34;animateColor&#34;</span> <span class=na>format=</span><span class=s>&#34;color&#34;</span><span class=nt>/&gt;</span>
-        <span class=c>&lt;!--字体大小,决定控件高度以及图形大小,默认14sp--&gt;</span>
-        <span class=nt>&lt;attr</span> <span class=na>name=</span><span class=s>&#34;textSize&#34;</span> <span class=na>format=</span><span class=s>&#34;dimension&#34;</span><span class=nt>/&gt;</span>
-        <span class=c>&lt;!--动画时间,默认300--&gt;</span>
-        <span class=nt>&lt;attr</span> <span class=na>name=</span><span class=s>&#34;animateDuration&#34;</span> <span class=na>format=</span><span class=s>&#34;integer&#34;</span><span class=nt>/&gt;</span>
-        <span class=c>&lt;!--图形与数字间的距离,默认3dp--&gt;</span>
-        <span class=nt>&lt;attr</span> <span class=na>name=</span><span class=s>&#34;distance&#34;</span> <span class=na>format=</span><span class=s>&#34;dimension&#34;</span><span class=nt>/&gt;</span>
-        <span class=c>&lt;!--图形与数字高度的比例,默认1.3--&gt;</span>
-        <span class=nt>&lt;attr</span> <span class=na>name=</span><span class=s>&#34;graphTextHeightRatio&#34;</span> <span class=na>format=</span><span class=s>&#34;float&#34;</span><span class=nt>/&gt;</span>
-        <span class=c>&lt;!--图形外边绘制宽度,默认3dp--&gt;</span>
-        <span class=nt>&lt;attr</span> <span class=na>name=</span><span class=s>&#34;graphStrokeWidth&#34;</span> <span class=na>format=</span><span class=s>&#34;dimension&#34;</span><span class=nt>/&gt;</span>
-        <span class=c>&lt;!--数字绘制宽度,默认2dp--&gt;</span>
-        <span class=nt>&lt;attr</span> <span class=na>name=</span><span class=s>&#34;textStrokeWidth&#34;</span> <span class=na>format=</span><span class=s>&#34;dimension&#34;</span><span class=nt>/&gt;</span>
-        <span class=c>&lt;!--是否激活,默认false--&gt;</span>
-        <span class=nt>&lt;attr</span> <span class=na>name=</span><span class=s>&#34;isActivated&#34;</span> <span class=na>format=</span><span class=s>&#34;boolean&#34;</span><span class=nt>/&gt;</span>
-        <span class=c>&lt;!--是否自动测量数字修改后的宽度改变,防止更改状态时控件宽度改变,默认开启--&gt;</span>
-        <span class=nt>&lt;attr</span> <span class=na>name=</span><span class=s>&#34;autoMeasureMaxWidth&#34;</span> <span class=na>format=</span><span class=s>&#34;boolean&#34;</span><span class=nt>/&gt;</span>
-        <span class=c>&lt;!--是否不允许取消点赞,默认false--&gt;</span>
-        <span class=nt>&lt;attr</span> <span class=na>name=</span><span class=s>&#34;notAllowedCancel&#34;</span> <span class=na>format=</span><span class=s>&#34;boolean&#34;</span><span class=nt>/&gt;</span>
-        <span class=c>&lt;!--对齐方式,前三种默认垂直居中--&gt;</span>
-        <span class=nt>&lt;attr</span> <span class=na>name=</span><span class=s>&#34;gravity&#34;</span> <span class=na>format=</span><span class=s>&#34;enum&#34;</span><span class=nt>&gt;</span>
-            <span class=c>&lt;!--居中--&gt;</span>
-            <span class=nt>&lt;enum</span> <span class=na>name=</span><span class=s>&#34;center&#34;</span> <span class=na>value=</span><span class=s>&#34;1&#34;</span><span class=nt>/&gt;</span>
-            <span class=c>&lt;!--左对齐--&gt;</span>
-            <span class=nt>&lt;enum</span> <span class=na>name=</span><span class=s>&#34;left&#34;</span> <span class=na>value=</span><span class=s>&#34;2&#34;</span><span class=nt>/&gt;</span>
-            <span class=c>&lt;!--右对齐--&gt;</span>
-            <span class=nt>&lt;enum</span> <span class=na>name=</span><span class=s>&#34;right&#34;</span> <span class=na>value=</span><span class=s>&#34;3&#34;</span><span class=nt>/&gt;</span>
-            <span class=c>&lt;!--开始点--&gt;</span>
-            <span class=nt>&lt;enum</span> <span class=na>name=</span><span class=s>&#34;start&#34;</span> <span class=na>value=</span><span class=s>&#34;4&#34;</span><span class=nt>/&gt;</span>
-        <span class=nt>&lt;/attr&gt;</span>
-    <span class=nt>&lt;/declare-styleable&gt;</span>
-<span class=nt>&lt;/resources&gt;</span>
-</code></pre></td></tr></table></div></div><h2 id=接口>接口</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span><span class=lnt>17
-</span><span class=lnt>18
-</span><span class=lnt>19
-</span><span class=lnt>20
-</span><span class=lnt>21
-</span><span class=lnt>22
-</span><span class=lnt>23
-</span><span class=lnt>24
-</span><span class=lnt>25
-</span><span class=lnt>26
-</span><span class=lnt>27
-</span><span class=lnt>28
-</span><span class=lnt>29
-</span><span class=lnt>30
-</span><span class=lnt>31
-</span><span class=lnt>32
-</span><span class=lnt>33
-</span><span class=lnt>34
-</span><span class=lnt>35
-</span><span class=lnt>36
-</span><span class=lnt>37
-</span><span class=lnt>38
-</span><span class=lnt>39
-</span><span class=lnt>40
-</span><span class=lnt>41
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=cm>/**
-</span><span class=cm>* 事件监听接口
-</span><span class=cm>*/</span>
-<span class=kd>public</span> <span class=kd>interface</span> <span class=nc>Callback</span> <span class=o>{</span>
-<span class=cm>/**
-</span><span class=cm>    * 点击事件监听
-</span><span class=cm>    *
-</span><span class=cm>    * @param view 当前View
-</span><span class=cm>    * @return 返回true则代表不使用默认的点击事件
-</span><span class=cm>    */</span>
-    <span class=kt>boolean</span> <span class=nf>onClick</span><span class=o>(</span><span class=n>LikeView</span> <span class=n>view</span><span class=o>);</span>
+    @Override
+    public void deactivate(LikeView view) {
+        Snackbar.make(view, &quot;你取消了对&quot; + entity.name + &quot;的赞!&quot;, Snackbar.LENGTH_SHORT).show();
+    }
+});
+//评论view的设置
+holder.comment.setNumber(entity.commentNum);
+//设置图形适配器
+holder.comment.setGraphAdapter(CommentPathAdapter.getInstance());
+holder.comment.setCallback(new LikeView.SimpleCallback(){
+    @Override
+    public boolean onClick(LikeView view) {
+        Snackbar.make(view, &quot;你点击&quot; + entity.name + &quot;的评论按钮&quot;, Snackbar.LENGTH_SHORT).show();
+        //返回true代表拦截此次点击,不使用默认的点击事件
+        return true;
+    }
+});
+</code></pre><h3 id=自定义图形适配器>自定义图形适配器</h3><pre><code class=language-java>public class CommentPathAdapter implements LikeView.GraphAdapter {
+    private static CommentPathAdapter instance;
+    private static final float xOffsetScale = 0.06f;
+    private static final float yOffsetScale = 0.2f;
+	//可用单例模式
+    public static CommentPathAdapter getInstance() {
+        synchronized (CommentPathAdapter.class) {
+            if (null == instance) {
+                instance = new CommentPathAdapter();
+            }
+        }
+        return instance;
+    }
+	//这里绘制你想要的图形
+    @Override
+    public Path getGraphPath(LikeView view, int length) {
+        Path path = new Path();
+        int dx = (int) (length * xOffsetScale);
+        int dy = (int) (length * yOffsetScale);
+        int w = (int) (length * (1 - xOffsetScale * 2));
+        int h = (int) (length * (1 - yOffsetScale * 2));
+        path.moveTo(dx, dy);
+        path.lineTo(dx + w, dy);
+        path.lineTo(dx + w, dy + h);
+        path.lineTo(dx + (w * 0.35f), dy + h);
+        path.lineTo(dx + (w * 0.1f), dy + (h * 1.4f));
+        path.lineTo(dx + (w * 0.1f), dy + h);
+        path.lineTo(dx, dy + h);
+        path.lineTo(dx, dy);
+        return path;
+    }
+}
+</code></pre><h2 id=自定义配置>自定义配置</h2><pre><code class=language-xml>&lt;resources&gt;
+    &lt;declare-styleable name=&quot;LikeView&quot;&gt;
+        &lt;!--当前数值,默认0--&gt;
+        &lt;attr name=&quot;number&quot; format=&quot;integer&quot;/&gt;
+        &lt;!--数字颜色,默认#888888--&gt;
+        &lt;attr name=&quot;textColor&quot; format=&quot;color&quot;/&gt;
+        &lt;!--图形外边颜色,默认#888888--&gt;
+        &lt;attr name=&quot;graphColor&quot; format=&quot;color&quot;/&gt;
+        &lt;!--当前激活时图形颜色,默认#ca5f5f--&gt;
+        &lt;attr name=&quot;animateColor&quot; format=&quot;color&quot;/&gt;
+        &lt;!--字体大小,决定控件高度以及图形大小,默认14sp--&gt;
+        &lt;attr name=&quot;textSize&quot; format=&quot;dimension&quot;/&gt;
+        &lt;!--动画时间,默认300--&gt;
+        &lt;attr name=&quot;animateDuration&quot; format=&quot;integer&quot;/&gt;
+        &lt;!--图形与数字间的距离,默认3dp--&gt;
+        &lt;attr name=&quot;distance&quot; format=&quot;dimension&quot;/&gt;
+        &lt;!--图形与数字高度的比例,默认1.3--&gt;
+        &lt;attr name=&quot;graphTextHeightRatio&quot; format=&quot;float&quot;/&gt;
+        &lt;!--图形外边绘制宽度,默认3dp--&gt;
+        &lt;attr name=&quot;graphStrokeWidth&quot; format=&quot;dimension&quot;/&gt;
+        &lt;!--数字绘制宽度,默认2dp--&gt;
+        &lt;attr name=&quot;textStrokeWidth&quot; format=&quot;dimension&quot;/&gt;
+        &lt;!--是否激活,默认false--&gt;
+        &lt;attr name=&quot;isActivated&quot; format=&quot;boolean&quot;/&gt;
+        &lt;!--是否自动测量数字修改后的宽度改变,防止更改状态时控件宽度改变,默认开启--&gt;
+        &lt;attr name=&quot;autoMeasureMaxWidth&quot; format=&quot;boolean&quot;/&gt;
+        &lt;!--是否不允许取消点赞,默认false--&gt;
+        &lt;attr name=&quot;notAllowedCancel&quot; format=&quot;boolean&quot;/&gt;
+        &lt;!--对齐方式,前三种默认垂直居中--&gt;
+        &lt;attr name=&quot;gravity&quot; format=&quot;enum&quot;&gt;
+            &lt;!--居中--&gt;
+            &lt;enum name=&quot;center&quot; value=&quot;1&quot;/&gt;
+            &lt;!--左对齐--&gt;
+            &lt;enum name=&quot;left&quot; value=&quot;2&quot;/&gt;
+            &lt;!--右对齐--&gt;
+            &lt;enum name=&quot;right&quot; value=&quot;3&quot;/&gt;
+            &lt;!--开始点--&gt;
+            &lt;enum name=&quot;start&quot; value=&quot;4&quot;/&gt;
+        &lt;/attr&gt;
+    &lt;/declare-styleable&gt;
+&lt;/resources&gt;
+</code></pre><h2 id=接口>接口</h2><pre><code class=language-java>/**
+* 事件监听接口
+*/
+public interface Callback {
+/**
+    * 点击事件监听
+    *
+    * @param view 当前View
+    * @return 返回true则代表不使用默认的点击事件
+    */
+    boolean onClick(LikeView view);
 
-    <span class=cm>/**
-</span><span class=cm>        * 变为激活状态
-</span><span class=cm>        *
-</span><span class=cm>        * @param view 当前View
-</span><span class=cm>        */</span>
-    <span class=kt>void</span> <span class=nf>activate</span><span class=o>(</span><span class=n>LikeView</span> <span class=n>view</span><span class=o>);</span>
+    /**
+        * 变为激活状态
+        *
+        * @param view 当前View
+        */
+    void activate(LikeView view);
 
-    <span class=cm>/**
-</span><span class=cm>        * 变为不激活状态
-</span><span class=cm>        *
-</span><span class=cm>        * @param view 当前View
-</span><span class=cm>        */</span>
-    <span class=kt>void</span> <span class=nf>deactivate</span><span class=o>(</span><span class=n>LikeView</span> <span class=n>view</span><span class=o>);</span>
-<span class=o>}</span>
+    /**
+        * 变为不激活状态
+        *
+        * @param view 当前View
+        */
+    void deactivate(LikeView view);
+}
 
-<span class=cm>/**
-</span><span class=cm>* 获取图形Path接口
-</span><span class=cm>*/</span>
-<span class=kd>public</span> <span class=kd>interface</span> <span class=nc>GraphAdapter</span> <span class=o>{</span>
-    <span class=cm>/**
-</span><span class=cm>        * 获取图形的Path
-</span><span class=cm>        *
-</span><span class=cm>        * @param view   当前View
-</span><span class=cm>        * @param length 可绘制图形区域正方形的边长
-</span><span class=cm>        * @return 带有图形的Path
-</span><span class=cm>        */</span>
-    <span class=n>Path</span> <span class=nf>getGraphPath</span><span class=o>(</span><span class=n>LikeView</span> <span class=n>view</span><span class=o>,</span> <span class=kt>int</span> <span class=n>length</span><span class=o>);</span>
-<span class=o>}</span>
+/**
+* 获取图形Path接口
+*/
+public interface GraphAdapter {
+    /**
+        * 获取图形的Path
+        *
+        * @param view   当前View
+        * @param length 可绘制图形区域正方形的边长
+        * @return 带有图形的Path
+        */
+    Path getGraphPath(LikeView view, int length);
+}
 
-</code></pre></td></tr></table></div></div><h2 id=声明>声明</h2><p>此项目为练手项目,当中可能存在BUG,发现BUG请指出,谢谢
+</code></pre><h2 id=声明>声明</h2><p>此项目为练手项目,当中可能存在BUG,发现BUG请指出,谢谢
 <a href=https://github.com/zFxiang/LikeView>github地址</a> 欢迎Star</p></div><div class=post-copyright><p class=copyright-item><span class=item-title>文章作者</span>
 <span class=item-content>Fxzou</span></p><p class=copyright-item><span class=item-title>上次更新</span>
 <span class=item-content>2016-12-05</span></p></div><footer class=post-footer><div class=post-tags><a href=/tags/%E8%87%AA%E5%AE%9A%E4%B9%89view/>自定义View</a>
@@ -302,4 +156,4 @@
 <span class=theme-info>主题 -
 <a class=theme-link href=https://github.com/olOwOlo/hugo-theme-even>Even</a></span>
 <span class=copyright-year>&copy;
-2021<span class=heart><i class="iconfont icon-heart"></i></span><span>Fxzou</span></span></div></footer><div class=back-to-top id=back-to-top><i class="iconfont icon-up"></i></div></div><script src=https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.min.js integrity="sha256-jwCP0NAdCBloaIWTWHmW4i3snUNMHUNO+jr9rYd2iOI=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.locales.min.js integrity="sha256-ZwofwC1Lf/faQCzN7nZtfijVV6hSwxjQMwXL4gn9qU8=" crossorigin=anonymous></script><script>var languageCode="zh-cn".replace(/-/g,'_').replace(/_(.*)/,function(b,a){return b.replace(a,a.toUpperCase())});timeago().render(document.querySelectorAll('.timeago'),languageCode),timeago.cancel()</script><script type=text/javascript src=/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js></script></body></html>
+2021<span class=heart><i class="iconfont icon-heart"></i></span><span>Fxzou</span></span></div></footer><div class=back-to-top id=back-to-top><i class="iconfont icon-up"></i></div></div><script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script src=https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.min.js integrity="sha256-jwCP0NAdCBloaIWTWHmW4i3snUNMHUNO+jr9rYd2iOI=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.locales.min.js integrity="sha256-ZwofwC1Lf/faQCzN7nZtfijVV6hSwxjQMwXL4gn9qU8=" crossorigin=anonymous></script><script>var languageCode="zh-cn".replace(/-/g,'_').replace(/_(.*)/,function(b,a){return b.replace(a,a.toUpperCase())});timeago().render(document.querySelectorAll('.timeago'),languageCode),timeago.cancel()</script><script type=text/javascript src=/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js></script></body></html>
