@@ -37,32 +37,32 @@
 </span><span class=lnt>24
 </span><span class=lnt>25
 </span><span class=lnt>26
-</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java>		<span class=c1>//点赞view的设置
-</span><span class=c1></span>		<span class=n>holder</span><span class=o>.</span><span class=na>like</span><span class=o>.</span><span class=na>setActivated</span><span class=o>(</span><span class=n>entity</span><span class=o>.</span><span class=na>isLike</span><span class=o>);</span>
-        <span class=n>holder</span><span class=o>.</span><span class=na>like</span><span class=o>.</span><span class=na>setNumber</span><span class=o>(</span><span class=n>entity</span><span class=o>.</span><span class=na>likeNum</span><span class=o>);</span>
-        <span class=n>holder</span><span class=o>.</span><span class=na>like</span><span class=o>.</span><span class=na>setCallback</span><span class=o>(</span><span class=k>new</span> <span class=n>LikeView</span><span class=o>.</span><span class=na>SimpleCallback</span><span class=o>()</span> <span class=o>{</span>
-            <span class=nd>@Override</span>
-            <span class=kd>public</span> <span class=kt>void</span> <span class=nf>activate</span><span class=o>(</span><span class=n>LikeView</span> <span class=n>view</span><span class=o>)</span> <span class=o>{</span>
-                <span class=n>Snackbar</span><span class=o>.</span><span class=na>make</span><span class=o>(</span><span class=n>view</span><span class=o>,</span> <span class=s>&#34;你觉得&#34;</span> <span class=o>+</span> <span class=n>entity</span><span class=o>.</span><span class=na>name</span> <span class=o>+</span> <span class=s>&#34;很赞!&#34;</span><span class=o>,</span> <span class=n>Snackbar</span><span class=o>.</span><span class=na>LENGTH_SHORT</span><span class=o>).</span><span class=na>show</span><span class=o>();</span>
-            <span class=o>}</span>
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=c1>//点赞view的设置
+</span><span class=c1></span><span class=n>holder</span><span class=o>.</span><span class=na>like</span><span class=o>.</span><span class=na>setActivated</span><span class=o>(</span><span class=n>entity</span><span class=o>.</span><span class=na>isLike</span><span class=o>);</span>
+<span class=n>holder</span><span class=o>.</span><span class=na>like</span><span class=o>.</span><span class=na>setNumber</span><span class=o>(</span><span class=n>entity</span><span class=o>.</span><span class=na>likeNum</span><span class=o>);</span>
+<span class=n>holder</span><span class=o>.</span><span class=na>like</span><span class=o>.</span><span class=na>setCallback</span><span class=o>(</span><span class=k>new</span> <span class=n>LikeView</span><span class=o>.</span><span class=na>SimpleCallback</span><span class=o>()</span> <span class=o>{</span>
+    <span class=nd>@Override</span>
+    <span class=kd>public</span> <span class=kt>void</span> <span class=nf>activate</span><span class=o>(</span><span class=n>LikeView</span> <span class=n>view</span><span class=o>)</span> <span class=o>{</span>
+        <span class=n>Snackbar</span><span class=o>.</span><span class=na>make</span><span class=o>(</span><span class=n>view</span><span class=o>,</span> <span class=s>&#34;你觉得&#34;</span> <span class=o>+</span> <span class=n>entity</span><span class=o>.</span><span class=na>name</span> <span class=o>+</span> <span class=s>&#34;很赞!&#34;</span><span class=o>,</span> <span class=n>Snackbar</span><span class=o>.</span><span class=na>LENGTH_SHORT</span><span class=o>).</span><span class=na>show</span><span class=o>();</span>
+    <span class=o>}</span>
 
-            <span class=nd>@Override</span>
-            <span class=kd>public</span> <span class=kt>void</span> <span class=nf>deactivate</span><span class=o>(</span><span class=n>LikeView</span> <span class=n>view</span><span class=o>)</span> <span class=o>{</span>
-                <span class=n>Snackbar</span><span class=o>.</span><span class=na>make</span><span class=o>(</span><span class=n>view</span><span class=o>,</span> <span class=s>&#34;你取消了对&#34;</span> <span class=o>+</span> <span class=n>entity</span><span class=o>.</span><span class=na>name</span> <span class=o>+</span> <span class=s>&#34;的赞!&#34;</span><span class=o>,</span> <span class=n>Snackbar</span><span class=o>.</span><span class=na>LENGTH_SHORT</span><span class=o>).</span><span class=na>show</span><span class=o>();</span>
-            <span class=o>}</span>
-        <span class=o>});</span>
-        <span class=c1>//评论view的设置
-</span><span class=c1></span>        <span class=n>holder</span><span class=o>.</span><span class=na>comment</span><span class=o>.</span><span class=na>setNumber</span><span class=o>(</span><span class=n>entity</span><span class=o>.</span><span class=na>commentNum</span><span class=o>);</span>
-        <span class=c1>//设置图形适配器
-</span><span class=c1></span>        <span class=n>holder</span><span class=o>.</span><span class=na>comment</span><span class=o>.</span><span class=na>setGraphAdapter</span><span class=o>(</span><span class=n>CommentPathAdapter</span><span class=o>.</span><span class=na>getInstance</span><span class=o>());</span>
-        <span class=n>holder</span><span class=o>.</span><span class=na>comment</span><span class=o>.</span><span class=na>setCallback</span><span class=o>(</span><span class=k>new</span> <span class=n>LikeView</span><span class=o>.</span><span class=na>SimpleCallback</span><span class=o>(){</span>
-            <span class=nd>@Override</span>
-            <span class=kd>public</span> <span class=kt>boolean</span> <span class=nf>onClick</span><span class=o>(</span><span class=n>LikeView</span> <span class=n>view</span><span class=o>)</span> <span class=o>{</span>
-                <span class=n>Snackbar</span><span class=o>.</span><span class=na>make</span><span class=o>(</span><span class=n>view</span><span class=o>,</span> <span class=s>&#34;你点击&#34;</span> <span class=o>+</span> <span class=n>entity</span><span class=o>.</span><span class=na>name</span> <span class=o>+</span> <span class=s>&#34;的评论按钮&#34;</span><span class=o>,</span> <span class=n>Snackbar</span><span class=o>.</span><span class=na>LENGTH_SHORT</span><span class=o>).</span><span class=na>show</span><span class=o>();</span>
-                <span class=c1>//返回true代表拦截此次点击,不使用默认的点击事件
-</span><span class=c1></span>                <span class=k>return</span> <span class=kc>true</span><span class=o>;</span>
-            <span class=o>}</span>
-        <span class=o>});</span>
+    <span class=nd>@Override</span>
+    <span class=kd>public</span> <span class=kt>void</span> <span class=nf>deactivate</span><span class=o>(</span><span class=n>LikeView</span> <span class=n>view</span><span class=o>)</span> <span class=o>{</span>
+        <span class=n>Snackbar</span><span class=o>.</span><span class=na>make</span><span class=o>(</span><span class=n>view</span><span class=o>,</span> <span class=s>&#34;你取消了对&#34;</span> <span class=o>+</span> <span class=n>entity</span><span class=o>.</span><span class=na>name</span> <span class=o>+</span> <span class=s>&#34;的赞!&#34;</span><span class=o>,</span> <span class=n>Snackbar</span><span class=o>.</span><span class=na>LENGTH_SHORT</span><span class=o>).</span><span class=na>show</span><span class=o>();</span>
+    <span class=o>}</span>
+<span class=o>});</span>
+<span class=c1>//评论view的设置
+</span><span class=c1></span><span class=n>holder</span><span class=o>.</span><span class=na>comment</span><span class=o>.</span><span class=na>setNumber</span><span class=o>(</span><span class=n>entity</span><span class=o>.</span><span class=na>commentNum</span><span class=o>);</span>
+<span class=c1>//设置图形适配器
+</span><span class=c1></span><span class=n>holder</span><span class=o>.</span><span class=na>comment</span><span class=o>.</span><span class=na>setGraphAdapter</span><span class=o>(</span><span class=n>CommentPathAdapter</span><span class=o>.</span><span class=na>getInstance</span><span class=o>());</span>
+<span class=n>holder</span><span class=o>.</span><span class=na>comment</span><span class=o>.</span><span class=na>setCallback</span><span class=o>(</span><span class=k>new</span> <span class=n>LikeView</span><span class=o>.</span><span class=na>SimpleCallback</span><span class=o>(){</span>
+    <span class=nd>@Override</span>
+    <span class=kd>public</span> <span class=kt>boolean</span> <span class=nf>onClick</span><span class=o>(</span><span class=n>LikeView</span> <span class=n>view</span><span class=o>)</span> <span class=o>{</span>
+        <span class=n>Snackbar</span><span class=o>.</span><span class=na>make</span><span class=o>(</span><span class=n>view</span><span class=o>,</span> <span class=s>&#34;你点击&#34;</span> <span class=o>+</span> <span class=n>entity</span><span class=o>.</span><span class=na>name</span> <span class=o>+</span> <span class=s>&#34;的评论按钮&#34;</span><span class=o>,</span> <span class=n>Snackbar</span><span class=o>.</span><span class=na>LENGTH_SHORT</span><span class=o>).</span><span class=na>show</span><span class=o>();</span>
+        <span class=c1>//返回true代表拦截此次点击,不使用默认的点击事件
+</span><span class=c1></span>        <span class=k>return</span> <span class=kc>true</span><span class=o>;</span>
+    <span class=o>}</span>
+<span class=o>});</span>
 </code></pre></td></tr></table></div></div><h3 id=自定义图形适配器>自定义图形适配器</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
@@ -251,45 +251,45 @@
 </span><span class=lnt>40
 </span><span class=lnt>41
 </span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=cm>/**
-</span><span class=cm>     * 事件监听接口
-</span><span class=cm>     */</span>
-    <span class=kd>public</span> <span class=kd>interface</span> <span class=nc>Callback</span> <span class=o>{</span>
-        <span class=cm>/**
-</span><span class=cm>         * 点击事件监听
-</span><span class=cm>         *
-</span><span class=cm>         * @param view 当前View
-</span><span class=cm>         * @return 返回true则代表不使用默认的点击事件
-</span><span class=cm>         */</span>
-        <span class=kt>boolean</span> <span class=nf>onClick</span><span class=o>(</span><span class=n>LikeView</span> <span class=n>view</span><span class=o>);</span>
+</span><span class=cm>* 事件监听接口
+</span><span class=cm>*/</span>
+<span class=kd>public</span> <span class=kd>interface</span> <span class=nc>Callback</span> <span class=o>{</span>
+<span class=cm>/**
+</span><span class=cm>    * 点击事件监听
+</span><span class=cm>    *
+</span><span class=cm>    * @param view 当前View
+</span><span class=cm>    * @return 返回true则代表不使用默认的点击事件
+</span><span class=cm>    */</span>
+    <span class=kt>boolean</span> <span class=nf>onClick</span><span class=o>(</span><span class=n>LikeView</span> <span class=n>view</span><span class=o>);</span>
 
-        <span class=cm>/**
-</span><span class=cm>         * 变为激活状态
-</span><span class=cm>         *
-</span><span class=cm>         * @param view 当前View
-</span><span class=cm>         */</span>
-        <span class=kt>void</span> <span class=nf>activate</span><span class=o>(</span><span class=n>LikeView</span> <span class=n>view</span><span class=o>);</span>
-
-        <span class=cm>/**
-</span><span class=cm>         * 变为不激活状态
-</span><span class=cm>         *
-</span><span class=cm>         * @param view 当前View
-</span><span class=cm>         */</span>
-        <span class=kt>void</span> <span class=nf>deactivate</span><span class=o>(</span><span class=n>LikeView</span> <span class=n>view</span><span class=o>);</span>
-    <span class=o>}</span>
-    
     <span class=cm>/**
-</span><span class=cm>     * 获取图形Path接口
-</span><span class=cm>     */</span>
-    <span class=kd>public</span> <span class=kd>interface</span> <span class=nc>GraphAdapter</span> <span class=o>{</span>
-        <span class=cm>/**
-</span><span class=cm>         * 获取图形的Path
-</span><span class=cm>         *
-</span><span class=cm>         * @param view   当前View
-</span><span class=cm>         * @param length 可绘制图形区域正方形的边长
-</span><span class=cm>         * @return 带有图形的Path
-</span><span class=cm>         */</span>
-        <span class=n>Path</span> <span class=nf>getGraphPath</span><span class=o>(</span><span class=n>LikeView</span> <span class=n>view</span><span class=o>,</span> <span class=kt>int</span> <span class=n>length</span><span class=o>);</span>
-    <span class=o>}</span>
+</span><span class=cm>        * 变为激活状态
+</span><span class=cm>        *
+</span><span class=cm>        * @param view 当前View
+</span><span class=cm>        */</span>
+    <span class=kt>void</span> <span class=nf>activate</span><span class=o>(</span><span class=n>LikeView</span> <span class=n>view</span><span class=o>);</span>
+
+    <span class=cm>/**
+</span><span class=cm>        * 变为不激活状态
+</span><span class=cm>        *
+</span><span class=cm>        * @param view 当前View
+</span><span class=cm>        */</span>
+    <span class=kt>void</span> <span class=nf>deactivate</span><span class=o>(</span><span class=n>LikeView</span> <span class=n>view</span><span class=o>);</span>
+<span class=o>}</span>
+
+<span class=cm>/**
+</span><span class=cm>* 获取图形Path接口
+</span><span class=cm>*/</span>
+<span class=kd>public</span> <span class=kd>interface</span> <span class=nc>GraphAdapter</span> <span class=o>{</span>
+    <span class=cm>/**
+</span><span class=cm>        * 获取图形的Path
+</span><span class=cm>        *
+</span><span class=cm>        * @param view   当前View
+</span><span class=cm>        * @param length 可绘制图形区域正方形的边长
+</span><span class=cm>        * @return 带有图形的Path
+</span><span class=cm>        */</span>
+    <span class=n>Path</span> <span class=nf>getGraphPath</span><span class=o>(</span><span class=n>LikeView</span> <span class=n>view</span><span class=o>,</span> <span class=kt>int</span> <span class=n>length</span><span class=o>);</span>
+<span class=o>}</span>
 
 </code></pre></td></tr></table></div></div><h2 id=声明>声明</h2><p>此项目为练手项目,当中可能存在BUG,发现BUG请指出,谢谢
 <a href=https://github.com/zFxiang/LikeView>github地址</a> 欢迎Star</p></div><div class=post-copyright><p class=copyright-item><span class=item-title>文章作者</span>
@@ -297,7 +297,7 @@
 <span class=item-content>2016-12-05</span></p></div><footer class=post-footer><div class=post-tags><a href=/tags/%E8%87%AA%E5%AE%9A%E4%B9%89view/>自定义View</a>
 <a href=/tags/android/>Android</a></div><nav class=post-nav><a class=next href=/post/java/spring_joinpoint/><span class="next-text nav-default">Spring JoinPoint的用法</span>
 <span class="next-text nav-mobile">下一篇</span>
-<i class="iconfont icon-right"></i></a></nav></footer></article></div></div></main><footer id=footer class=footer><div class=social-links><a href=vvvzfx@gmail.com class="iconfont icon-email" title=email></a><a href=https://github.com/zFxiang class="iconfont icon-github" title=github></a><a href=https://zfxiang.github.io/index.xml type=application/rss+xml class="iconfont icon-rss" title=rss></a></div><div class=copyright><span class=power-by>由 <a class=hexo-link href=https://gohugo.io>Hugo</a> 强力驱动</span>
+<i class="iconfont icon-right"></i></a></nav></footer></article></div><script src=https://utteranc.es/client.js repo=zFxiang/zfxiang.github.io issue-term=pathname theme=github-light crossorigin=anonymous async></script><noscript>Please enable JavaScript to view the <a href=https://github.com/utterance>comments powered by utterances.</a></noscript></div></main><footer id=footer class=footer><div class=social-links><a href=vvvzfx@gmail.com class="iconfont icon-email" title=email></a><a href=https://github.com/zFxiang class="iconfont icon-github" title=github></a><a href=https://zfxiang.github.io/index.xml type=application/rss+xml class="iconfont icon-rss" title=rss></a></div><div class=copyright><span class=power-by>由 <a class=hexo-link href=https://gohugo.io>Hugo</a> 强力驱动</span>
 <span class=division>|</span>
 <span class=theme-info>主题 -
 <a class=theme-link href=https://github.com/olOwOlo/hugo-theme-even>Even</a></span>
