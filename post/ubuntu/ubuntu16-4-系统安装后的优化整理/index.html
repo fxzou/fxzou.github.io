@@ -1,0 +1,142 @@
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>ubuntu16.4 系统安装后的优化整理 - Fxzou Blog</title><meta name=renderer content="webkit"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=theme-color content="#f8f5ec"><meta name=msapplication-navbutton-color content="#f8f5ec"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec"><meta name=author content="Fxzou"><meta name=description content="美化 原贴地址 系统清理篇 1 2 3 4 5 6 7 8 9 10 11 //卸载自带的开源office软件 sudo apt-get remove libreoffice-common //删除Amazon的链接 sudo apt-get remove unity-webapps-common //删除不常用的软件"><meta name=keywords content="Fxzou,blog,zFxiang"><meta name=generator content="Hugo 0.82.0 with theme even"><link rel=canonical href=https://zfxiang.github.io/post/ubuntu/ubuntu16-4-%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85%E5%90%8E%E7%9A%84%E4%BC%98%E5%8C%96%E6%95%B4%E7%90%86/><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/manifest.json><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link href=/sass/main.min.39a3e01cac9473be1356f3572fcfe34b2e363efabad244a99a40f28a812c837e.css rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin=anonymous><meta property="og:title" content="ubuntu16.4 系统安装后的优化整理"><meta property="og:description" content="美化 原贴地址 系统清理篇 1 2 3 4 5 6 7 8 9 10 11 //卸载自带的开源office软件 sudo apt-get remove libreoffice-common //删除Amazon的链接 sudo apt-get remove unity-webapps-common //删除不常用的软件"><meta property="og:type" content="article"><meta property="og:url" content="https://zfxiang.github.io/post/ubuntu/ubuntu16-4-%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85%E5%90%8E%E7%9A%84%E4%BC%98%E5%8C%96%E6%95%B4%E7%90%86/"><meta property="article:section" content="post"><meta property="article:published_time" content="2016-08-31T15:43:48+08:00"><meta property="article:modified_time" content="2016-08-31T15:43:48+08:00"><meta itemprop=name content="ubuntu16.4 系统安装后的优化整理"><meta itemprop=description content="美化 原贴地址 系统清理篇 1 2 3 4 5 6 7 8 9 10 11 //卸载自带的开源office软件 sudo apt-get remove libreoffice-common //删除Amazon的链接 sudo apt-get remove unity-webapps-common //删除不常用的软件"><meta itemprop=datePublished content="2016-08-31T15:43:48+08:00"><meta itemprop=dateModified content="2016-08-31T15:43:48+08:00"><meta itemprop=wordCount content="1341"><meta itemprop=keywords content="ubuntu16.4,美化,"><meta name=twitter:card content="summary"><meta name=twitter:title content="ubuntu16.4 系统安装后的优化整理"><meta name=twitter:description content="美化 原贴地址 系统清理篇 1 2 3 4 5 6 7 8 9 10 11 //卸载自带的开源office软件 sudo apt-get remove libreoffice-common //删除Amazon的链接 sudo apt-get remove unity-webapps-common //删除不常用的软件"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script><script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head><body><div id=mobile-navbar class=mobile-navbar><div class=mobile-header-logo><a href=/ class=logo>Fxzou</a></div><div class=mobile-navbar-icon><span></span><span></span><span></span></div></div><nav id=mobile-menu class="mobile-menu slideout-menu"><ul class=mobile-menu-list><a href=/><li class=mobile-menu-item>主页</li></a><a href=/post/><li class=mobile-menu-item>归档</li></a><a href=/tags/><li class=mobile-menu-item>标签</li></a><a href=/categories/><li class=mobile-menu-item>分类</li></a><a href=/about/><li class=mobile-menu-item>关于我</li></a></ul></nav><div class=container id=mobile-panel><header id=header class=header><div class=logo-wrapper><a href=/ class=logo>Fxzou</a></div><nav class=site-navbar><ul id=menu class=menu><li class=menu-item><a class=menu-item-link href=/>主页</a></li><li class=menu-item><a class=menu-item-link href=/post/>归档</a></li><li class=menu-item><a class=menu-item-link href=/tags/>标签</a></li><li class=menu-item><a class=menu-item-link href=/categories/>分类</a></li><li class=menu-item><a class=menu-item-link href=/about/>关于我</a></li></ul></nav></header><main id=main class=main><div class=content-wrapper><div id=content class=content><article class=post><header class=post-header><h1 class=post-title>ubuntu16.4 系统安装后的优化整理</h1><div class=post-meta><span class=post-time>2016-08-31</span><div class=post-category><a href=/categories/ubuntu/>ubuntu</a></div></div></header><div class=post-toc id=post-toc><h2 class=post-toc-title>文章目录</h2><div class=post-toc-content><nav id=TableOfContents><ul><li><ul><li><a href=#美化>美化</a><ul><li><a href=#系统清理篇>系统清理篇</a></li><li><a href=#主题美化篇>主题美化篇</a></li></ul></li><li><a href=#解决浏览器总是提示找不到服务器的问题>解决浏览器总是提示找不到服务器的问题</a></li><li><a href=#解决和盖或外接显示器睡眠后无法唤醒输入密码错误>解决和盖或外接显示器睡眠后无法唤醒，输入密码错误</a></li><li><a href=#观看视频时取消自动休眠>观看视频时取消自动休眠</a></li><li><a href=#sublime-text-23中文输入问题>Sublime Text 2/3中文输入问题</a></li><li><a href=#去除打开软件需要输入凭证密码>去除打开软件需要输入凭证密码</a></li><li><a href=#idea-或-android-studio-快捷键冲突的解决办法>idea 或 android studio 快捷键冲突的解决办法</a></li><li><a href=#安装搜狗输入法>安装搜狗输入法</a></li><li><a href=#其他修改>其他修改</a></li></ul></li></ul></nav></div></div><div class=post-outdated><div class=warn><p>【注意】最后更新于 <span class=timeago datetime=2016-08-31T15:43:48 title="August 31, 2016">August 31, 2016</span>，文中内容可能已过时，请谨慎使用。</p></div></div><div class=post-content><h2 id=美化>美化</h2><p><a href=http://blog.csdn.net/terence1212/article/details/52270210>原贴地址</a></p><h3 id=系统清理篇>系统清理篇</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>//卸载自带的开源office软件
+sudo apt-get remove libreoffice-common
+//删除Amazon的链接
+sudo apt-get remove unity-webapps-common
+//删除不常用的软件
+sudo apt-get remove thunderbird totem rhythmbox empathy brasero simple-scan gnome-mahjongg aisleriot
+sudo apt-get remove gnome-mines cheese transmission-common gnome-orca webbrowser-app gnome-sudoku  landscape-client-ui-install
+sudo apt-get remove onboard deja-dup
+//更新一些补丁
+sudo apt-get update
+sudo apt-get upgrade
+</code></pre></td></tr></table></div></div><h3 id=主题美化篇>主题美化篇</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>//安装unity-tweak-tool
+sudo apt-get install unity-tweak-tool
+//安装Flatabulous主题
+sudo add-apt-repository ppa:noobslab/themes
+sudo apt-get update
+sudo apt-get install flatabulous-theme
+//安装配套的图标
+sudo add-apt-repository ppa:noobslab/icons
+sudo apt-get update
+sudo apt-get install ultra-flat-icons
+//打开unity-tweak-tool软件，修改主题和图标，主题选择Flatabulous，图标选择Ultra-flat
+</code></pre></td></tr></table></div></div><h2 id=解决浏览器总是提示找不到服务器的问题>解决浏览器总是提示找不到服务器的问题</h2><p><a href=http://www.coder51aj.pub/article/1113831.html>原贴地址</a></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>//修改文件，将nameserver后面的IP改为你想要的DNS服务器IP，谷歌提供的免费dns服务器地址8.8.8.8
+sudo vim /etc/resolv.conf
+//再修改文件,在打开的这个文件中添加：nameserver 你在上面写的DNS IP（也就是拷贝上面修改的那一行）
+sudo vim /etc/resolvconf/resolv.conf.d/head
+</code></pre></td></tr></table></div></div><h2 id=解决和盖或外接显示器睡眠后无法唤醒输入密码错误>解决和盖或外接显示器睡眠后无法唤醒，输入密码错误</h2><p><a href=http://blog.csdn.net/huludan/article/details/52725594>原贴地址1（休眠问题）</a>
+<a href=http://www.tuicool.com/articles/uiMzuuI>原贴地址2（鼠标问题）</a></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>//检查是否安装了grep laptop-mode-tools 工具包，如果执行命令无结果输出，表示未安装<span class=o>(</span>如果已安装，忽略第2步<span class=o>)</span>
+dpkg -l <span class=p>|</span> grep laptop-mode-tools
+//安装laptop-mode
+sudo apt-get install laptop-mode-tools
+//判断Laptop是否启用了laptop_mode模式,如果显示结果为0，则表示未启动，如果为非0的数字则表示启动了
+cat /proc/sys/vm/laptop_mode
+//修改文件,更改 <span class=nv>ENABLE_LAPTOP_MODE</span><span class=o>=</span>true,，如果在此文件中没找到该字段，则要进行下一步
+sudo vim /etc/default/acpi-support
+//（解决上一步骤问题，上一步正常的可以跳过）修改文件,将
+//ENABLE_LAPTOP_MODE_ON_BATTERY、
+//ENABLE_LAPTOP_MODE_ON_AC、
+//ENABLE_LAPTOP_MODE_WHEN_LID_CLOSED
+//全部设为1
+sudo vim /etc/laptop-mode/laptop-mode.conf
+//启动了laptop_mode
+sudo laptop_mode start
+//再次判断Laptop是否启用了laptop_mode模式，如果显示结果为0，则表示未启动，如果为非0的数字则表示启动了
+cat /proc/sys/vm/laptop_mode
+//这时候如果正常启动了，就成功了
+//但是如果发现鼠标自动休眠的话，还要进行以下操作
+//修改文件,令AUTOSUSPEND_RUNTIME_DEVTYPE_BLACKLIST<span class=o>=</span><span class=s2>&#34;usbhid usb-storage&#34;</span>，保存后重启电脑后鼠标即不会再次自动断电了。
+sudo vim /etc/laptop-mode/conf.d/runtime-pm.conf
+</code></pre></td></tr></table></div></div><h2 id=观看视频时取消自动休眠>观看视频时取消自动休眠</h2><p><a href="http://forum.ubuntu.org.cn/viewtopic.php?f=48&t=472523">原贴地址</a></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>sudo add-apt-repository ppa:caffeine-developers/ppa
+sudo apt-get update
+sudo apt-get install caffeine
+//打开软件后状态栏会出现一个咖啡杯图标，右键激活就行了
+</code></pre></td></tr></table></div></div><h2 id=sublime-text-23中文输入问题>Sublime Text 2/3中文输入问题</h2><p><a href=https://github.com/lyfeyaj/sublime-text-imfix>原贴地址</a></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>//若没安装git请先安装git（sudo apt-get install git）
+git clone https://github.com/lyfeyaj/sublime-text-imfix.git
+<span class=nb>cd</span> sublime-text-imfix
+./sublime-imfix
+//重启软件
+</code></pre></td></tr></table></div></div><h2 id=去除打开软件需要输入凭证密码>去除打开软件需要输入凭证密码</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>//打开凭证管理器，将该凭证的密码改为无（右键修改密码，输入旧密码后不输入新密码直接点击继续）
+ seahorse
+</code></pre></td></tr></table></div></div><h2 id=idea-或-android-studio-快捷键冲突的解决办法>idea 或 android studio 快捷键冲突的解决办法</h2><p>系统设置 > 键盘 > 快捷键 ，再逐个查找其中冲突的快捷键，将它修改或禁用</p><h2 id=安装搜狗输入法>安装搜狗输入法</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-shell data-lang=shell>//添加源
+sudo add-apt-repository ppa:fcitx-team/nightly
+//安装fcitx
+sudo apt-get install fcitx fcitx-config-gtk fcitx-table-all fcitx-frontend-qt5:amd64 fcitx-uilassic
+//官网下载deb安装
+</code></pre></td></tr></table></div></div><h2 id=其他修改>其他修改</h2><p>其它非必须操作请参考这篇博客<a href=http://staynoob.cn/post/linux/%E5%AE%89%E8%A3%85ubuntu16-04%E5%90%8E%E8%A6%81%E5%81%9A%E7%9A%849%E4%BB%B6%E4%BA%8B/>安装ubuntu16.04后要做的9件事</a>
+各种软件安装请自行google，此片文章没有图片，若看不懂请点开原文链接。
+不定时更新！</p></div><div class=post-copyright><p class=copyright-item><span class=item-title>文章作者</span>
+<span class=item-content>Fxzou</span></p><p class=copyright-item><span class=item-title>上次更新</span>
+<span class=item-content>2016-08-31</span></p></div><footer class=post-footer><div class=post-tags><a href=/tags/ubuntu16.4/>ubuntu16.4</a>
+<a href=/tags/%E7%BE%8E%E5%8C%96/>美化</a></div><nav class=post-nav><a class=prev href=/post/android/android-%E4%BD%BF%E7%94%A8%E8%B4%9D%E5%A1%9E%E5%B0%94%E6%9B%B2%E7%BA%BF%E5%B0%86%E5%A4%9A%E7%82%B9%E8%BF%9E%E6%88%90%E4%B8%80%E6%9D%A1%E5%B9%B3%E6%BB%91%E7%9A%84%E6%9B%B2%E7%BA%BF/><i class="iconfont icon-left"></i>
+<span class="prev-text nav-default">Android-使用贝塞尔曲线将多点连成一条平滑的曲线</span>
+<span class="prev-text nav-mobile">上一篇</span></a></nav></footer></article></div></div></main><footer id=footer class=footer><div class=social-links><a href=vvvzfx@gmail.com class="iconfont icon-email" title=email></a><a href=https://github.com/zFxiang class="iconfont icon-github" title=github></a><a href=https://zfxiang.github.io/index.xml type=application/rss+xml class="iconfont icon-rss" title=rss></a></div><div class=copyright><span class=power-by>由 <a class=hexo-link href=https://gohugo.io>Hugo</a> 强力驱动</span>
+<span class=division>|</span>
+<span class=theme-info>主题 -
+<a class=theme-link href=https://github.com/olOwOlo/hugo-theme-even>Even</a></span>
+<span class=copyright-year>&copy;
+2021<span class=heart><i class="iconfont icon-heart"></i></span><span>Fxzou</span></span></div></footer><div class=back-to-top id=back-to-top><i class="iconfont icon-up"></i></div></div><script src=https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.min.js integrity="sha256-jwCP0NAdCBloaIWTWHmW4i3snUNMHUNO+jr9rYd2iOI=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.locales.min.js integrity="sha256-ZwofwC1Lf/faQCzN7nZtfijVV6hSwxjQMwXL4gn9qU8=" crossorigin=anonymous></script><script>var languageCode="zh-cn".replace(/-/g,'_').replace(/_(.*)/,function(b,a){return b.replace(a,a.toUpperCase())});timeago().render(document.querySelectorAll('.timeago'),languageCode),timeago.cancel()</script><script type=text/javascript src=/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js></script></body></html>

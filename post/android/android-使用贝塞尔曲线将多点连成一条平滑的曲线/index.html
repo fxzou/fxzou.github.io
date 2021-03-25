@@ -1,0 +1,200 @@
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>Android-使用贝塞尔曲线将多点连成一条平滑的曲线 - Fxzou Blog</title><meta name=renderer content="webkit"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=theme-color content="#f8f5ec"><meta name=msapplication-navbutton-color content="#f8f5ec"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec"><meta name=author content="Fxzou"><meta name=description content="本文主要讲解怎么用贝塞尔曲线将多点连成一条平滑的曲线，若不了解贝塞尔曲线的同学可以查看这里 先看效果 确定控制点 使用贝塞尔曲线,我们就要先找出它"><meta name=keywords content="Fxzou,blog,zFxiang"><meta name=generator content="Hugo 0.82.0 with theme even"><link rel=canonical href=https://zfxiang.github.io/post/android/android-%E4%BD%BF%E7%94%A8%E8%B4%9D%E5%A1%9E%E5%B0%94%E6%9B%B2%E7%BA%BF%E5%B0%86%E5%A4%9A%E7%82%B9%E8%BF%9E%E6%88%90%E4%B8%80%E6%9D%A1%E5%B9%B3%E6%BB%91%E7%9A%84%E6%9B%B2%E7%BA%BF/><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/manifest.json><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link href=/sass/main.min.39a3e01cac9473be1356f3572fcfe34b2e363efabad244a99a40f28a812c837e.css rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin=anonymous><meta property="og:title" content="Android-使用贝塞尔曲线将多点连成一条平滑的曲线"><meta property="og:description" content="本文主要讲解怎么用贝塞尔曲线将多点连成一条平滑的曲线，若不了解贝塞尔曲线的同学可以查看这里 先看效果 确定控制点 使用贝塞尔曲线,我们就要先找出它"><meta property="og:type" content="article"><meta property="og:url" content="https://zfxiang.github.io/post/android/android-%E4%BD%BF%E7%94%A8%E8%B4%9D%E5%A1%9E%E5%B0%94%E6%9B%B2%E7%BA%BF%E5%B0%86%E5%A4%9A%E7%82%B9%E8%BF%9E%E6%88%90%E4%B8%80%E6%9D%A1%E5%B9%B3%E6%BB%91%E7%9A%84%E6%9B%B2%E7%BA%BF/"><meta property="article:section" content="post"><meta property="article:published_time" content="2016-09-21T15:43:48+08:00"><meta property="article:modified_time" content="2016-10-05T15:43:48+08:00"><meta itemprop=name content="Android-使用贝塞尔曲线将多点连成一条平滑的曲线"><meta itemprop=description content="本文主要讲解怎么用贝塞尔曲线将多点连成一条平滑的曲线，若不了解贝塞尔曲线的同学可以查看这里 先看效果 确定控制点 使用贝塞尔曲线,我们就要先找出它"><meta itemprop=datePublished content="2016-09-21T15:43:48+08:00"><meta itemprop=dateModified content="2016-10-05T15:43:48+08:00"><meta itemprop=wordCount content="852"><meta itemprop=keywords content="自定义View,Android,"><meta name=twitter:card content="summary"><meta name=twitter:title content="Android-使用贝塞尔曲线将多点连成一条平滑的曲线"><meta name=twitter:description content="本文主要讲解怎么用贝塞尔曲线将多点连成一条平滑的曲线，若不了解贝塞尔曲线的同学可以查看这里 先看效果 确定控制点 使用贝塞尔曲线,我们就要先找出它"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script><script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head><body><div id=mobile-navbar class=mobile-navbar><div class=mobile-header-logo><a href=/ class=logo>Fxzou</a></div><div class=mobile-navbar-icon><span></span><span></span><span></span></div></div><nav id=mobile-menu class="mobile-menu slideout-menu"><ul class=mobile-menu-list><a href=/><li class=mobile-menu-item>主页</li></a><a href=/post/><li class=mobile-menu-item>归档</li></a><a href=/tags/><li class=mobile-menu-item>标签</li></a><a href=/categories/><li class=mobile-menu-item>分类</li></a><a href=/about/><li class=mobile-menu-item>关于我</li></a></ul></nav><div class=container id=mobile-panel><header id=header class=header><div class=logo-wrapper><a href=/ class=logo>Fxzou</a></div><nav class=site-navbar><ul id=menu class=menu><li class=menu-item><a class=menu-item-link href=/>主页</a></li><li class=menu-item><a class=menu-item-link href=/post/>归档</a></li><li class=menu-item><a class=menu-item-link href=/tags/>标签</a></li><li class=menu-item><a class=menu-item-link href=/categories/>分类</a></li><li class=menu-item><a class=menu-item-link href=/about/>关于我</a></li></ul></nav></header><main id=main class=main><div class=content-wrapper><div id=content class=content><article class=post><header class=post-header><h1 class=post-title>Android-使用贝塞尔曲线将多点连成一条平滑的曲线</h1><div class=post-meta><span class=post-time>2016-09-21</span><div class=post-category><a href=/categories/android/>Android</a></div></div></header><div class=post-toc id=post-toc><h2 class=post-toc-title>文章目录</h2><div class=post-toc-content><nav id=TableOfContents><ul><li><ul><li><ul><li><a href=#先看效果>先看效果</a></li><li><a href=#确定控制点>确定控制点</a></li></ul></li></ul></li></ul></nav></div></div><div class=post-outdated><div class=warn><p>【注意】最后更新于 <span class=timeago datetime=2016-10-05T15:43:48 title="October 5, 2016">October 5, 2016</span>，文中内容可能已过时，请谨慎使用。</p></div></div><div class=post-content><blockquote><p>本文主要讲解怎么用贝塞尔曲线将多点连成一条平滑的曲线，若不了解贝塞尔曲线的同学可以查看<a href=http://blog.csdn.net/u013831257/article/details/51281136>这里</a></p></blockquote><h3 id=先看效果>先看效果</h3><p><img src=https://img.imgdb.cn/item/605c19db8322e6675c771b50.gif alt=不带辅助线>
+<img src=https://img.imgdb.cn/item/605c19ec8322e6675c772345.gif alt=带辅助线></p><h3 id=确定控制点>确定控制点</h3><p>使用贝塞尔曲线,我们就要先找出它的控制点,笔者Google后发现了<a href="http://www.zheng-hang.com/?id=43">此篇文章</a>,文章中列出了找出控制点的公式
+<img src=https://img.imgdb.cn/item/605c24608322e6675c7cd673.jpg alt=找出控制点></p><blockquote><p><strong>注意:</strong></p><ol><li>公式中的当前点是线段的起点,文中的当前点指的是线段的终点</li><li>公式中的a,b代表曲线的弯曲指数,越大代表曲线越弯,一般设置0.16</li></ol></blockquote><p>从公式中可以发现,确定当前点的控制点,需要用到当前点的前两个点和下一个点四个点,那么当当前点是第一个点,第二个点和最后一个点时,我们就无法获取到全部点,那篇文章中又指出
+<img src=https://img.imgdb.cn/item/605c246a8322e6675c7cdd83.jpg alt=找出控制点></p><p>第二种方法过于复杂,文中使用的是第一中方法,即用当前点的值表示无法获取到的点的值,
+下面列出代码:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span><span class=lnt>75
+</span><span class=lnt>76
+</span><span class=lnt>77
+</span><span class=lnt>78
+</span><span class=lnt>79
+</span><span class=lnt>80
+</span><span class=lnt>81
+</span><span class=lnt>82
+</span><span class=lnt>83
+</span><span class=lnt>84
+</span><span class=lnt>85
+</span><span class=lnt>86
+</span><span class=lnt>87
+</span><span class=lnt>88
+</span><span class=lnt>89
+</span><span class=lnt>90
+</span><span class=lnt>91
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-java data-lang=java><span class=kd>private</span> <span class=kt>void</span> <span class=nf>measurePath</span><span class=o>()</span> <span class=o>{</span>
+    <span class=c1>//保存曲线路径
+</span><span class=c1></span>    <span class=n>mPath</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Path</span><span class=o>();</span>
+    <span class=c1>//保存辅助线路径
+</span><span class=c1></span>    <span class=n>mAssistPath</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Path</span><span class=o>();</span>
+    <span class=kt>float</span> <span class=n>prePreviousPointX</span> <span class=o>=</span> <span class=n>Float</span><span class=o>.</span><span class=na>NaN</span><span class=o>;</span>
+    <span class=kt>float</span> <span class=n>prePreviousPointY</span> <span class=o>=</span> <span class=n>Float</span><span class=o>.</span><span class=na>NaN</span><span class=o>;</span>
+    <span class=kt>float</span> <span class=n>previousPointX</span> <span class=o>=</span> <span class=n>Float</span><span class=o>.</span><span class=na>NaN</span><span class=o>;</span>
+    <span class=kt>float</span> <span class=n>previousPointY</span> <span class=o>=</span> <span class=n>Float</span><span class=o>.</span><span class=na>NaN</span><span class=o>;</span>
+    <span class=kt>float</span> <span class=n>currentPointX</span> <span class=o>=</span> <span class=n>Float</span><span class=o>.</span><span class=na>NaN</span><span class=o>;</span>
+    <span class=kt>float</span> <span class=n>currentPointY</span> <span class=o>=</span> <span class=n>Float</span><span class=o>.</span><span class=na>NaN</span><span class=o>;</span>
+    <span class=kt>float</span> <span class=n>nextPointX</span><span class=o>;</span>
+    <span class=kt>float</span> <span class=n>nextPointY</span><span class=o>;</span>
+
+    <span class=kd>final</span> <span class=kt>int</span> <span class=n>lineSize</span> <span class=o>=</span> <span class=n>mPointList</span><span class=o>.</span><span class=na>size</span><span class=o>();</span>
+    <span class=k>for</span> <span class=o>(</span><span class=kt>int</span> <span class=n>valueIndex</span> <span class=o>=</span> <span class=n>0</span><span class=o>;</span> <span class=n>valueIndex</span> <span class=o>&lt;</span> <span class=n>lineSize</span><span class=o>;</span> <span class=o>++</span><span class=n>valueIndex</span><span class=o>)</span> <span class=o>{</span>
+        <span class=k>if</span> <span class=o>(</span><span class=n>Float</span><span class=o>.</span><span class=na>isNaN</span><span class=o>(</span><span class=n>currentPointX</span><span class=o>))</span> <span class=o>{</span>
+            <span class=n>Point</span> <span class=n>point</span> <span class=o>=</span> <span class=n>mPointList</span><span class=o>.</span><span class=na>get</span><span class=o>(</span><span class=n>valueIndex</span><span class=o>);</span>
+            <span class=n>currentPointX</span> <span class=o>=</span> <span class=n>point</span><span class=o>.</span><span class=na>x</span><span class=o>;</span>
+            <span class=n>currentPointY</span> <span class=o>=</span> <span class=n>point</span><span class=o>.</span><span class=na>y</span><span class=o>;</span>
+        <span class=o>}</span>
+        <span class=k>if</span> <span class=o>(</span><span class=n>Float</span><span class=o>.</span><span class=na>isNaN</span><span class=o>(</span><span class=n>previousPointX</span><span class=o>))</span> <span class=o>{</span>
+            <span class=c1>//是否是第一个点
+</span><span class=c1></span>            <span class=k>if</span> <span class=o>(</span><span class=n>valueIndex</span> <span class=o>&gt;</span> <span class=n>0</span><span class=o>)</span> <span class=o>{</span>
+                <span class=n>Point</span> <span class=n>point</span> <span class=o>=</span> <span class=n>mPointList</span><span class=o>.</span><span class=na>get</span><span class=o>(</span><span class=n>valueIndex</span> <span class=o>-</span> <span class=n>1</span><span class=o>);</span>
+                <span class=n>previousPointX</span> <span class=o>=</span> <span class=n>point</span><span class=o>.</span><span class=na>x</span><span class=o>;</span>
+                <span class=n>previousPointY</span> <span class=o>=</span> <span class=n>point</span><span class=o>.</span><span class=na>y</span><span class=o>;</span>
+            <span class=o>}</span> <span class=k>else</span> <span class=o>{</span>
+                <span class=c1>//是的话就用当前点表示上一个点
+</span><span class=c1></span>                <span class=n>previousPointX</span> <span class=o>=</span> <span class=n>currentPointX</span><span class=o>;</span>
+                <span class=n>previousPointY</span> <span class=o>=</span> <span class=n>currentPointY</span><span class=o>;</span>
+            <span class=o>}</span>
+        <span class=o>}</span>
+
+        <span class=k>if</span> <span class=o>(</span><span class=n>Float</span><span class=o>.</span><span class=na>isNaN</span><span class=o>(</span><span class=n>prePreviousPointX</span><span class=o>))</span> <span class=o>{</span>
+            <span class=c1>//是否是前两个点
+</span><span class=c1></span>            <span class=k>if</span> <span class=o>(</span><span class=n>valueIndex</span> <span class=o>&gt;</span> <span class=n>1</span><span class=o>)</span> <span class=o>{</span>
+                <span class=n>Point</span> <span class=n>point</span> <span class=o>=</span> <span class=n>mPointList</span><span class=o>.</span><span class=na>get</span><span class=o>(</span><span class=n>valueIndex</span> <span class=o>-</span> <span class=n>2</span><span class=o>);</span>
+                <span class=n>prePreviousPointX</span> <span class=o>=</span> <span class=n>point</span><span class=o>.</span><span class=na>x</span><span class=o>;</span>
+                <span class=n>prePreviousPointY</span> <span class=o>=</span> <span class=n>point</span><span class=o>.</span><span class=na>y</span><span class=o>;</span>
+            <span class=o>}</span> <span class=k>else</span> <span class=o>{</span>
+                <span class=c1>//是的话就用当前点表示上上个点
+</span><span class=c1></span>                <span class=n>prePreviousPointX</span> <span class=o>=</span> <span class=n>previousPointX</span><span class=o>;</span>
+                <span class=n>prePreviousPointY</span> <span class=o>=</span> <span class=n>previousPointY</span><span class=o>;</span>
+            <span class=o>}</span>
+        <span class=o>}</span>
+
+        <span class=c1>// 判断是不是最后一个点了
+</span><span class=c1></span>        <span class=k>if</span> <span class=o>(</span><span class=n>valueIndex</span> <span class=o>&lt;</span> <span class=n>lineSize</span> <span class=o>-</span> <span class=n>1</span><span class=o>)</span> <span class=o>{</span>
+            <span class=n>Point</span> <span class=n>point</span> <span class=o>=</span> <span class=n>mPointList</span><span class=o>.</span><span class=na>get</span><span class=o>(</span><span class=n>valueIndex</span> <span class=o>+</span> <span class=n>1</span><span class=o>);</span>
+            <span class=n>nextPointX</span> <span class=o>=</span> <span class=n>point</span><span class=o>.</span><span class=na>x</span><span class=o>;</span>
+            <span class=n>nextPointY</span> <span class=o>=</span> <span class=n>point</span><span class=o>.</span><span class=na>y</span><span class=o>;</span>
+        <span class=o>}</span> <span class=k>else</span> <span class=o>{</span>
+            <span class=c1>//是的话就用当前点表示下一个点
+</span><span class=c1></span>            <span class=n>nextPointX</span> <span class=o>=</span> <span class=n>currentPointX</span><span class=o>;</span>
+            <span class=n>nextPointY</span> <span class=o>=</span> <span class=n>currentPointY</span><span class=o>;</span>
+        <span class=o>}</span>
+
+        <span class=k>if</span> <span class=o>(</span><span class=n>valueIndex</span> <span class=o>==</span> <span class=n>0</span><span class=o>)</span> <span class=o>{</span>
+            <span class=c1>// 将Path移动到开始点
+</span><span class=c1></span>            <span class=n>mPath</span><span class=o>.</span><span class=na>moveTo</span><span class=o>(</span><span class=n>currentPointX</span><span class=o>,</span> <span class=n>currentPointY</span><span class=o>);</span>
+            <span class=n>mAssistPath</span><span class=o>.</span><span class=na>moveTo</span><span class=o>(</span><span class=n>currentPointX</span><span class=o>,</span> <span class=n>currentPointY</span><span class=o>);</span>
+        <span class=o>}</span> <span class=k>else</span> <span class=o>{</span>
+            <span class=c1>// 求出控制点坐标
+</span><span class=c1></span>            <span class=kd>final</span> <span class=kt>float</span> <span class=n>firstDiffX</span> <span class=o>=</span> <span class=o>(</span><span class=n>currentPointX</span> <span class=o>-</span> <span class=n>prePreviousPointX</span><span class=o>);</span>
+            <span class=kd>final</span> <span class=kt>float</span> <span class=n>firstDiffY</span> <span class=o>=</span> <span class=o>(</span><span class=n>currentPointY</span> <span class=o>-</span> <span class=n>prePreviousPointY</span><span class=o>);</span>
+            <span class=kd>final</span> <span class=kt>float</span> <span class=n>secondDiffX</span> <span class=o>=</span> <span class=o>(</span><span class=n>nextPointX</span> <span class=o>-</span> <span class=n>previousPointX</span><span class=o>);</span>
+            <span class=kd>final</span> <span class=kt>float</span> <span class=n>secondDiffY</span> <span class=o>=</span> <span class=o>(</span><span class=n>nextPointY</span> <span class=o>-</span> <span class=n>previousPointY</span><span class=o>);</span>
+            <span class=kd>final</span> <span class=kt>float</span> <span class=n>firstControlPointX</span> <span class=o>=</span> <span class=n>previousPointX</span> <span class=o>+</span> <span class=o>(</span><span class=n>lineSmoothness</span> <span class=o>*</span> <span class=n>firstDiffX</span><span class=o>);</span>
+            <span class=kd>final</span> <span class=kt>float</span> <span class=n>firstControlPointY</span> <span class=o>=</span> <span class=n>previousPointY</span> <span class=o>+</span> <span class=o>(</span><span class=n>lineSmoothness</span> <span class=o>*</span> <span class=n>firstDiffY</span><span class=o>);</span>
+            <span class=kd>final</span> <span class=kt>float</span> <span class=n>secondControlPointX</span> <span class=o>=</span> <span class=n>currentPointX</span> <span class=o>-</span> <span class=o>(</span><span class=n>lineSmoothness</span> <span class=o>*</span> <span class=n>secondDiffX</span><span class=o>);</span>
+            <span class=kd>final</span> <span class=kt>float</span> <span class=n>secondControlPointY</span> <span class=o>=</span> <span class=n>currentPointY</span> <span class=o>-</span> <span class=o>(</span><span class=n>lineSmoothness</span> <span class=o>*</span> <span class=n>secondDiffY</span><span class=o>);</span>
+            <span class=c1>//画出曲线
+</span><span class=c1></span>            <span class=n>mPath</span><span class=o>.</span><span class=na>cubicTo</span><span class=o>(</span><span class=n>firstControlPointX</span><span class=o>,</span> <span class=n>firstControlPointY</span><span class=o>,</span> <span class=n>secondControlPointX</span><span class=o>,</span> <span class=n>secondControlPointY</span><span class=o>,</span>
+                    <span class=n>currentPointX</span><span class=o>,</span> <span class=n>currentPointY</span><span class=o>);</span>
+            <span class=c1>//将控制点保存到辅助路径上
+</span><span class=c1></span>            <span class=n>mAssistPath</span><span class=o>.</span><span class=na>lineTo</span><span class=o>(</span><span class=n>firstControlPointX</span><span class=o>,</span> <span class=n>firstControlPointY</span><span class=o>);</span>
+            <span class=n>mAssistPath</span><span class=o>.</span><span class=na>lineTo</span><span class=o>(</span><span class=n>secondControlPointX</span><span class=o>,</span> <span class=n>secondControlPointY</span><span class=o>);</span>
+            <span class=n>mAssistPath</span><span class=o>.</span><span class=na>lineTo</span><span class=o>(</span><span class=n>currentPointX</span><span class=o>,</span> <span class=n>currentPointY</span><span class=o>);</span>
+        <span class=o>}</span>
+
+        <span class=c1>// 更新值,
+</span><span class=c1></span>        <span class=n>prePreviousPointX</span> <span class=o>=</span> <span class=n>previousPointX</span><span class=o>;</span>
+        <span class=n>prePreviousPointY</span> <span class=o>=</span> <span class=n>previousPointY</span><span class=o>;</span>
+        <span class=n>previousPointX</span> <span class=o>=</span> <span class=n>currentPointX</span><span class=o>;</span>
+        <span class=n>previousPointY</span> <span class=o>=</span> <span class=n>currentPointY</span><span class=o>;</span>
+        <span class=n>currentPointX</span> <span class=o>=</span> <span class=n>nextPointX</span><span class=o>;</span>
+        <span class=n>currentPointY</span> <span class=o>=</span> <span class=n>nextPointY</span><span class=o>;</span>
+    <span class=o>}</span>
+    <span class=n>mPathMeasure</span> <span class=o>=</span> <span class=k>new</span> <span class=n>PathMeasure</span><span class=o>(</span><span class=n>mPath</span><span class=o>,</span> <span class=kc>false</span><span class=o>);</span>
+<span class=o>}</span>
+</code></pre></td></tr></table></div></div><blockquote><ul><li>参考博客 <a href=http://blog.csdn.net/u011102153/article/details/52039794>http://blog.csdn.net/u011102153/article/details/52039794</a> 部分源码拷贝了该项目的源码</li><li>完整代码 <a href=https://github.com/zFxiang/BezierDemo>https://github.com/zFxiang/BezierDemo</a></li><li>笔者还属于学习阶段,若文中有错误,还请赐教</li></ul></blockquote></div><div class=post-copyright><p class=copyright-item><span class=item-title>文章作者</span>
+<span class=item-content>Fxzou</span></p><p class=copyright-item><span class=item-title>上次更新</span>
+<span class=item-content>2016-10-05</span></p></div><footer class=post-footer><div class=post-tags><a href=/tags/%E8%87%AA%E5%AE%9A%E4%B9%89view/>自定义View</a>
+<a href=/tags/android/>Android</a></div><nav class=post-nav><a class=prev href=/post/android/dagger2-%E5%85%A5%E9%97%A8%E4%BB%A5%E5%88%9D%E5%AD%A6%E8%80%85%E8%A7%92%E5%BA%A6/><i class="iconfont icon-left"></i>
+<span class="prev-text nav-default">Dagger2-入门，以初学者角度</span>
+<span class="prev-text nav-mobile">上一篇</span></a>
+<a class=next href=/post/ubuntu/ubuntu16-4-%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85%E5%90%8E%E7%9A%84%E4%BC%98%E5%8C%96%E6%95%B4%E7%90%86/><span class="next-text nav-default">ubuntu16.4 系统安装后的优化整理</span>
+<span class="next-text nav-mobile">下一篇</span>
+<i class="iconfont icon-right"></i></a></nav></footer></article></div></div></main><footer id=footer class=footer><div class=social-links><a href=vvvzfx@gmail.com class="iconfont icon-email" title=email></a><a href=https://github.com/zFxiang class="iconfont icon-github" title=github></a><a href=https://zfxiang.github.io/index.xml type=application/rss+xml class="iconfont icon-rss" title=rss></a></div><div class=copyright><span class=power-by>由 <a class=hexo-link href=https://gohugo.io>Hugo</a> 强力驱动</span>
+<span class=division>|</span>
+<span class=theme-info>主题 -
+<a class=theme-link href=https://github.com/olOwOlo/hugo-theme-even>Even</a></span>
+<span class=copyright-year>&copy;
+2021<span class=heart><i class="iconfont icon-heart"></i></span><span>Fxzou</span></span></div></footer><div class=back-to-top id=back-to-top><i class="iconfont icon-up"></i></div></div><script src=https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.min.js integrity="sha256-jwCP0NAdCBloaIWTWHmW4i3snUNMHUNO+jr9rYd2iOI=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.locales.min.js integrity="sha256-ZwofwC1Lf/faQCzN7nZtfijVV6hSwxjQMwXL4gn9qU8=" crossorigin=anonymous></script><script>var languageCode="zh-cn".replace(/-/g,'_').replace(/_(.*)/,function(b,a){return b.replace(a,a.toUpperCase())});timeago().render(document.querySelectorAll('.timeago'),languageCode),timeago.cancel()</script><script type=text/javascript src=/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js></script></body></html>
