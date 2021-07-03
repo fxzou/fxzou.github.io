@@ -1,0 +1,206 @@
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>- Fxzou Blog</title><meta name=renderer content="webkit"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=theme-color content="#f8f5ec"><meta name=msapplication-navbutton-color content="#f8f5ec"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec"><meta name=author content="Fxzou"><meta name=description content="从ReentrantLock看AQS (AbstractQueuedSynchronizer) 运行流程 概述 本文将以ReentrantLock为例来讲解AbstractQueuedSynchroni"><meta name=keywords content="Fxzou,blog,zFxiang"><meta name=generator content="Hugo 0.84.4 with theme even"><link rel=canonical href=https://fxzou.github.io/post/java/java_aqs/><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/manifest.json><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><script async src=//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js></script><link href=/sass/main.min.6a07198a7772a3f591f1f71ae4d69692baa652596d5ebb6f1600d15bc497919c.css rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin=anonymous><meta property="og:title" content><meta property="og:description" content="从ReentrantLock看AQS (AbstractQueuedSynchronizer) 运行流程 概述 本文将以ReentrantLock为例来讲解AbstractQueuedSynchroni"><meta property="og:type" content="article"><meta property="og:url" content="https://fxzou.github.io/post/java/java_aqs/"><meta property="article:section" content="post"><meta itemprop=name content><meta itemprop=description content="从ReentrantLock看AQS (AbstractQueuedSynchronizer) 运行流程 概述 本文将以ReentrantLock为例来讲解AbstractQueuedSynchroni"><meta itemprop=wordCount content="4060"><meta itemprop=keywords content><meta name=twitter:card content="summary"><meta name=twitter:title content><meta name=twitter:description content="从ReentrantLock看AQS (AbstractQueuedSynchronizer) 运行流程 概述 本文将以ReentrantLock为例来讲解AbstractQueuedSynchroni"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script><script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head><body><div id=mobile-navbar class=mobile-navbar><div class=mobile-header-logo><a href=/ class=logo>Fxzou</a></div><div class=mobile-navbar-icon><span></span><span></span><span></span></div></div><nav id=mobile-menu class="mobile-menu slideout-menu"><ul class=mobile-menu-list><a href=/><li class=mobile-menu-item>主页</li></a><a href=/post/><li class=mobile-menu-item>归档</li></a><a href=/tags/><li class=mobile-menu-item>标签</li></a><a href=/categories/><li class=mobile-menu-item>分类</li></a><a href=/about/><li class=mobile-menu-item>关于我</li></a></ul></nav><div class=container id=mobile-panel><header id=header class=header><div class=logo-wrapper><a href=/ class=logo>Fxzou</a></div><nav class=site-navbar><ul id=menu class=menu><li class=menu-item><a class=menu-item-link href=/>主页</a></li><li class=menu-item><a class=menu-item-link href=/post/>归档</a></li><li class=menu-item><a class=menu-item-link href=/tags/>标签</a></li><li class=menu-item><a class=menu-item-link href=/categories/>分类</a></li><li class=menu-item><a class=menu-item-link href=/about/>关于我</a></li></ul></nav></header><main id=main class=main><div class=content-wrapper><div id=content class=content><article class=post><header class=post-header><h1 class=post-title></h1><div class=post-meta><span class=post-time>0001-01-01</span>
+<span id=busuanzi_container_page_pv class=more-meta><span id=busuanzi_value_page_pv><img src=/img/spinner.svg alt=spinner.svg></span> 次阅读</span></div></header><div class=post-toc id=post-toc><h2 class=post-toc-title>文章目录</h2><div class="post-toc-content always-active"><nav id=TableOfContents><ul><li><a href=#从reentrantlock看aqs-abstractqueuedsynchronizer-运行流程>从ReentrantLock看AQS (AbstractQueuedSynchronizer) 运行流程</a><ul><li><a href=#概述>概述</a></li><li><a href=#reentrantlock-介绍>ReentrantLock 介绍</a></li><li><a href=#abstractqueuedsynchronizer>AbstractQueuedSynchronizer</a><ul><li><a href=#介绍>介绍</a></li><li><a href=#aqs数据结构>AQS数据结构</a></li><li><a href=#aqs-主要方法>AQS 主要方法</a></li><li><a href=#aqs总结>AQS总结</a></li></ul></li><li><a href=#总结>总结</a></li><li><a href=#参考文章>参考文章</a></li></ul></li></ul></nav></div></div><div class=post-outdated><div class=warn><p>【注意】最后更新于 <span class=timeago datetime=0001-01-01T00:00:00 title="January 1, 0001">January 1, 0001</span>，文中内容可能已过时，请谨慎使用。</p></div></div><div class=post-content><h1 id=从reentrantlock看aqs-abstractqueuedsynchronizer-运行流程>从ReentrantLock看AQS (AbstractQueuedSynchronizer) 运行流程</h1><h2 id=概述>概述</h2><p>本文将以ReentrantLock为例来讲解AbstractQueuedSynchronizer的运行流程，主要通过源码的方式来讲解，仅包含大体的运行流程，不会过于深入。</p><h2 id=reentrantlock-介绍>ReentrantLock 介绍</h2><p>ReentrantLock 是JDK提供的可重入锁实现类，可用其替换synchronized来实现锁重入效果；其底层实现主要是依靠AbstractQueuedSynchronizer，本文将通过ReentrantLock来观察AbstractQueuedSynchronizer的运行流程。</p><h2 id=abstractqueuedsynchronizer>AbstractQueuedSynchronizer</h2><h3 id=介绍>介绍</h3><p>关于AbstractQueuedSynchronizer（以下简称AQS），JDK是这样子描述的：</p><blockquote><p>Provides a framework for implementing blocking locks and related synchronizers (semaphores, events, etc) that rely on first-in-first-out (FIFO) wait queues.</p></blockquote><p>大体意思就是“提供一个框架，用于实现依赖于先进先出(FIFO)等待队列的阻塞锁和相关同步器(信号量、事件等)”，AQS不是一个功能完整的类，而是一个提供了一套依赖于FIFO等待队列的流程框架，该框架可用于实现锁等同步器的。AQS中没有使用任何锁相关的API，其实现主要依靠CAS (Compare And Swap)，是一个优秀的lock-free 编程实践。</p><h3 id=aqs数据结构>AQS数据结构</h3><p>AQS中主要包含以下三个字段</p><pre><code class=language-java>/**
+ * Head of the wait queue, lazily initialized.  Except for
+ * initialization, it is modified only via method setHead.  Note:
+ * If head exists, its waitStatus is guaranteed not to be
+ * CANCELLED.
+ */
+private transient volatile Node head;
+
+/**
+ * Tail of the wait queue, lazily initialized.  Modified only via
+ * method enq to add new wait node.
+ */
+private transient volatile Node tail;
+
+/**
+ * The synchronization state.
+ */
+private volatile int state;
+</code></pre><p>这三个字段都标记了<code>volatile</code>，其中<code>head</code> 和 <code>tail</code>主要用于维护AQS的FIFO双向队列，该队列是AQS的核心，只由AQS该维护该队列，子类实现不会去维护该队列；<code>state</code>用于标记当前同步器的转态，AQS不会对该字段做任何操作，该字段由子类去维护，但AQS提供了修改<code>state</code>的方法，其中的<code>compareAndSetState</code>是子类用的最多的，主要用于实现多线程对同步器的抢夺。</p><h3 id=aqs-主要方法>AQS 主要方法</h3><p>在开始了解AQS的运行流程之前，我们先看一下在使用AQS时需要关注的四个方法：</p><pre><code class=language-java>
+// 抢夺资源流程的入口，AQS暴露出的API，由自定义同步器来调用，ReentrantLock 的lock方法就是去调用该方法。
+public final void acquire(int arg) {
+    if (!tryAcquire(arg) &amp;&amp;
+        acquireQueued(addWaiter(Node.EXCLUSIVE), arg))
+        selfInterrupt();
+}
+
+// 由子类实现该方法，抢占资源逻辑在这个方法实现，该方法由AQS在抢夺资源流程中调用。
+protected boolean tryAcquire(int arg) {
+    throw new UnsupportedOperationException();
+}
+
+// 释放资源流程的入口，AQS暴露出的API，由自定义同步器来调用，ReentrantLock 的unlock方法就是去调用该方法。
+public final boolean release(int arg) {
+    if (tryRelease(arg)) {
+        Node h = head;
+        if (h != null &amp;&amp; h.waitStatus != 0)
+            unparkSuccessor(h);
+        return true;
+    }
+    return false;
+}
+
+// 由子类实现该方法，释放资源逻辑在这个方法实现，该方法由AQS在释放资源流程中调用。
+protected boolean tryRelease(int arg) {
+    throw new UnsupportedOperationException();
+}
+
+</code></pre><p>其中<code>acquire</code> 和 <code>tryAcquire</code> 跟同步器资源抢夺相关；<code>release</code> 和 <code>tryRelease</code> 和同步器资源释放相关。<code>acquire</code>和<code>release</code> 方法是AQS流程的入口，通过这两个方法来走资源抢夺和资源释放的流程，该流程中包含了FIFO队列维护、线程状态管理等操作，是整个AQS的核心，自定义同步器中会去调用这两个方法；而<code>tryAcquire</code>和<code>tryRelease</code> 方法对应线程资源抢占和释放操作，这两个方法中只关心线程是否抢占/释放资源成功，不会维护FIFO队列和线程状态，由子类来实现这两个方法，这个是自定义同步器的核心代码，由这两个方法来实现不同同步器的不同功能。</p><blockquote><p>这四个方法对应的是线程独占流程，共享流程使用的是<code>acquireShared</code>, <code>tryAcquireShared</code>, <code>releaseShared</code>, <code>tryReleaseShared</code> 这四个方法，ReentrantLock是线程独占模式，所以本文主要讲解线程独占流程，但线程共享流程和独占流程差别不大，感兴趣的同学可以自行了解。</p></blockquote><p>下面看一下ReentrantLock中是如何去使用这四个方法的：</p><pre><code class=language-java>// 简化版代码，方便演示
+public class ReentrantLock implements Lock, Serializable {
+    private final Sync sync = new Sync();
+    
+    public void lock() {
+        this.sync.acquire(1);
+    }
+    
+    public void unlock() {
+        this.sync.release(1);
+    }
+
+    static final class Sync extends AbstractQueuedSynchronizer {
+
+        protected final boolean tryAcquire(int acquires) {
+            final Thread current = Thread.currentThread();
+            int c = getState();
+            if (c == 0) { // 当前锁没有被占用
+                if (compareAndSetState(0, acquires)) { // 尝试去拿锁
+                    setExclusiveOwnerThread(current); // 标记当前线程为锁的持有者
+                    return true; // 返回拿锁成功
+                }
+            }
+            else if (current == getExclusiveOwnerThread()) { // 当前锁被占用，且是被自己占用，走重入逻辑，对state做累加
+                int nextc = c + acquires;
+                if (nextc &lt; 0) // overflow
+                    throw new Error(&quot;Maximum lock count exceeded&quot;);
+                setState(nextc);
+                return true;
+            }
+            // 锁被占用或者拿锁失败，返回拿锁失败
+            return false;
+        }
+
+        protected final boolean tryRelease(int releases) {
+            int c = getState() - releases;
+            if (Thread.currentThread() != getExclusiveOwnerThread())
+                throw new IllegalMonitorStateException();
+            boolean free = false;
+            if (c == 0) { // 锁被完全释放
+                free = true; // 标记锁已被释放
+                setExclusiveOwnerThread(null);
+            }
+            setState(c);
+            return free;
+        }
+
+    }
+</code></pre><p>可以看出，ReentrantLock的核心功能是由内部类Sync来完成的，而这个Sync类就是继承了AQS，并重写了<code>tryAcquire</code> 和 <code>tryRelease</code> 方法，这两个方法的实现也很简单</p><ul><li><code>tryAcquire</code> 中主要是通过state字段是否等于0来判断当前锁是否锁住了，没有锁住，则当前线程使用CAS去尝试将state标记为acquires，标记成功则代表拿锁成功，返回<code>true</code>，否则返回<code>false</code>。</li><li><code>tryRelease</code> 中则是通过判断释放后state是否为0来判断当前锁是否被完全释放，若完全释放则返回<code>true</code>，否则返回<code>false</code>。</li></ul><p>可以看出这个两个方法的实现只关注锁的占用和释放是否成功，没有关心FIFO队列和线程状态。那么FIFO队列和线程状态是如何来维护的呢？答案就是在<code>acquire</code>和<code>release</code> 方法中；从ReentrantLock源码也可以看到，<code>lock</code>和<code>unlock</code>方法只是调用了一下<code>acquire</code>和<code>release</code> 方法，所以接下来我们重点来看一下这两个方法的实现</p><h4 id=node>Node</h4><p>开始前，先看一下队列Node的数据结构</p><pre><code class=language-java>static final class Node {
+
+        static final int CANCELLED =  1;
+
+        static final int SIGNAL    = -1;
+
+        static final int CONDITION = -2;
+
+        static final int PROPAGATE = -3;
+      
+        volatile int waitStatus;
+
+        volatile Node prev;
+ 
+        volatile Node next;
+
+        volatile Thread thread;
+}
+</code></pre><p>其中<code>waitStatus</code>字段代表了节点的等待状态，共包含了5个值。</p><ol><li><code>INIT(0)</code>: 节点的默认状态为0。当线程释放资源后，也会将自己的节点状态设置为0。</li><li><code>CANCELLED(1)</code>: 当前线程节点已取消等待，为<code>CANCELLED</code>的节点会在<code>acquire</code>方法里的流程中被清除。</li><li><code>SIGNAL(-1)</code>: 当前节点的后续节点已沉睡，需要被唤醒。会在<code>release</code>方法里的流程中将其后续节点唤醒。</li><li><code>CONDITION(-2)</code> 和 <code>PROPAGATE(-3)</code> 则和条件锁及共享模式有关，本文不过多解释。</li></ol><p>其中可以看出，状态可以分为两类，无效转态和有效状态，大于0则代表当前节点无效了，需要被移除，小于等于0则是有效节点，需要继续去尝试获取资源。</p><h4 id=acquire>acquire</h4><p>先看一下<code>acquire</code>方法的实现</p><pre><code class=language-java>public final void acquire(int arg) {
+        // 调用我们自己实现的tryAcquire去获取资源，获取失败则尝试将自己加入到等待队列中
+        if (!tryAcquire(arg) &amp;&amp; acquireQueued(addWaiter(Node.EXCLUSIVE), arg))
+            selfInterrupt();
+ }
+</code></pre><p>再看一下<code>addWaiter</code>方法</p><pre><code class=language-java>private Node addWaiter(Node mode) {
+        Node node = new Node(mode);
+        // 为当前线程新建一个node，并将其加入到队列尾部，这里需要注意的是添加时是先将新节点的prev设置为老的尾部节点，使用CAS将新节点设置为tail后才会将老节点的next设置为新节点，
+        // 这样做的理由是为了防止并发问题，后续的对队列的修改也是包括两种遍历，一个是从前往后，一个是从后往前。
+        for (;;) {
+            Node oldTail = tail;
+            if (oldTail != null) {
+                node.setPrevRelaxed(oldTail);
+                if (compareAndSetTail(oldTail, node)) {
+                    oldTail.next = node;
+                    return node;
+                }
+            } else {
+                initializeSyncQueue();
+            }
+        }
+    }
+</code></pre><p>添加完节点后，就会尝试去从队列中获取资源，这里也是AQS的核心了，看一下<code>acquireQueued</code>方法</p><pre><code class=language-java>final boolean acquireQueued(final Node node, int arg) {
+        boolean interrupted = false;
+        try {
+            for (;;) {
+                // 取到当前节点的上一个节点
+                final Node p = node.predecessor();
+                // 如果上一个节点是头节点，则证明前面没有在等待的线程了，轮到当前线程去尝试获取资源。
+                if (p == head &amp;&amp; tryAcquire(arg)) {
+                    // 获取资源成功，则将当前节点设为头节点，并设置为空节点
+                    setHead(node);
+                    p.next = null; // help GC
+                    return interrupted;
+                }
+                // 判断前面一个节点是否是一个有效的等待线程节点（没有取消等待的线程），是则将自己睡眠，不是则将前面已取消的线程节点移除，直到找到一个有效的线程节点作为自己的前序节点并将其状态设为SIGNAL，然后再走一次循环。
+                if (shouldParkAfterFailedAcquire(p, node))
+                    interrupted |= parkAndCheckInterrupt();
+            }
+        } catch (Throwable t) {
+            cancelAcquire(node);
+            if (interrupted)
+                selfInterrupt();
+            throw t;
+        }
+    }
+</code></pre><p>总结一下<code>acquire</code>方法的流程：</p><ol><li>调用子类实现的<code>tryAcquire</code>方法去获取资源。</li><li>获取成功则当前线程继续执行，否则将自己加入到等待队列。</li><li>进入等待队列后，循环的去判断自己的上一个节点是否是头结点，是则再次调用子类实现的<code>tryAcquire</code>方法去获取资源，否则进入沉睡，等待唤醒。</li><li>在沉睡前，会将前面已取消的线程节点移除，直到找到一个有效的线程节点做为自己的前序节点，并将其状态设为SIGNAL。</li></ol><p>一句话就是<code>acquire</code>方法会去尝试获取资源，获取失败则将自己加入到等待队列，并沉睡，等待唤醒。</p><p>举个例子，demo1线程获取资源失败后，当前的队列状态为：
+<img src=https://img2020.cnblogs.com/blog/841817/202107/841817-20210703152632900-1547595244.png alt=一个等待线程的情况>
+若是有多个线程等待，则队列状态为：
+<img src=https://img2020.cnblogs.com/blog/841817/202107/841817-20210703152817791-2080937468.png alt=多个等待线程的情况></p><p>由图可以看出，若当前节点已沉睡，则需要在沉睡前将前一个节点的转态设为<code>SIGNAL</code>。</p><h4 id=release>release</h4><p>前面的<code>acquire</code>方法说到，等待队列中的线程会进入沉睡，等待唤醒，那么由谁来唤醒呢？答案就是<code>release</code>方法，也就是我们在调用unlock的时候，接下来我们先看一下<code>release</code>方法的实现</p><pre><code class=language-java>public final boolean release(int arg) {
+        // 调用子类实现的tryRelease方法去释放资源
+        if (tryRelease(arg)) {
+            Node h = head;
+            // 释放成功，且等待队列中还有节点，则去唤醒下一个等待线程
+            if (h != null &amp;&amp; h.waitStatus != 0)
+                unparkSuccessor(h);
+            return true;
+        }
+        return false;
+    }
+
+</code></pre><p>再看一下<code>unparkSuccessor</code>方法</p><pre><code class=language-java>private void unparkSuccessor(Node node) {
+        int ws = node.waitStatus;
+        if (ws &lt; 0)
+            node.compareAndSetWaitStatus(ws, 0);
+        Node s = node.next;
+        // 如果下一个节点已经取消了，则从后往前遍历，找到第一个等待线程节点
+        if (s == null || s.waitStatus &gt; 0) {
+            s = null;
+            for (Node p = tail; p != node &amp;&amp; p != null; p = p.prev)
+                if (p.waitStatus &lt;= 0)
+                    s = p;
+        }
+        // 找到了等待线程节点，并将其唤醒
+        if (s != null)
+            LockSupport.unpark(s.thread);
+    }
+</code></pre><p>唤醒后线程将会继续在<code>acquireQueued</code>方法里执行，并尝试再去获取资源。
+总结一下<code>release</code>方法的流程：</p><ol><li>调用子类实现的tryRelease方法去释放资源</li><li>释放成功则判断当前队列是否有等待线程</li><li>有则找到第一个等待线程，并将其唤醒。</li></ol><p>从流程上也可以看出，若<code>tryRelease</code>方法中抛了异常，则会导致所有沉睡的线程将无法被唤醒。</p><h3 id=aqs总结>AQS总结</h3><p>AQS是模版设计模式的一种实践，其将线程调度等通用逻辑进行了实现，只预留了<code>tryAcquire</code> 和 <code>tryRelease</code> 方法供子类实现自己的并发工具，大大的减轻了实现的复杂难度。</p><h2 id=总结>总结</h2><p>ReentrantLock 是使用AQS实现的，其主要是实现了AQS的<code>tryAcquire</code> 和 <code>tryRelease</code> 方法，且只需要在<code>lock</code>和<code>unlock</code>方法中调用一下<code>acquire</code>和<code>release</code> 方法即可，可以看出AQS非常强大！</p><h2 id=参考文章>参考文章</h2><ul><li><a href=https://www.cnblogs.com/waterystone/p/4920797.html>Java并发之AQS详解</a></li><li><a href=https://tech.meituan.com/2019/12/05/aqs-theory-and-apply.html>从ReentrantLock的实现看AQS的原理及应用</a></li></ul></div><div class=post-copyright><p class=copyright-item><span class=item-title>文章作者</span>
+<span class=item-content>Fxzou</span></p><p class=copyright-item><span class=item-title>上次更新</span>
+<span class=item-content>0001-01-01</span></p></div><footer class=post-footer><nav class=post-nav><a class=prev href=/post/ubuntu/ubuntu_16_4/><i class="iconfont icon-left"></i>
+<span class="prev-text nav-default">ubuntu16.4 系统安装后的优化整理</span>
+<span class="prev-text nav-mobile">上一篇</span></a></nav></footer></article></div><script src=https://utteranc.es/client.js repo=fxzou/fxzou.github.io issue-term=pathname theme=github-light crossorigin=anonymous async></script><noscript>Please enable JavaScript to view the <a href=https://github.com/utterance>comments powered by utterances.</a></noscript></div></main><footer id=footer class=footer><div class=social-links><a href=https://github.com/zFxiang class="iconfont icon-github" title=github></a><a href=https://fxzou.github.io/index.xml type=application/rss+xml class="iconfont icon-rss" title=rss></a></div><div class=copyright><span class=power-by>由 <a class=hexo-link href=https://gohugo.io>Hugo</a> 强力驱动</span>
+<span class=division>|</span>
+<span class=theme-info>主题 -
+<a class=theme-link href=https://github.com/olOwOlo/hugo-theme-even>Even</a></span><div class=busuanzi-footer><span id=busuanzi_container_site_pv>本站总访问量 <span id=busuanzi_value_site_pv><img src=/img/spinner.svg alt=spinner.svg></span> 次</span>
+<span class=division>|</span>
+<span id=busuanzi_container_site_uv>本站总访客数 <span id=busuanzi_value_site_uv><img src=/img/spinner.svg alt=spinner.svg></span> 人</span></div><span class=copyright-year>&copy;
+2021<span class=heart><i class="iconfont icon-heart"></i></span><span>Fxzou</span></span>
+<span style="font-family:source sans pro,helvetica neue,Arial,sans-serif"><a href=https://beian.miit.gov.cn/ target=_blank>粤ICP备2021051746号</a>
+|
+<a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030602005705" target=_blank>粤公网安备 44030602005705号</a></span></div></footer><div class=back-to-top id=back-to-top><i class="iconfont icon-up"></i></div></div><script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script src=https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.min.js integrity="sha256-jwCP0NAdCBloaIWTWHmW4i3snUNMHUNO+jr9rYd2iOI=" crossorigin=anonymous></script><script src=https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.locales.min.js integrity="sha256-ZwofwC1Lf/faQCzN7nZtfijVV6hSwxjQMwXL4gn9qU8=" crossorigin=anonymous></script><script>var languageCode="zh-cn".replace(/-/g,'_').replace(/_(.*)/,function(b,a){return b.replace(a,a.toUpperCase())});timeago().render(document.querySelectorAll('.timeago'),languageCode),timeago.cancel()</script><script type=text/javascript src=/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js></script></body></html>
