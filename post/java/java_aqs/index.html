@@ -158,9 +158,9 @@ public class ReentrantLock implements Lock, Serializable {
         }
     }
 </code></pre><p>总结一下<code>acquire</code>方法的流程：</p><ol><li>调用子类实现的<code>tryAcquire</code>方法去获取资源。</li><li>获取成功则当前线程继续执行，否则将自己加入到等待队列。</li><li>进入等待队列后，循环的去判断自己的上一个节点是否是头结点，是则再次调用子类实现的<code>tryAcquire</code>方法去获取资源，否则进入沉睡，等待唤醒。</li><li>在沉睡前，会将前面已取消的线程节点移除，直到找到一个有效的线程节点做为自己的前序节点，并将其状态设为SIGNAL。</li></ol><p>一句话就是<code>acquire</code>方法会去尝试获取资源，获取失败则将自己加入到等待队列，并沉睡，等待唤醒。</p><p>举个例子，demo1线程获取资源失败后，当前的队列状态为：
-<img src=https://img2020.cnblogs.com/blog/841817/202107/841817-20210703152632900-1547595244.png alt=一个等待线程的情况>
+<img src=https://pic.imgdb.cn/item/60e037b45132923bf8ba495b.png alt=一个等待线程的情况>
 若是有多个线程等待，则队列状态为：
-<img src=https://img2020.cnblogs.com/blog/841817/202107/841817-20210703152817791-2080937468.png alt=多个等待线程的情况></p><p>由图可以看出，若当前节点已沉睡，则需要在沉睡前将前一个节点的转态设为<code>SIGNAL</code>。</p><h4 id=release>release</h4><p>前面的<code>acquire</code>方法说到，等待队列中的线程会进入沉睡，等待唤醒，那么由谁来唤醒呢？答案就是<code>release</code>方法，也就是我们在调用unlock的时候，接下来我们先看一下<code>release</code>方法的实现</p><pre><code class=language-java>public final boolean release(int arg) {
+<img src=https://pic.imgdb.cn/item/60e037b45132923bf8ba4968.png alt=多个等待线程的情况></p><p>由图可以看出，若当前节点已沉睡，则需要在沉睡前将前一个节点的转态设为<code>SIGNAL</code>。</p><h4 id=release>release</h4><p>前面的<code>acquire</code>方法说到，等待队列中的线程会进入沉睡，等待唤醒，那么由谁来唤醒呢？答案就是<code>release</code>方法，也就是我们在调用unlock的时候，接下来我们先看一下<code>release</code>方法的实现</p><pre><code class=language-java>public final boolean release(int arg) {
         // 调用子类实现的tryRelease方法去释放资源
         if (tryRelease(arg)) {
             Node h = head;
