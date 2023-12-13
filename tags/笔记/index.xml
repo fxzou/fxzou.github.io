@@ -1,1 +1,34 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>笔记 on Fxzou Blog</title><link>https://fxzou.github.io/tags/%E7%AC%94%E8%AE%B0/</link><description>Recent content in 笔记 on Fxzou Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Wed, 13 Dec 2023 18:07:48 +0800</lastBuildDate><atom:link href="https://fxzou.github.io/tags/%E7%AC%94%E8%AE%B0/index.xml" rel="self" type="application/rss+xml"/><item><title>从ReentrantLock看AQS (AbstractQueuedSynchronizer) 运行流程</title><link>https://fxzou.github.io/post/java/java_aqs/</link><pubDate>Wed, 13 Dec 2023 18:07:48 +0800</pubDate><guid>https://fxzou.github.io/post/java/java_aqs/</guid><description/></item><item><title>Spring JoinPoint的用法</title><link>https://fxzou.github.io/post/java/spring_joinpoint/</link><pubDate>Tue, 25 Oct 2016 15:43:48 +0800</pubDate><guid>https://fxzou.github.io/post/java/spring_joinpoint/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>笔记 on Fxzou</title>
+    <link>https://blog.fxzou.com/tags/%E7%AC%94%E8%AE%B0/</link>
+    <description>Recent content in 笔记 on Fxzou</description>
+    <image>
+      <title>Fxzou</title>
+      <url>https://blog.fxzou.com/papermod-cover.png</url>
+      <link>https://blog.fxzou.com/papermod-cover.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 13 Dec 2023 18:07:48 +0800</lastBuildDate><atom:link href="https://blog.fxzou.com/tags/%E7%AC%94%E8%AE%B0/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>从ReentrantLock看AQS (AbstractQueuedSynchronizer) 运行流程</title>
+      <link>https://blog.fxzou.com/post/java/java_aqs/</link>
+      <pubDate>Wed, 13 Dec 2023 18:07:48 +0800</pubDate>
+      
+      <guid>https://blog.fxzou.com/post/java/java_aqs/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Spring JoinPoint的用法</title>
+      <link>https://blog.fxzou.com/post/java/spring_joinpoint/</link>
+      <pubDate>Tue, 25 Oct 2016 15:43:48 +0800</pubDate>
+      
+      <guid>https://blog.fxzou.com/post/java/spring_joinpoint/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,1 +1,25 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>美化 on Fxzou Blog</title><link>https://fxzou.github.io/tags/%E7%BE%8E%E5%8C%96/</link><description>Recent content in 美化 on Fxzou Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Wed, 31 Aug 2016 15:43:48 +0800</lastBuildDate><atom:link href="https://fxzou.github.io/tags/%E7%BE%8E%E5%8C%96/index.xml" rel="self" type="application/rss+xml"/><item><title>ubuntu16.4 系统安装后的优化整理</title><link>https://fxzou.github.io/post/ubuntu/ubuntu_16_4/</link><pubDate>Wed, 31 Aug 2016 15:43:48 +0800</pubDate><guid>https://fxzou.github.io/post/ubuntu/ubuntu_16_4/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>美化 on Fxzou</title>
+    <link>https://blog.fxzou.com/tags/%E7%BE%8E%E5%8C%96/</link>
+    <description>Recent content in 美化 on Fxzou</description>
+    <image>
+      <title>Fxzou</title>
+      <url>https://blog.fxzou.com/papermod-cover.png</url>
+      <link>https://blog.fxzou.com/papermod-cover.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 31 Aug 2016 15:43:48 +0800</lastBuildDate><atom:link href="https://blog.fxzou.com/tags/%E7%BE%8E%E5%8C%96/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ubuntu16.4 系统安装后的优化整理</title>
+      <link>https://blog.fxzou.com/post/ubuntu/ubuntu_16_4/</link>
+      <pubDate>Wed, 31 Aug 2016 15:43:48 +0800</pubDate>
+      
+      <guid>https://blog.fxzou.com/post/ubuntu/ubuntu_16_4/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

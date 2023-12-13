@@ -1,1 +1,43 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Android on Fxzou Blog</title><link>https://fxzou.github.io/tags/android/</link><description>Recent content in Android on Fxzou Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Mon, 05 Dec 2016 15:43:48 +0800</lastBuildDate><atom:link href="https://fxzou.github.io/tags/android/index.xml" rel="self" type="application/rss+xml"/><item><title>仿即刻APP点赞桃心的效果</title><link>https://fxzou.github.io/post/android/like_view/</link><pubDate>Mon, 05 Dec 2016 15:43:48 +0800</pubDate><guid>https://fxzou.github.io/post/android/like_view/</guid><description>&lt;p>用自定View的方式实现即刻APP的点赞效果。&lt;/p></description></item><item><title>Dagger2入门，以初学者角度</title><link>https://fxzou.github.io/post/android/dagger2/</link><pubDate>Sun, 25 Sep 2016 15:43:48 +0800</pubDate><guid>https://fxzou.github.io/post/android/dagger2/</guid><description>Dagger2是Android中比较热门的依赖注入框架, 本文将从初学者的角度来学习Dagger2。</description></item><item><title>Android-使用贝塞尔曲线将多点连成一条平滑的曲线</title><link>https://fxzou.github.io/post/android/bezier/</link><pubDate>Wed, 21 Sep 2016 15:43:48 +0800</pubDate><guid>https://fxzou.github.io/post/android/bezier/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Android on Fxzou</title>
+    <link>https://blog.fxzou.com/tags/android/</link>
+    <description>Recent content in Android on Fxzou</description>
+    <image>
+      <title>Fxzou</title>
+      <url>https://blog.fxzou.com/papermod-cover.png</url>
+      <link>https://blog.fxzou.com/papermod-cover.png</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 05 Dec 2016 15:43:48 +0800</lastBuildDate><atom:link href="https://blog.fxzou.com/tags/android/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>仿即刻APP点赞桃心的效果</title>
+      <link>https://blog.fxzou.com/post/android/like_view/</link>
+      <pubDate>Mon, 05 Dec 2016 15:43:48 +0800</pubDate>
+      
+      <guid>https://blog.fxzou.com/post/android/like_view/</guid>
+      <description>&lt;p&gt;用自定View的方式实现即刻APP的点赞效果。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Dagger2入门，以初学者角度</title>
+      <link>https://blog.fxzou.com/post/android/dagger2/</link>
+      <pubDate>Sun, 25 Sep 2016 15:43:48 +0800</pubDate>
+      
+      <guid>https://blog.fxzou.com/post/android/dagger2/</guid>
+      <description>Dagger2是Android中比较热门的依赖注入框架, 本文将从初学者的角度来学习Dagger2。</description>
+    </item>
+    
+    <item>
+      <title>Android-使用贝塞尔曲线将多点连成一条平滑的曲线</title>
+      <link>https://blog.fxzou.com/post/android/bezier/</link>
+      <pubDate>Wed, 21 Sep 2016 15:43:48 +0800</pubDate>
+      
+      <guid>https://blog.fxzou.com/post/android/bezier/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
