@@ -1,16 +1,75 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  
-  <sitemap>
-    <loc>https://blog.fxzou.com/en/sitemap.xml</loc>
-    
-      <lastmod>2023-12-13T18:07:48+08:00</lastmod>
-    
-  </sitemap>
-  
-  <sitemap>
-    <loc>https://blog.fxzou.com/zh/sitemap.xml</loc>
-    
-  </sitemap>
-  
-</sitemapindex>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://blog.fxzou.com/about/</loc>
+  </url><url>
+    <loc>https://blog.fxzou.com/categories/</loc>
+    <lastmod>2023-12-13T18:07:48+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.fxzou.com/</loc>
+    <lastmod>2023-12-13T18:07:48+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.fxzou.com/categories/java/</loc>
+    <lastmod>2023-12-13T18:07:48+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.fxzou.com/post/</loc>
+    <lastmod>2023-12-13T18:07:48+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.fxzou.com/tags/</loc>
+    <lastmod>2023-12-13T18:07:48+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.fxzou.com/post/java/java_aqs/</loc>
+    <lastmod>2023-12-13T18:07:48+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.fxzou.com/tags/%E5%B9%B6%E5%8F%91/</loc>
+    <lastmod>2023-12-13T18:07:48+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.fxzou.com/tags/%E7%AC%94%E8%AE%B0/</loc>
+    <lastmod>2023-12-13T18:07:48+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.fxzou.com/tags/android/</loc>
+    <lastmod>2016-12-21T15:43:48+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.fxzou.com/categories/android/</loc>
+    <lastmod>2016-12-21T15:43:48+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.fxzou.com/post/android/like_view/</loc>
+    <lastmod>2016-12-05T15:43:48+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.fxzou.com/tags/%E8%87%AA%E5%AE%9A%E4%B9%89view/</loc>
+    <lastmod>2016-12-05T15:43:48+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.fxzou.com/tags/spring/</loc>
+    <lastmod>2016-10-25T15:43:48+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.fxzou.com/post/java/spring_joinpoint/</loc>
+    <lastmod>2016-10-25T15:43:48+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.fxzou.com/tags/dagger2/</loc>
+    <lastmod>2016-12-21T15:43:48+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.fxzou.com/post/android/dagger2/</loc>
+    <lastmod>2016-12-21T15:43:48+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.fxzou.com/tags/%E6%95%99%E7%A8%8B/</loc>
+    <lastmod>2016-12-21T15:43:48+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.fxzou.com/post/android/bezier/</loc>
+    <lastmod>2016-10-05T15:43:48+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.fxzou.com/categories/ubuntu/</loc>
+    <lastmod>2016-08-31T15:43:48+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.fxzou.com/tags/ubuntu16.4/</loc>
+    <lastmod>2016-08-31T15:43:48+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.fxzou.com/post/ubuntu/ubuntu_16_4/</loc>
+    <lastmod>2016-08-31T15:43:48+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.fxzou.com/tags/%E7%BE%8E%E5%8C%96/</loc>
+    <lastmod>2016-08-31T15:43:48+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.fxzou.com/series/</loc>
+  </url>
+</urlset>
