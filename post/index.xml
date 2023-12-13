@@ -10,7 +10,7 @@
       <link>https://blog.fxzou.com/papermod-cover.png</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
+    <language>zh</language>
     <lastBuildDate>Wed, 13 Dec 2023 18:07:48 +0800</lastBuildDate><atom:link href="https://blog.fxzou.com/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>从ReentrantLock看AQS (AbstractQueuedSynchronizer) 运行流程</title>
