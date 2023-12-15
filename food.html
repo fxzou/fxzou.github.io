@@ -1,0 +1,82 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>今天吃什么？</title>
+</head>
+
+<body>
+    <h3>今天吃什么：</h3>
+	<button onclick="randomFood();">随机</button>
+    <ul id="all">
+		<li>肉类：<pre id="rou"></pre></li>
+		<li>蔬菜：<pre id="shucai"></pre></li>
+	</ul>
+
+    <script>
+        function getRandom(array) {
+          var name = array[Math.floor(Math.random() * array.length)];
+		  return `<a href="https://home.meishichina.com/search/${name}">${name}</a>`
+        }
+        
+		function randomFood() {
+		  localStorage.clear();
+		  var rou = [
+			'青椒炒肉',
+			'白萝卜炒牛肉',
+			'土豆炖牛肉',
+			'红烧牛肉',
+			'洋葱炒牛肉',
+			'胡萝卜炒肉',
+			'辣椒炒鸡',
+			'香菇焖鸡',
+			'辣子鸡',
+			'土豆烧鸡块',
+			'红萝卜烧排骨',
+			'红烧鱼块',
+			'蒸鱼',
+			'红烧带鱼',
+			'海带排骨汤',
+			'白萝卜烧鸭',
+			'蒜苗烧鸭血',
+			'红烧花甲',
+			'虾',
+			'鸭血豆腐',
+			'豆干蒸猪油渣'
+		  ];
+		  var shucai = [
+			 '菠菜',
+			'四季豆',
+			'上海青',
+			'茼蒿',
+			'西兰花',
+			'秋葵',
+			'油麦菜',
+			'丝瓜',
+			'藕片',
+			'手撕包菜',
+			'番茄炒蛋',
+			'煎豆腐',
+			'豆干',
+			'凉拌海带',
+			'红烧冬瓜',
+			'芹菜腐竹',
+			'茄子',
+			'山药',
+			'南瓜',
+			'蒸蛋'
+		  ];
+		  
+		  document.getElementById("rou").innerHTML = getRandom(rou) + '，' + getRandom(rou);
+		  document.getElementById("shucai").innerHTML = getRandom(shucai) + '，' + getRandom(shucai);
+		  localStorage.setItem(new Date().toDateString(), document.getElementById("all").innerHTML);
+		}
+		var cache = localStorage.getItem(new Date().toDateString());
+        if (cache) {
+			document.getElementById("all").innerHTML = cache;
+		}
+    </script>
+
+</body>
+
+</html>
